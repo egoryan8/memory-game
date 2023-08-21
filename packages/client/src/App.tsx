@@ -1,16 +1,16 @@
 import React, { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
-import { Spinner } from '../components/Spinner/Spinner'
+import { Spinner } from './components/Spinner/Spinner'
 
-const Error = lazy(() => import('../pages/Error/Error'))
-const Forum = lazy(() => import('../pages/Forum/Forum'))
-const ForumThread = lazy(() => import('../pages/ForumThread/ForumThread'))
-const LeaderBoard = lazy(() => import('../pages/LeaderBoard/LeaderBoard'))
-const Game = lazy(() => import('../pages/Game/Game'))
-const Login = lazy(() => import('../pages/Login/Login'))
-const Register = lazy(() => import('../pages/Register/Register'))
-const Profile = lazy(() => import('../pages/Profile/Profile'))
+const Error = lazy(() => import('./pages/Error/Error'))
+const Forum = lazy(() => import('./pages/Forum/Forum'))
+const ForumThread = lazy(() => import('./pages/ForumThread/ForumThread'))
+const LeaderBoard = lazy(() => import('./pages/LeaderBoard/LeaderBoard'))
+const Game = lazy(() => import('./pages/Game/Game'))
+const Login = lazy(() => import('./pages/Login/Login'))
+const Register = lazy(() => import('./pages/Register/Register'))
+const Profile = lazy(() => import('./pages/Profile/Profile'))
 
 const routes = [
   {
