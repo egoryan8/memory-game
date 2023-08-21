@@ -1,10 +1,14 @@
 import React, { ChangeEvent, useState } from 'react'
-import Input from '../../components/Input/Input'
+import Input from '@/components/Input/Input'
 import { inputsData } from './constants'
-import { InputValue } from '../../components/Input/types'
+
+interface InputStateValue {
+  login: string
+  password: string
+}
 
 const Login: React.FC = () => {
-  const [inputValue, setInputValue] = useState<InputValue>({
+  const [inputValue, setInputValue] = useState<InputStateValue>({
     login: '',
     password: '',
   })
@@ -32,7 +36,7 @@ const Login: React.FC = () => {
             name={item.name}
             label={item.label}
             type={item.type}
-            value={inputValue[item.id as keyof InputValue]}
+            value={inputValue[item.id as keyof InputStateValue]}
             onChange={handleInputChange}
             key={item.id}
           />

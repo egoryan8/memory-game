@@ -1,7 +1,15 @@
 import React, { ChangeEvent, useState } from 'react'
-import CInputProps from './types'
 
-const Input: React.FC<CInputProps> = ({
+interface InputProps {
+  id: string
+  name: string
+  label: string
+  type: string
+  value: string
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void
+}
+
+const Input: React.FC<InputProps> = ({
   id,
   name,
   label,
