@@ -2,7 +2,7 @@ import React, { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import { Spinner } from './components/Spinner/Spinner'
-import { AppPath } from './App.type'
+import { AppPath } from './types/AppPath'
 
 const Error = lazy(() => import('./pages/Error/Error'))
 const Forum = lazy(() => import('./pages/Forum/Forum'))
