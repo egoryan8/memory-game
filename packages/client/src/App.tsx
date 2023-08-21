@@ -1,8 +1,6 @@
-import * as React from 'react'
-import { lazy, Suspense, useEffect } from 'react'
+import React, { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
-
 import { Spinner } from '../components/Spinner/Spinner'
 
 const Error = lazy(() => import('../pages/Error/Error'))
@@ -58,8 +56,8 @@ const routes = [
   },
 ]
 
-const routeComponents = routes.map(({ path, element }) => (
-  <Route path={path} element={element} />
+const routeComponents = routes.map((route, index) => (
+  <Route key={index} path={route.path} element={route.element} />
 ))
 
 function App() {
