@@ -1,46 +1,42 @@
 import React, { ChangeEvent, useState } from 'react'
+import CInput from '../../components/CInput/CInput'
+import { inputsData } from './constants'
+import { InputValue } from '../../components/CInput/types'
 
 const PSignIn: React.FC = () => {
-  /** Local data */
-  const [username, setUsername] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
+  const [inputValue, setInputValue] = useState<InputValue>({
+    login: '',
+    password: '',
+  })
 
-  /** Handlers */
-  const handleLoginChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value)
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target
+    setInputValue(prevInputValue => ({
+      ...prevInputValue,
+      [name]: value,
+    }))
   }
-  const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value)
-  }
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    console.log('SUBMIT', username, password)
+    console.log('SUBMIT', inputValue.login, inputValue.password)
   }
 
   return (
     <div className="page-container">
       <h1 className="text-align-center">ВОЙТИ В ИГРУ</h1>
       <form className="form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="login">Имя пользователя</label>
-          <input
-            type="text"
-            id="login"
-            value={username}
-            onChange={handleLoginChange}
+        {inputsData.map(item => (
+          <CInput
+            id={item.id}
+            label={item.label}
+            type={item.type}
+            value={inputValue[item.id as keyof InputValue]}
+            onChange={handleInputChange}
+            key={item.id}
           />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Пароль</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-        </div>
+        ))}
         <button type="submit">Войти</button>
-        {/*Заменить на Link после добавления роутера*/}
         <a className="display-block" href="#">
           Регистрация
         </a>
