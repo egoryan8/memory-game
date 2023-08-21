@@ -2,6 +2,7 @@ import { ChangeEvent } from 'react'
 
 export default interface CInputProps {
   id: string
+  name: string
   label: string
   type: string
   value: string

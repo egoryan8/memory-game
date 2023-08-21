@@ -1,8 +1,9 @@
 import React, { ChangeEvent, useState } from 'react'
 import CInputProps from './types'
 
-const CInput: React.FC<CInputProps> = ({
+const Input: React.FC<CInputProps> = ({
   id,
+  name,
   label,
   type,
   value,
@@ -21,6 +22,7 @@ const CInput: React.FC<CInputProps> = ({
       <input
         type={type}
         id={id}
+        name={name}
         value={inputValue}
         onChange={handleInputChange}
       />
@@ -28,4 +30,4 @@ const CInput: React.FC<CInputProps> = ({
   )
 }
 
-export default CInput
+export default Input

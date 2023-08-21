@@ -1,6 +1,5 @@
 import React, { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import './App.css'
 import { Spinner } from './components/Spinner/Spinner'
 import { AppPath } from './types/AppPath'
 
