@@ -2,6 +2,7 @@ import React, { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import { Spinner } from './components/Spinner/Spinner'
+import { AppPath } from './App.type'
 
 const Error = lazy(() => import('./pages/Error/Error'))
 const Forum = lazy(() => import('./pages/Forum/Forum'))
@@ -18,31 +19,31 @@ const routes = [
     element: <Game />,
   },
   {
-    path: '/login',
+    path: AppPath.LOGIN,
     element: <Login />,
   },
   {
-    path: '/register',
+    path: AppPath.REGISTER,
     element: <Register />,
   },
   {
-    path: '/forum',
+    path: AppPath.FORUM,
     element: <Forum />,
   },
   {
-    path: '/forum/thread',
+    path: AppPath.THREAD,
     element: <ForumThread />,
   },
   {
-    path: '/profile',
+    path: AppPath.PROFILE,
     element: <Profile />,
   },
   {
-    path: '/leaderboard',
+    path: AppPath.LEADERBOARD,
     element: <LeaderBoard />,
   },
   {
-    path: '/404',
+    path: '/*',
     element: <Error name="404" text="Упс! Такой страницы нет..." />,
   },
   {
@@ -56,8 +57,8 @@ const routes = [
   },
 ]
 
-const routeComponents = routes.map((route, index) => (
-  <Route key={index} path={route.path} element={route.element} />
+const routeComponents = routes.map(route => (
+  <Route key={route.path} path={route.path} element={route.element} />
 ))
 
 function App() {
