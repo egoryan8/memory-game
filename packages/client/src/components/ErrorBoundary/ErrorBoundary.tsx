@@ -1,5 +1,13 @@
-import React, { PureComponent, FC, ReactNode } from 'react'
-import { ErrorBoundaryProps, ErrorBoundaryState } from './types'
+import React, { PureComponent, FC, ReactNode, ComponentType } from 'react'
+
+interface ErrorBoundaryProps {
+  children: ReactNode
+  ErrorComponent?: ComponentType<{ error: Error }>
+}
+
+interface ErrorBoundaryState {
+  error: Error | null
+}
 
 const ErrorMsg: FC<{ error: Error }> = ({ error }) => {
   return (
