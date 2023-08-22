@@ -42,8 +42,10 @@ const Login: React.FC = () => {
             key={item.id}
           />
         ))}
-        <button type="submit">Войти</button>
-        <Link to="/register">Регистрация</Link>
+        <div className="button-link-container">
+          <button type="submit">Войти</button>
+          <Link to="/register">Регистрация</Link>
+        </div>
       </form>
     </div>
   )

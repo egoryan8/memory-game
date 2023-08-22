@@ -14,12 +14,6 @@ body,
   height: 100%;
 }
 
-#root {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 html {
   font-family: 'PT-Sans', sans-serif;
   font-size: $base-font-size;
@@ -29,6 +23,7 @@ h1 {
   font-family: 'Overpass', sans-serif;
   font-size: $extra-large;
   font-weight: 900;
+  margin-bottom: $large;
 }
 
 input {
@@ -75,10 +70,26 @@ button {
   text-align: center;
 }
 
+.page-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .form {
-  width: 40rem;
+  display: grid;
+  grid-gap: 0 1.5rem;
+  width: 45rem;
   margin: 0 auto;
-  padding: 1.2rem;
+
+  .input-wrapper {
+    width: 100%;
+  }
+
+  .button-link-container {
+    grid-column: 1 / span 2;
+  }
 
   .form-group {
     margin-bottom: 1rem;
