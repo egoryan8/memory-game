@@ -1,0 +1,90 @@
+@import 'variables';
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&family=Overpass:wght@400;500;600;700;900&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+html {
+  font-family: 'PT-Sans', sans-serif;
+  font-size: $base-font-size;
+}
+
+h1 {
+  font-family: 'Overpass', sans-serif;
+  font-size: $extra-large;
+  font-weight: 900;
+}
+
+input {
+  width: 100%;
+  min-height: $extra-large;
+  padding: 1rem;
+  border: 1px solid $dark;
+  border-radius: .75rem;
+  font-size: 1.5rem;
+  font-family: 'PT-Sans', sans-serif;
+  font-weight: 700;
+}
+
+label {
+  display: block;
+  margin-bottom: .5rem;
+  font-weight: 700;
+  padding-left: 1rem;
+}
+
+a {
+  font-size: $large;
+  font-weight: 700;
+  line-height: 2.5rem;
+  text-align: center;
+  color: $dark;
+}
+
+button {
+  display: block;
+  width: 100%;
+  min-height: $extra-large;
+  background-color: $primary;
+  color: $light;
+  border: none;
+  border-radius: .75rem;
+  cursor: pointer;
+  font-size: $large;
+  font-weight: 700;
+  margin: $large 0;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.form {
+  width: 40rem;
+  margin: 0 auto;
+  padding: 1.2rem;
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  a {
+    display: block;
+  }
+}

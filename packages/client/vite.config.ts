@@ -12,4 +12,11 @@ export default defineConfig({
     __SERVER_PORT__: process.env.SERVER_PORT,
   },
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@/': '/src/',
+      '@components': '/src/components',
+      '@pages': '/src/pages',
+    },
+  },
 })
