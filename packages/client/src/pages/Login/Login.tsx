@@ -1,30 +1,23 @@
-import React, { ChangeEvent, useState } from 'react'
+import React from 'react'
 import Input from '@/components/Input/Input'
 import { inputsData } from './constants'
 import { Link } from 'react-router-dom'
+import { useFormInput } from '@/hooks/useFormInput/useFormInput'
 
-interface InputStateValue {
+interface ILogin {
   login: string
   password: string
 }
 
 const Login: React.FC = () => {
-  const [inputValue, setInputValue] = useState<InputStateValue>({
+  const { inputValue, handleInputChange } = useFormInput<ILogin>({
     login: '',
     password: '',
   })
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target
-    setInputValue(prevInputValue => ({
-      ...prevInputValue,
-      [name]: value,
-    }))
-  }
-
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    console.log('SUBMIT', inputValue)
+    console.log('LOGIN', inputValue)
   }
 
   return (
@@ -37,7 +30,7 @@ const Login: React.FC = () => {
             name={item.name}
             label={item.label}
             type={item.type}
-            value={inputValue[item.id as keyof InputStateValue]}
+            value={inputValue[item.id as keyof ILogin]}
             onChange={handleInputChange}
             key={item.id}
           />
