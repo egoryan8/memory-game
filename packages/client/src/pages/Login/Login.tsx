@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from 'react'
 import Input from '@/components/Input/Input'
 import { inputsData } from './constants'
+import { Link } from 'react-router-dom'
 
 interface InputStateValue {
   login: string
@@ -42,9 +43,7 @@ const Login: React.FC = () => {
           />
         ))}
         <button type="submit">Войти</button>
-        <a className="display-block" href="#">
-          Регистрация
-        </a>
+        <Link to="/register">Регистрация</Link>
       </form>
     </div>
   )

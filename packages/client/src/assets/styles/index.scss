@@ -35,7 +35,7 @@ input {
   width: 100%;
   min-height: $extra-large;
   padding: 1rem;
-  border: 1px solid $black;
+  border: 1px solid $dark;
   border-radius: .75rem;
   font-size: 1.5rem;
   font-family: 'PT-Sans', sans-serif;
@@ -54,15 +54,15 @@ a {
   font-weight: 700;
   line-height: 2.5rem;
   text-align: center;
-  color: $black;
+  color: $dark;
 }
 
 button {
   display: block;
   width: 100%;
   min-height: $extra-large;
-  background-color: $base-blue;
-  color: $white;
+  background-color: $primary;
+  color: $light;
   border: none;
   border-radius: .75rem;
   cursor: pointer;
@@ -75,10 +75,6 @@ button {
   text-align: center;
 }
 
-.display-block {
-  display: block;
-}
-
 .form {
   width: 40rem;
   margin: 0 auto;
@@ -86,5 +82,9 @@ button {
 
   .form-group {
     margin-bottom: 1rem;
+  }
+
+  a {
+    display: block;
   }
 }
