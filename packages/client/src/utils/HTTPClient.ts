@@ -57,10 +57,10 @@ function HTTPClient(baseUri = '') {
       method: METHOD.DELETE,
     })
 
-  function fetchWithRetry(
+  const fetchWithRetry = (
     urlPath: string,
     options: Partial<RequestInit>
-  ): Promise<Response> {
+  ): Promise<Response> => {
     urlPath = baseUri.includes('https:')
       ? baseUri + urlPath
       : BASE_URI + baseUri + urlPath
@@ -68,7 +68,6 @@ function HTTPClient(baseUri = '') {
       const queryParams = options.body ? `?${queryStringify(options.body)}` : ''
       urlPath = `${urlPath}${queryParams}`
     }
-    console.log(options)
     return fetch(urlPath, {
       credentials: 'include',
       mode: 'cors',
