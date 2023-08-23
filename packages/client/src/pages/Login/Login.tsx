@@ -1,50 +1,31 @@
-import React, { ChangeEvent, useState } from 'react'
-import Input from '@/components/Input/Input'
-import { inputsData } from './constants'
+import React from 'react'
 import { Link } from 'react-router-dom'
+import Form from '@/components/Form/Form'
+import { INPUTS_DATA } from '@/components/Form/constants'
+import { SubmitHandler } from 'react-hook-form'
 
-interface InputStateValue {
+interface ILogin {
   login: string
   password: string
 }
 
 const Login: React.FC = () => {
-  const [inputValue, setInputValue] = useState<InputStateValue>({
-    login: '',
-    password: '',
-  })
-
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target
-    setInputValue(prevInputValue => ({
-      ...prevInputValue,
-      [name]: value,
-    }))
+  const onSubmit: SubmitHandler<ILogin> = data => {
+    console.log('LOGIN', data)
   }
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault()
-    console.log('SUBMIT', inputValue)
-  }
+  const inputNames = ['login', 'password']
 
   return (
     <div className="page-container">
-      <h1 className="text-align-center">ВОЙТИ В ИГРУ</h1>
-      <form className="form" onSubmit={handleSubmit}>
-        {inputsData.map(item => (
-          <Input
-            id={item.id}
-            name={item.name}
-            label={item.label}
-            type={item.type}
-            value={inputValue[item.id as keyof InputStateValue]}
-            onChange={handleInputChange}
-            key={item.id}
-          />
-        ))}
-        <button type="submit">Войти</button>
-        <Link to="/register">Регистрация</Link>
-      </form>
+      <h1 className="text-align-center">ВОЙТИ</h1>
+      <Form
+        inputsData={INPUTS_DATA}
+        onSubmit={onSubmit}
+        inputNames={inputNames}
+        type="login"
+      />
+      <Link to="/register">Регистрация</Link>
     </div>
   )
 }

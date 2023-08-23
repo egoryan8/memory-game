@@ -1,12 +1,14 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent } from 'react'
 
 interface InputProps {
   id: string
   name: string
   label: string
   type: string
-  value: string
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
+  onBlur?: () => void
+  error?: any
+  required?: boolean
 }
 
 const Input: React.FC<InputProps> = ({
@@ -14,26 +16,25 @@ const Input: React.FC<InputProps> = ({
   name,
   label,
   type,
-  value,
   onChange,
+  onBlur,
+  error,
+  required,
 }) => {
-  const [inputValue, setInputValue] = useState(value)
-
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value)
-    onChange(event)
-  }
-
   return (
-    <div className="form-group">
-      <label htmlFor={id}>{label}</label>
+    <div className={`form-group ${error && 'validation-error'}`}>
+      <label htmlFor={id}>
+        {label}
+        {required && '*'}
+      </label>
       <input
         type={type}
         id={id}
         name={name}
-        value={inputValue}
-        onChange={handleInputChange}
+        onChange={onChange}
+        onBlur={onBlur}
       />
+      {error && <span className="error-message">{error}</span>}
     </div>
   )
 }
