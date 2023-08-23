@@ -17,7 +17,9 @@ const FormComponent: React.FC<IForm> = ({
   inputNames,
   type,
 }) => {
-  const { control, handleSubmit, formState } = useForm()
+  const { control, handleSubmit, formState, trigger } = useForm({
+    reValidateMode: 'onChange',
+  })
 
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -36,7 +38,10 @@ const FormComponent: React.FC<IForm> = ({
                 label={item.label}
                 type={item.type}
                 onChange={event => field.onChange(event.target.value)}
-                onBlur={field.onBlur}
+                onBlur={() => {
+                  field.onBlur()
+                  trigger(item.id)
+                }}
                 error={formState.errors[item.id]?.message}
                 required={item.required}
               />
