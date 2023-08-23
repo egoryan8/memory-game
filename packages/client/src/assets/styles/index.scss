@@ -14,10 +14,14 @@ body,
   height: 100%;
 }
 
-#root {
+.layout {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: $secondary;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
 html {
