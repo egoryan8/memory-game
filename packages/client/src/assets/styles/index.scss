@@ -29,8 +29,8 @@ h1 {
 input {
   width: 100%;
   min-height: $extra-large;
-  padding: 1rem;
-  border: 1px solid $dark;
+  padding: .75rem;
+  border: 2px solid $dark;
   border-radius: .75rem;
   font-size: 1.5rem;
   font-family: 'PT-Sans', sans-serif;
@@ -41,7 +41,6 @@ label {
   display: block;
   margin-bottom: .5rem;
   font-weight: 700;
-  padding-left: 1rem;
 }
 
 a {
@@ -79,6 +78,7 @@ button {
 
 .form {
   display: grid;
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 0 1.5rem;
   width: 45rem;
   margin: 0 auto;
@@ -97,5 +97,21 @@ button {
 
   a {
     display: block;
+  }
+}
+
+.validation-error {
+  label {
+    color: $danger;
+  }
+  input {
+    margin-bottom: .25rem;
+    color: $danger;
+    border-color: $danger;
+  }
+  span {
+    color: $danger;
+    margin-top: .5rem;
+    font-size: .75rem;
   }
 }

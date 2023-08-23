@@ -1,8 +1,9 @@
 import React from 'react'
 import Input from '@/components/Input/Input'
-import { inputsData } from './constants'
+import { RegisterInputsData } from './constants'
 import { Link } from 'react-router-dom'
-import { useFormInput } from '@/hooks/useFormInput/useFormInput'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { validationRules } from '@/utils/validation'
 
 interface IRegister {
   first_name: string
@@ -14,35 +15,35 @@ interface IRegister {
 }
 
 const Register: React.FC = () => {
-  const { inputValue, handleInputChange } = useFormInput<IRegister>({
-    first_name: '',
-    last_name: '',
-    login: '',
-    email: '',
-    phone: '',
-    password: '',
-  })
+  const { control, handleSubmit, formState } = useForm<IRegister>()
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault()
-    console.log('REGISTER', inputValue)
+  const onSubmit: SubmitHandler<IRegister> = data => {
+    console.log('REGISTER', data)
   }
 
   return (
     <div className="page-container">
       <h1 className="text-align-center">РЕГИСТРАЦИЯ</h1>
-      <form className="form" onSubmit={handleSubmit}>
-        {inputsData.map(item => (
-          <div className="input-wrapper" key={item.id}>
-            <Input
-              id={item.id}
-              name={item.name}
-              label={item.label}
-              type={item.type}
-              value={inputValue[item.id as keyof IRegister]}
-              onChange={handleInputChange}
-            />
-          </div>
+      <form className="form" onSubmit={handleSubmit(onSubmit)}>
+        {RegisterInputsData.map(item => (
+          <Controller
+            key={item.id}
+            name={item.id as keyof IRegister}
+            control={control}
+            rules={validationRules[item.id as keyof typeof validationRules]}
+            render={({ field }) => (
+              <Input
+                id={item.id}
+                name={item.name}
+                label={item.label}
+                type={item.type}
+                onChange={event => field.onChange(event.target.value)}
+                onBlur={field.onBlur}
+                error={formState.errors[item.id as keyof IRegister]?.message}
+                required={item.required}
+              />
+            )}
+          />
         ))}
         <div className="button-link-container">
           <button type="submit">Зарегистрироваться</button>
