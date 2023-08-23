@@ -3,7 +3,6 @@
 
 .pageContainer {
   @include page-container;
-  justify-content: space-around;
   padding: 0 15%;
 }
 
