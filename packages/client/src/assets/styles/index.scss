@@ -14,12 +14,6 @@ body,
   height: 100%;
 }
 
-#root {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 html {
   font-family: 'PT-Sans', sans-serif;
   font-size: $base-font-size;
@@ -55,20 +49,6 @@ a {
   line-height: 2.5rem;
   text-align: center;
   color: $dark;
-}
-
-button {
-  display: block;
-  width: 100%;
-  min-height: $extra-large;
-  background-color: $primary;
-  color: $light;
-  border: none;
-  border-radius: .75rem;
-  cursor: pointer;
-  font-size: $large;
-  font-weight: 700;
-  margin: $large 0;
 }
 
 .text-align-center {
