@@ -2,6 +2,7 @@ import React, { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Spinner } from './components/Spinner/Spinner'
 import { AppPath } from './types/AppPath'
+import { Layout } from './components/Layout/Layout'
 
 const Error = lazy(() => import('./pages/Error/Error'))
 const Forum = lazy(() => import('./pages/Forum/Forum'))
@@ -74,7 +75,9 @@ function App() {
   return (
     <BrowserRouter>
       <Suspense fallback={<Spinner />}>
-        <Routes>{routeComponents}</Routes>
+        <Routes>
+          <Route element={<Layout />}>{routeComponents}</Route>
+        </Routes>
       </Suspense>
     </BrowserRouter>
   )
