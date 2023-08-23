@@ -1,9 +1,8 @@
 import React from 'react'
-import Input from '@/components/Input/Input'
-import { RegisterInputsData } from './constants'
 import { Link } from 'react-router-dom'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import { validationRules } from '@/utils/validation'
+import Form from '@/components/Form/Form'
+import { INPUTS_DATA } from '@/components/Form/constants'
+import { SubmitHandler } from 'react-hook-form'
 
 interface IRegister {
   first_name: string
@@ -15,41 +14,22 @@ interface IRegister {
 }
 
 const Register: React.FC = () => {
-  const { control, handleSubmit, formState } = useForm<IRegister>()
-
   const onSubmit: SubmitHandler<IRegister> = data => {
     console.log('REGISTER', data)
   }
 
+  const inputNames = Object.keys(INPUTS_DATA)
+
   return (
     <div className="page-container">
       <h1 className="text-align-center">РЕГИСТРАЦИЯ</h1>
-      <form className="form" onSubmit={handleSubmit(onSubmit)}>
-        {RegisterInputsData.map(item => (
-          <Controller
-            key={item.id}
-            name={item.id as keyof IRegister}
-            control={control}
-            rules={validationRules[item.id as keyof typeof validationRules]}
-            render={({ field }) => (
-              <Input
-                id={item.id}
-                name={item.name}
-                label={item.label}
-                type={item.type}
-                onChange={event => field.onChange(event.target.value)}
-                onBlur={field.onBlur}
-                error={formState.errors[item.id as keyof IRegister]?.message}
-                required={item.required}
-              />
-            )}
-          />
-        ))}
-        <div className="button-link-container">
-          <button type="submit">Зарегистрироваться</button>
-          <Link to="/login">Войти</Link>
-        </div>
-      </form>
+      <Form
+        inputsData={INPUTS_DATA}
+        onSubmit={onSubmit}
+        inputNames={inputNames}
+        type="register"
+      />
+      <Link to="/login">Войти</Link>
     </div>
   )
 }

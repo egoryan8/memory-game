@@ -1,9 +1,8 @@
 import React from 'react'
-import { useForm, Controller, SubmitHandler } from 'react-hook-form'
-import Input from '@/components/Input/Input'
-import { LoginInputsData } from './constants'
 import { Link } from 'react-router-dom'
-import { validationRules } from '@/utils/validation'
+import Form from '@/components/Form/Form'
+import { INPUTS_DATA } from '@/components/Form/constants'
+import { SubmitHandler } from 'react-hook-form'
 
 interface ILogin {
   login: string
@@ -11,41 +10,22 @@ interface ILogin {
 }
 
 const Login: React.FC = () => {
-  const { control, handleSubmit, formState } = useForm<ILogin>()
-
   const onSubmit: SubmitHandler<ILogin> = data => {
     console.log('LOGIN', data)
   }
 
+  const inputNames = ['login', 'password']
+
   return (
     <div className="page-container">
-      <h1 className="text-align-center">ВОЙТИ В ИГРУ</h1>
-      <form className="form" onSubmit={handleSubmit(onSubmit)}>
-        {LoginInputsData.map(item => (
-          <Controller
-            key={item.id}
-            name={item.id as keyof ILogin}
-            control={control}
-            rules={validationRules[item.id as keyof typeof validationRules]}
-            render={({ field }) => (
-              <Input
-                id={item.id}
-                name={item.name}
-                label={item.label}
-                type={item.type}
-                onChange={event => field.onChange(event.target.value)}
-                onBlur={field.onBlur}
-                error={formState.errors[item.id as keyof ILogin]?.message}
-                required={item.required}
-              />
-            )}
-          />
-        ))}
-        <div className="button-link-container">
-          <button type="submit">Войти</button>
-          <Link to="/register">Регистрация</Link>
-        </div>
-      </form>
+      <h1 className="text-align-center">ВОЙТИ</h1>
+      <Form
+        inputsData={INPUTS_DATA}
+        onSubmit={onSubmit}
+        inputNames={inputNames}
+        type="login"
+      />
+      <Link to="/register">Регистрация</Link>
     </div>
   )
 }
