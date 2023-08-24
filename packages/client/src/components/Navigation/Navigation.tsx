@@ -4,10 +4,9 @@ import { ReactComponent as ExitIcon } from './exit.svg'
 import s from './Navigation.module.scss'
 
 const navList = [
-  { id: 1, heading: 'о проекте', href: '/about-us' },
-  { id: 2, heading: 'правила игры', href: '/rules' },
-  { id: 3, heading: 'форум', href: '/forum' },
-  { id: 4, heading: 'таблица лидеров', href: '/leaderboard' },
+  { id: 1, heading: 'Играть', href: '/new-game' },
+  { id: 2, heading: 'форум', href: '/forum' },
+  { id: 3, heading: 'таблица лидеров', href: '/leaderboard' },
 ]
 
 const Navigation = () => {
