@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from 'react'
-import cn from 'classnames'
-import s from './button.module.scss'
+import cn from '@/utils/classNames'
+import s from './Button.module.scss'
 
 interface ButtonProps
   extends DetailedHTMLProps<
@@ -15,7 +15,9 @@ interface ButtonProps
 const Button = ({ theme, className, children, ...props }: ButtonProps) => {
   return (
     <button
-      className={cn(s.button, className, { [s.blue]: theme === 'blue' })}
+      className={cn(s.button, { [s.buttonPrimary]: theme === 'blue' }, [
+        className,
+      ])}
       {...props}>
       {children}
     </button>
