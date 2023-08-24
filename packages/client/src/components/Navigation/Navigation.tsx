@@ -2,6 +2,7 @@ import Button from '@/components/Button/Button'
 import { NavLink } from 'react-router-dom'
 import { ReactComponent as ExitIcon } from './exit.svg'
 import s from './Navigation.module.scss'
+import useStore from '@/store'
 
 const navList = [
   { id: 1, heading: 'Играть', href: '/new-game' },
@@ -10,6 +11,11 @@ const navList = [
 ]
 
 const Navigation = () => {
+  const [logoutAsync] = useStore(s => [s.logoutAsync])
+  const handleClick = () => {
+    logoutAsync()
+  }
+
   return (
     <nav className={s.nav}>
       <div className={s.logo}>Лого</div>
@@ -24,7 +30,7 @@ const Navigation = () => {
           </li>
         ))}
         <li>
-          <Button className={s.btnExit}>
+          <Button className={s.btnExit} onClick={handleClick}>
             <ExitIcon />
             выйти
           </Button>

@@ -1,15 +1,13 @@
 import useStore from '@/store'
 import AuthApi from '@/api/AuthApi'
 
-const registerAsync = () => ({
-  registerAsync: (data: IUser) => {
+const logoutAsync = () => ({
+  logoutAsync: () => {
     const state = useStore.getState()
-    const { user, fetchUserAsync } = state
-
-    if (user.data) return
+    const { logout } = state
 
     ;(async () => {
-      AuthApi.register(data)
+      AuthApi.logout()
         .then(async response => {
           return {
             status: response.status,
@@ -19,19 +17,16 @@ const registerAsync = () => ({
         .then(response => {
           switch (response.status) {
             case 200:
-              return true
+              logout()
+              break
             default: {
-              console.log('REGISTER_FAILED', response)
-              return false
+              console.log('LOGOUT_FAILED', response)
             }
           }
         })
-        .then(flag => {
-          if (flag) fetchUserAsync()
-        })
-        .catch(e => console.log('REGISTER_FAILED', e.message))
+        .catch(e => console.log('LOGOUT_FAILED', e.message))
     })()
   },
 })
 
-export default registerAsync
+export default logoutAsync

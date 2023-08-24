@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import loginAsync from '@/store/asyncActions/loginAsync'
 import { fetchUserAsync } from '@/store/asyncActions/fetchUserAsync'
 import registerAsync from '@/store/asyncActions/registerAsync'
+import logoutAsync from '@/store/asyncActions/logoutAsync'
 
 interface IState {
   user: IUserState
@@ -15,6 +16,7 @@ interface IStateActions {
   logout: () => void
   setUser: (user: IState['user']) => void
   loginAsync: (data: ILogin) => void
+  logoutAsync: () => void
   registerAsync: (data: IUser) => void
   fetchUserAsync: () => void
 }
@@ -30,6 +32,7 @@ const useStore = create<IState & IStateActions>()(set => ({
     })),
   setUser: userState => set(() => ({ user: userState })),
   ...loginAsync(),
+  ...logoutAsync(),
   ...registerAsync(),
   ...fetchUserAsync(),
 }))

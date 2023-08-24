@@ -5,7 +5,9 @@ const loginAsync = () => ({
   loginAsync: (data: ILogin) => {
     const state = useStore.getState()
     const { user, fetchUserAsync } = state
+
     if (user.data) return
+
     ;(async () => {
       AuthApi.login(data)
         .then(async response => {

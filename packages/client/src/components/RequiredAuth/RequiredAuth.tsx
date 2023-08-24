@@ -14,6 +14,7 @@ const RequiredAuth: FC<RequiredAuthProps> = ({ children }) => {
   const location = useLocation()
   const routes = Object.values(AppPath) as string[]
   useEffect(() => {
+    if (user.loading) return
     if (routes.includes(location.pathname)) {
       switch (location.pathname) {
         case AppPath.LOGIN:
