@@ -1,0 +1,40 @@
+.nav {
+  display: flex;
+  align-items: center;
+  padding: 36px 48px;
+
+  .logo {
+    margin-right: auto;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  ul {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+
+    li {
+      display: flex;
+      align-items: center;
+      list-style-type: none;
+    }
+
+    a {
+      display: inline-block;
+      padding: 12px 24px;
+    }
+  }
+}
+.active {
+  background: #eaeced;
+  border-radius: 128px;
+}
+
+.btnExit {
+  display: inline-flex;
+  align-items: center;
+  svg {
+    margin-right: 10px;
+  }
+}
