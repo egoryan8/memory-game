@@ -1,3 +1,17 @@
+.page {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.forum {
+  flex: 1;
+  width: 100%;
+  padding: 48px;
+  background: #cfd3d9;
+}
+
 .title {
   margin-bottom: 10px;
 }
@@ -16,7 +30,7 @@
 }
 
 .container {
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 12px;
 
   .headings {
@@ -26,7 +40,7 @@
     column-gap: 10px;
     font-weight: 900;
     text-transform: uppercase;
-    border-bottom: 1px solid #CFD3D9;
+    border-bottom: 1px solid #cfd3d9;
 
     div {
       display: flex;
@@ -36,7 +50,6 @@
       }
     }
   }
-
 
   li {
     display: grid;
@@ -52,7 +65,7 @@
     }
 
     &:not(:last-child) {
-      border-bottom: 1px solid #F4F4F6;
+      border-bottom: 1px solid #f4f4f6;
     }
 
     &:last-child {

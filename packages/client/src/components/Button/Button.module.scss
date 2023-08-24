@@ -4,7 +4,7 @@
   display: inline-block;
   width: 100%;
   min-height: $extra-large;
-  border-radius: .75rem;
+  border-radius: 0.75rem;
   cursor: pointer;
   font-size: $large;
   font-weight: 700;
@@ -16,7 +16,7 @@
   background-color: $primary;
   color: $light;
   border: none;
-  transition: opacity .3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
 
   &:hover {
     opacity: 0.8;

@@ -27,10 +27,10 @@ const Forum = () => {
   }
 
   return (
-    <>
+    <div className={s.page}>
       <Navigation />
 
-      <div style={{ background: '#CFD3D9', width: '100%', padding: '48px' }}>
+      <div className={s.forum}>
         <Title tag={'h1'} className={s.title}>
           Форум
         </Title>
@@ -41,7 +41,6 @@ const Forum = () => {
               name="chat-topic"
               label="Создать тему:"
               type={'text'}
-              value={''}
               onChange={() => console.log('12')}
             />
           )}
@@ -73,7 +72,7 @@ const Forum = () => {
           </ul>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
