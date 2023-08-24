@@ -1,0 +1,22 @@
+@import "@/assets/styles/variables";
+@import "@/assets/styles/mixins";
+
+.pageContainer {
+  @include page-container;
+  padding: 0 15%;
+}
+
+.errorName {
+  color: $silver;
+  font-size: 16rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.errorText {
+  color: $dark;
+  font-family: 'PT-Sans', serif;
+  font-size: 3rem;
+  font-weight: normal;
+}

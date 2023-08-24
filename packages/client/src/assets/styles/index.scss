@@ -14,6 +14,16 @@ body,
   height: 100%;
 }
 
+.layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $secondary;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
 html {
   font-family: 'PT-Sans', sans-serif;
   font-size: $base-font-size;
@@ -23,13 +33,14 @@ h1 {
   font-family: 'Overpass', sans-serif;
   font-size: $extra-large;
   font-weight: 900;
+  margin-bottom: $large;
 }
 
 input {
   width: 100%;
   min-height: $extra-large;
-  padding: 1rem;
-  border: 1px solid $dark;
+  padding: .75rem;
+  border: 2px solid $dark;
   border-radius: .75rem;
   font-size: 1.5rem;
   font-family: 'PT-Sans', sans-serif;
@@ -40,7 +51,6 @@ label {
   display: block;
   margin-bottom: .5rem;
   font-weight: 700;
-  padding-left: 1rem;
 }
 
 a {
@@ -55,10 +65,27 @@ a {
   text-align: center;
 }
 
+.page-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .form {
-  width: 40rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 0 1.5rem;
+  width: 45rem;
   margin: 0 auto;
-  padding: 1.2rem;
+
+  .input-wrapper {
+    width: 100%;
+  }
+
+  .button-container {
+    grid-column: 1 / span 2;
+  }
 
   .form-group {
     margin-bottom: 1rem;
@@ -66,5 +93,21 @@ a {
 
   a {
     display: block;
+  }
+}
+
+.validation-error {
+  label {
+    color: $danger;
+  }
+  input {
+    margin-bottom: .25rem;
+    color: $danger;
+    border-color: $danger;
+  }
+  span {
+    color: $danger;
+    margin-top: .5rem;
+    font-size: .75rem;
   }
 }
