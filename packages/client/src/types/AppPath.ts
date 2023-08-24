@@ -1,4 +1,5 @@
 export enum AppPath {
+  GAME = '/',
   LOGIN = '/login',
   REGISTER = '/register',
   FORUM = '/forum',

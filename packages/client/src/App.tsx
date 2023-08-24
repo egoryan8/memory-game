@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Spinner } from './components/Spinner/Spinner'
 import { AppPath } from './types/AppPath'
 import { Layout } from './components/Layout/Layout'
+import useStore from './store'
 
 const Error = lazy(() => import('./pages/Error/Error'))
 const Forum = lazy(() => import('./pages/Forum/Forum'))
@@ -15,7 +16,7 @@ const Profile = lazy(() => import('./pages/Profile/Profile'))
 
 const routes = [
   {
-    path: '/',
+    path: AppPath.GAME,
     element: <Game />,
   },
   {
@@ -62,7 +63,9 @@ const routeComponents = routes.map(route => (
 ))
 
 function App() {
+  const [fetchUserAsync] = useStore(s => [s.fetchUserAsync])
   useEffect(() => {
+    fetchUserAsync()
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`
       const response = await fetch(url)

@@ -1,20 +1,37 @@
-import { create, createStore } from 'zustand'
+import { create } from 'zustand'
+import loginAsync from '@/store/asyncActions/loginAsync'
+import { fetchUserAsync } from '@/store/asyncActions/fetchUserAsync'
+import registerAsync from '@/store/asyncActions/registerAsync'
 
 interface IState {
-  isAuth: boolean
+  user: IUserState
+}
+interface IUserState {
   loading: boolean
+  data?: IUser | null
 }
 
 interface IStateActions {
-  login: (isAuth: IState['isAuth']) => void
-  logout: (isAuth: IState['isAuth']) => void
+  logout: () => void
+  setUser: (user: IState['user']) => void
+  loginAsync: (data: ILogin) => void
+  registerAsync: (data: IUser) => void
+  fetchUserAsync: () => void
 }
 
 const useStore = create<IState & IStateActions>()(set => ({
-  isAuth: false,
-  loading: false,
-  login: isAuth => set(() => ({ isAuth: isAuth })),
-  logout: () => set(() => ({ isAuth: false })),
+  user: {
+    loading: false,
+    data: null,
+  },
+  logout: () =>
+    set(() => ({
+      user: { loading: false, data: null },
+    })),
+  setUser: userState => set(() => ({ user: userState })),
+  ...loginAsync(),
+  ...registerAsync(),
+  ...fetchUserAsync(),
 }))
 
 export default useStore

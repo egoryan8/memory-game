@@ -3,15 +3,14 @@ import { Link } from 'react-router-dom'
 import Form from '@/components/Form/Form'
 import { INPUTS_DATA } from '@/components/Form/constants'
 import { SubmitHandler } from 'react-hook-form'
-
-interface ILogin {
-  login: string
-  password: string
-}
+import useStore from '@/store'
 
 const Login: React.FC = () => {
-  const onSubmit: SubmitHandler<ILogin> = data => {
+  const [loginAsync] = useStore(s => [s.loginAsync])
+  const onSubmit: SubmitHandler<ILogin> = (data, event) => {
+    event?.preventDefault()
     console.log('LOGIN', data)
+    loginAsync(data)
   }
 
   const inputNames = ['login', 'password']
