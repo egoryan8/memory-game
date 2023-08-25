@@ -1,8 +1,17 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
+import RequiredAuth from '@/components/RequiredAuth/RequiredAuth'
 
-export const Layout = () => (
+interface ILayout {
+  children?: JSX.Element
+}
+export const Layout = ({ children }: ILayout) => (
   <div className="layout">
-    <Outlet />
+    <RequiredAuth>
+      <>
+        {children}
+        <Outlet />
+      </>
+    </RequiredAuth>
   </div>
 )

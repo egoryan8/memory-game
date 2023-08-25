@@ -1,4 +1,4 @@
-interface IUserData {
+interface IUser {
   id?: number
   first_name: string
   second_name: string
@@ -10,7 +10,7 @@ interface IUserData {
   avatar?: string
 }
 
-interface ILoginData {
+interface ILogin {
   login: string
   password: string
 }

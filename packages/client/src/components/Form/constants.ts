@@ -6,9 +6,9 @@ export const INPUTS_DATA = {
     type: 'text',
     required: true,
   },
-  last_name: {
-    id: 'last_name',
-    name: 'last_name',
+  second_name: {
+    id: 'second_name',
+    name: 'second_name',
     label: 'Фамилия',
     type: 'text',
     required: true,

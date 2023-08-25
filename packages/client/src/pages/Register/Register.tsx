@@ -3,19 +3,14 @@ import { Link } from 'react-router-dom'
 import Form from '@/components/Form/Form'
 import { INPUTS_DATA } from '@/components/Form/constants'
 import { SubmitHandler } from 'react-hook-form'
-
-interface IRegister {
-  first_name: string
-  last_name: string
-  login: string
-  email: string
-  phone: string
-  password: string
-}
+import useStore from '@/store'
 
 const Register: React.FC = () => {
-  const onSubmit: SubmitHandler<IRegister> = data => {
+  const [registerAsync] = useStore(s => [s.registerAsync])
+  const onSubmit: SubmitHandler<IUser> = (data, event) => {
+    event?.preventDefault()
     console.log('REGISTER', data)
+    registerAsync(data)
   }
 
   const inputNames = Object.keys(INPUTS_DATA)
