@@ -9,16 +9,19 @@
   font-size: $large;
   font-weight: 700;
   padding: 1rem;
-  margin: $large 0;
-}
-
-.buttonPrimary {
-  background-color: $primary;
-  color: $light;
   border: none;
   transition: opacity 0.3s ease-in-out;
 
   &:hover {
     opacity: 0.8;
   }
+}
+
+.blue {
+  background-color: $primary;
+  color: $light;
+}
+
+.dark {
+  background-color: $dark;
 }
