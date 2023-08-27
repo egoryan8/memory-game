@@ -1,12 +1,9 @@
-@import '../../assets/styles/variables';
-
-
 .nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 36px 48px;
-  background-color: $light;
+  background-color: white;
 
   .logo {
     font-size: 24px;
@@ -52,7 +49,7 @@
   margin: 0;
   padding: 0;
   background-color: transparent;
-  color: $dark;
+  color: #1F252D;
   font-size: 24px;
   font-style: normal;
   font-weight: 900;
