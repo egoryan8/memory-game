@@ -19,7 +19,7 @@ const RequiredAuth: FC<RequiredAuthProps> = ({ children }) => {
       switch (location.pathname) {
         case AppPath.LOGIN:
         case AppPath.REGISTER: {
-          if (user.data) navigate(AppPath.GAME)
+          if (user.data) navigate(AppPath.MAIN)
           break
         }
         default: {

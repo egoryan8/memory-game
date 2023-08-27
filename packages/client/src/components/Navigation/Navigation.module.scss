@@ -1,12 +1,20 @@
+@import '../../assets/styles/variables';
+
+
 .nav {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 36px 48px;
+  background-color: $light;
 
   .logo {
-    margin-right: auto;
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+    letter-spacing: 0.72px;
+    text-transform: uppercase;
   }
 
   ul {
@@ -22,18 +30,35 @@
 
     a {
       display: inline-block;
-      padding: 12px 24px;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: normal;
+      letter-spacing: 0.72px;
+      text-transform: uppercase;
     }
   }
 }
 .active {
   background: #eaeced;
   border-radius: 128px;
+  padding: 12px 24px;
 }
 
 .btnExit {
-  display: inline-flex;
+  width: fit-content;
+  display: flex;
   align-items: center;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  color: $dark;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: normal;
+  letter-spacing: 0.72px;
+  text-transform: uppercase;
   svg {
     margin-right: 10px;
   }
