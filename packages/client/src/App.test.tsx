@@ -1,5 +1,6 @@
 import App from './App'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import { act } from 'react-dom/test-utils'
 
 // @ts-ignore
 global.fetch = jest.fn(() =>
@@ -8,4 +9,7 @@ global.fetch = jest.fn(() =>
 
 test('Example test', async () => {
   render(<App />)
+  act(() => {
+    expect(screen.findByText('ВОЙТИ')).toBeDefined()
+  })
 })
