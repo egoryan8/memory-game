@@ -12,6 +12,7 @@ html,
 body,
 #root {
   height: 100%;
+  background-color: $secondary;
 }
 
 .layout {
@@ -21,7 +22,6 @@ body,
   background-color: $secondary;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
 }
 
 html {
@@ -45,6 +45,22 @@ input {
   font-size: 1.5rem;
   font-family: 'PT-Sans', sans-serif;
   font-weight: 700;
+  &:disabled {
+    border: none;
+    background: $light;
+    opacity: .5;
+  }
+}
+
+.custom-file-input {
+  width: $extra-large;
+  height: $extra-large;
+  background: url("@/assets/images/image-icon.svg") 50% $primary no-repeat;
+  border-radius: 50%;
+  cursor: pointer;
+  margin: 0 auto;
+  position: relative;
+  top: -2rem;
 }
 
 label {
@@ -73,6 +89,15 @@ button {
   font-size: $large;
   font-weight: 700;
   margin: $large 0;
+
+  &:disabled {
+    background-color: $silver;
+    opacity: .25;
+  }
+}
+
+.mb-1 {
+  margin-bottom: $medium;
 }
 
 .text-align-center {
@@ -84,6 +109,7 @@ button {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 2rem 0;
 }
 
 .form {
@@ -114,14 +140,26 @@ button {
   label {
     color: $danger;
   }
+
   input {
     margin-bottom: .25rem;
     color: $danger;
     border-color: $danger;
   }
+
   span {
     color: $danger;
     margin-top: .5rem;
     font-size: .75rem;
+  }
+}
+
+.avatar {
+  &__profile {
+    width: 15rem;
+    height: 15rem;
+    border-radius: 50%;
+    background: $light center/cover;
+    margin: 0 auto;
   }
 }

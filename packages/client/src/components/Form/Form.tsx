@@ -5,14 +5,14 @@ import { validationRules } from '@/utils/validation'
 import { FORM_TYPE } from '@/components/Form/constants'
 
 interface IForm {
-  inputsData: Record<string, any>
+  inputTypes: Record<string, any>
   onSubmit: SubmitHandler<any>
   inputNames: string[]
   type: string
 }
 
 const FormComponent: React.FC<IForm> = ({
-  inputsData,
+  inputTypes,
   onSubmit,
   inputNames,
   type,
@@ -24,7 +24,7 @@ const FormComponent: React.FC<IForm> = ({
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       {inputNames.map(name => {
-        const item = inputsData[name]
+        const item = inputTypes[name]
         return (
           <Controller
             key={item.id}

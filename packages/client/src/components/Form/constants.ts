@@ -46,4 +46,5 @@ export const INPUTS_DATA = {
 export const FORM_TYPE = {
   LOGIN: 'Войти',
   REGISTER: 'Зарегистрироваться',
+  EDIT_PROFILE: 'Сохранить',
 }
