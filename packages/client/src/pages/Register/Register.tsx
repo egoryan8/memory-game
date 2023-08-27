@@ -19,7 +19,7 @@ const Register: React.FC = () => {
     <div className="page-container">
       <h1 className="text-align-center">РЕГИСТРАЦИЯ</h1>
       <Form
-        inputsData={INPUTS_DATA}
+        inputTypes={INPUTS_DATA}
         onSubmit={onSubmit}
         inputNames={inputNames}
         type="register"

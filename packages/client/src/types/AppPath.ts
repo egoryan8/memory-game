@@ -6,4 +6,5 @@ export enum AppPath {
   THREAD = '/forum/thread',
   PROFILE = '/profile',
   LEADERBOARD = '/leaderboard',
+  CHANGE_PASS = '/change-password',
 }

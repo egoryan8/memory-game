@@ -1,4 +1,5 @@
 @import 'variables';
+@import 'mixins';
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&family=Overpass:wght@400;500;600;700;900&display=swap');
 
 * {
@@ -45,6 +46,7 @@ input {
   font-size: 1.5rem;
   font-family: 'PT-Sans', sans-serif;
   font-weight: 700;
+
   &:disabled {
     border: none;
     background: $light;
@@ -53,8 +55,8 @@ input {
 }
 
 .custom-file-input {
-  width: $extra-large;
-  height: $extra-large;
+  width: 3rem;
+  height: 3rem;
   background: url("@/assets/images/image-icon.svg") 50% $primary no-repeat;
   border-radius: 50%;
   cursor: pointer;
@@ -96,8 +98,42 @@ button {
   }
 }
 
+.button-group {
+  display: flex;
+  align-items: center;
+
+  & button {
+    margin-right: 1rem;
+  }
+}
+
+.link-button {
+  background: none;
+  color: $dark;
+  min-height: auto;
+}
+
+.custom-link {
+  background: $dark;
+  color: $light;
+  width: 100%;
+  min-height: $extra-large;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.75rem;
+}
+
+.mb-0 {
+  margin: 0;
+}
+
 .mb-1 {
   margin-bottom: $medium;
+}
+
+.mb-2 {
+  margin-bottom: $large;
 }
 
 .text-align-center {
@@ -155,9 +191,19 @@ button {
 }
 
 .avatar {
+  position: relative;
+  &__submit-button {
+    @include avatar-button;
+    top: 25%;
+  }
+  &__cancel-button {
+    @include avatar-button;
+    top: 60%;
+    background: $danger;
+  }
   &__profile {
-    width: 15rem;
-    height: 15rem;
+    width: 7.5rem;
+    height: 7.5rem;
     border-radius: 50%;
     background: $light center/cover;
     margin: 0 auto;

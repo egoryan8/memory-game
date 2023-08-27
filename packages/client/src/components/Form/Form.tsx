@@ -9,6 +9,8 @@ interface IForm {
   onSubmit: SubmitHandler<any>
   inputNames: string[]
   type: string
+  data?: any
+  disabled?: boolean
 }
 
 const FormComponent: React.FC<IForm> = ({
@@ -16,10 +18,17 @@ const FormComponent: React.FC<IForm> = ({
   onSubmit,
   inputNames,
   type,
+  data,
+  disabled,
 }) => {
-  const { control, handleSubmit, formState, trigger } = useForm({
+  const { control, handleSubmit, formState, trigger, setValue } = useForm({
     reValidateMode: 'onChange',
+    defaultValues: data || {},
   })
+
+  const handleInputChange = (name: string, value: string) => {
+    setValue(name, value)
+  }
 
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -27,32 +36,39 @@ const FormComponent: React.FC<IForm> = ({
         const item = inputTypes[name]
         return (
           <Controller
-            key={item.id}
-            name={item.id}
+            key={item?.id}
+            name={item?.id}
             control={control}
-            rules={validationRules[item.id as keyof typeof validationRules]}
+            rules={validationRules[item?.id as keyof typeof validationRules]}
             render={({ field }) => (
               <Input
                 id={item.id}
                 name={item.name}
                 label={item.label}
                 type={item.type}
-                onChange={event => field.onChange(event.target.value)}
+                value={field.value}
+                onChange={event => {
+                  field.onChange(event.target.value)
+                  handleInputChange(item.name, event.target.value)
+                }}
                 onBlur={() => {
                   field.onBlur()
                   trigger(item.id)
                 }}
                 error={formState.errors[item.id]?.message}
                 required={item.required}
+                disabled={disabled}
               />
             )}
           />
         )
       })}
       <div className="button-container">
-        <button type="submit">
-          {FORM_TYPE[type.toUpperCase() as keyof typeof FORM_TYPE]}
-        </button>
+        {!disabled && (
+          <button type="submit">
+            {FORM_TYPE[type.toUpperCase() as keyof typeof FORM_TYPE]}
+          </button>
+        )}
       </div>
     </form>
   )

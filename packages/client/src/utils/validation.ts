@@ -1,5 +1,8 @@
+import * as yup from 'yup'
+
 const required = 'Поле обязательное для заполнения'
 const nameRegExp = /^[A-ZА-Я][A-Za-zА-Яа-я-]*$/
+const passwordRegExp = /(?=.*\d)(?=.*[A-Z])/
 
 export const validationRules = {
   first_name: {
@@ -10,7 +13,7 @@ export const validationRules = {
         'Некорректное имя. Латиница или кириллица, первая буква должна быть заглавной, без пробелов и без цифр, нет спецсимволов (допустим только дефис).',
     },
   },
-  last_name: {
+  second_name: {
     required: required,
     pattern: {
       value: nameRegExp,
@@ -53,9 +56,34 @@ export const validationRules = {
       message: 'Пароль должен содержать максимум 40 символов',
     },
     pattern: {
-      value: /(?=.*\d)(?=.*[A-Z])/,
+      value: passwordRegExp,
       message:
         'Пароль должен содержать хотя бы одну цифру и одну заглавную букву',
+    },
+  },
+  oldPassword: {
+    required: required,
+    pattern: {
+      value: passwordRegExp,
+      message:
+        'Старый пароль должен содержать хотя бы одну цифру и одну заглавную букву',
+    },
+  },
+  newPassword: {
+    required: required,
+    oneOf: [yup.ref('oldPassword'), null],
+    minLength: {
+      value: 8,
+      message: 'Новый пароль должен содержать минимум 8 символов',
+    },
+    maxLength: {
+      value: 40,
+      message: 'Новый пароль должен содержать максимум 40 символов',
+    },
+    pattern: {
+      value: passwordRegExp,
+      message:
+        'Новый пароль должен содержать хотя бы одну цифру и одну заглавную букву',
     },
   },
   phone: {

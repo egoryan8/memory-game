@@ -19,7 +19,7 @@ const Login: React.FC = () => {
     <div className="page-container">
       <h1 className="text-align-center">ВОЙТИ</h1>
       <Form
-        inputsData={INPUTS_DATA}
+        inputTypes={INPUTS_DATA}
         onSubmit={onSubmit}
         inputNames={inputNames}
         type="login"
