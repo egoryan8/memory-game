@@ -48,13 +48,12 @@ const Profile: React.FC = () => {
       <div className="profile-header">
         <h1 className="text-align-center">МОЙ ПРОФИЛЬ</h1>
         <div className="avatar">
-          <div
+          <img
             className="avatar__profile mb-1"
-            style={{
-              backgroundImage: `url(${
-                BASE_URI + '/resources' + user.data?.avatar || DefaultAvatar
-              })`,
-            }}
+            src={`${BASE_URI}/resources${
+              user.data?.avatar ? user.data.avatar : DefaultAvatar
+            }`}
+            alt="User Avatar"
           />
           <input
             id="file"

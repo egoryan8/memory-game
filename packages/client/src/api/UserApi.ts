@@ -11,7 +11,7 @@ function UserApi() {
 
   const editAvatar = async (avatar: File) => {
     const formData = new FormData()
-    await formData.append('avatar', avatar)
+    formData.append('avatar', avatar)
     const response = await client.putFile('/profile/avatar', {
       body: formData as never,
     })

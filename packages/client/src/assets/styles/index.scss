@@ -205,13 +205,7 @@ button {
 
   &__submit-button {
     @include avatar-button;
-    top: 25%;
-  }
-
-  &__cancel-button {
-    @include avatar-button;
-    top: 60%;
-    background: $danger;
+    top: 50%;
   }
 
   &__profile {
@@ -220,6 +214,9 @@ button {
     border-radius: 50%;
     background: $light center/cover;
     margin: 0 auto;
+    object-fit: cover;
+    position: relative;
+    left: 40%;
   }
 }
 

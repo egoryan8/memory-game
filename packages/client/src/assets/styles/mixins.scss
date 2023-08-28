@@ -9,9 +9,9 @@
 
 @mixin avatar-button {
   font-size: $medium;
-  width: 25%;
+  width: 20%;
   min-height: 3rem;
   margin: 0 auto;
   position: absolute;
-  right: 0;
+  left: 0;
 }
