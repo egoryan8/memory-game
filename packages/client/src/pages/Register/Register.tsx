@@ -7,6 +7,7 @@ import useStore from '@/store'
 
 const Register: React.FC = () => {
   const [registerAsync] = useStore(s => [s.registerAsync])
+
   const onSubmit: SubmitHandler<IUser> = (data, event) => {
     event?.preventDefault()
     console.log('REGISTER', data)

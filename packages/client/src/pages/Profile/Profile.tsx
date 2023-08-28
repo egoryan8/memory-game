@@ -28,12 +28,14 @@ const Profile: React.FC = () => {
     editProfileAsync(data)
     handleEditProfile()
   }
+
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAvatar(event.target.files?.[0])
   }
+
   const handleAvatarUpload = async () => {
     if (!avatar) return
-    editAvatarAsync(avatar)
+    await editAvatarAsync(avatar)
     setAvatar(undefined)
   }
 
@@ -63,15 +65,20 @@ const Profile: React.FC = () => {
           />
           <label className="custom-file-input" htmlFor="file" />
           {avatar && (
-            <button
-              type="submit"
-              className="avatar__submit-button mb-0"
-              onClick={handleAvatarUpload}>
-              Сохранить аватар
-            </button>
-          )}
-          {avatar && (
-            <div className="text-align-center mb-2">{avatar?.name}</div>
+            <>
+              <button
+                type="submit"
+                className="avatar__submit-button mb-0"
+                onClick={handleAvatarUpload}>
+                Сохранить
+              </button>
+              <div className="avatar__file-name text-align-center mb-2">
+                <span className="ellipsis-content">
+                  <b>Файл: </b>
+                  {avatar?.name}
+                </span>
+              </div>
+            </>
           )}
         </div>
       </div>
@@ -85,12 +92,16 @@ const Profile: React.FC = () => {
       />
       <div className="button-group">
         {editProfile && (
-          <button onClick={handleEditProfile}>Редактировать</button>
-        )}
-        {editProfile && (
-          <Link className="custom-link" to="/change-password">
-            Сменить пароль
-          </Link>
+          <>
+            <button
+              className="button-group__edit-button"
+              onClick={handleEditProfile}>
+              Редактировать
+            </button>
+            <Link className="custom-link" to="/change-password">
+              Сменить пароль
+            </Link>
+          </>
         )}
       </div>
       {editProfile ? (

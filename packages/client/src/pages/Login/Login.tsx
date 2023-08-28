@@ -7,6 +7,7 @@ import useStore from '@/store'
 
 const Login: React.FC = () => {
   const [loginAsync] = useStore(s => [s.loginAsync])
+
   const onSubmit: SubmitHandler<ILogin> = (data, event) => {
     event?.preventDefault()
     console.log('LOGIN', data)

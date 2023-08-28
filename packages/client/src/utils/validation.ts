@@ -1,5 +1,3 @@
-import * as yup from 'yup'
-
 const required = 'Поле обязательное для заполнения'
 const nameRegExp = /^[A-ZА-Я][A-Za-zА-Яа-я-]*$/
 const passwordRegExp = /(?=.*\d)(?=.*[A-Z])/
@@ -71,7 +69,6 @@ export const validationRules = {
   },
   newPassword: {
     required: required,
-    oneOf: [yup.ref('oldPassword'), null],
     minLength: {
       value: 8,
       message: 'Новый пароль должен содержать минимум 8 символов',

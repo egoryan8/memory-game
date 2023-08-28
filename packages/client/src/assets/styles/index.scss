@@ -48,8 +48,8 @@ input {
   font-weight: 700;
 
   &:disabled {
-    border: none;
     background: $light;
+    border-color: $light;
     opacity: .5;
   }
 }
@@ -102,7 +102,7 @@ button {
   display: flex;
   align-items: center;
 
-  & button {
+  &__edit-button {
     margin-right: 1rem;
   }
 }
@@ -192,20 +192,44 @@ button {
 
 .avatar {
   position: relative;
+
+  &__file-name {
+    position: absolute;
+    left: 0;
+    top: 25%;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    max-width: 35%;
+  }
+
   &__submit-button {
     @include avatar-button;
     top: 25%;
   }
+
   &__cancel-button {
     @include avatar-button;
     top: 60%;
     background: $danger;
   }
+
   &__profile {
-    width: 7.5rem;
-    height: 7.5rem;
+    width: 8.5rem;
+    height: 8.5rem;
     border-radius: 50%;
     background: $light center/cover;
     margin: 0 auto;
   }
+}
+
+.ellipsis-content {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.spinner {
+  font-size: 4rem;
 }

@@ -7,8 +7,8 @@ import useStore from '@/store'
 
 const ChangePassword: React.FC = () => {
   const [editPasswordAsync] = useStore(store => [store.editPasswordAsync])
-  const onSubmit: SubmitHandler<IPassword> = async data =>
-    editPasswordAsync(data)
+
+  const onSubmit: SubmitHandler<IPassword> = data => editPasswordAsync(data)
 
   const inputNames = ['oldPassword', 'newPassword']
 
