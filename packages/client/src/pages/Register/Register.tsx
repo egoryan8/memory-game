@@ -7,6 +7,7 @@ import useStore from '@/store'
 
 const Register: React.FC = () => {
   const [registerAsync] = useStore(s => [s.registerAsync])
+
   const onSubmit: SubmitHandler<IUser> = (data, event) => {
     event?.preventDefault()
     console.log('REGISTER', data)
@@ -19,7 +20,7 @@ const Register: React.FC = () => {
     <div className="page-container">
       <h1 className="text-align-center">РЕГИСТРАЦИЯ</h1>
       <Form
-        inputsData={INPUTS_DATA}
+        inputTypes={INPUTS_DATA}
         onSubmit={onSubmit}
         inputNames={inputNames}
         type="register"

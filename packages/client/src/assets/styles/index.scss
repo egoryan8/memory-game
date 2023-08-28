@@ -1,4 +1,5 @@
 @import 'variables';
+@import 'mixins';
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&family=Overpass:wght@400;500;600;700;900&display=swap');
 
 * {
@@ -12,6 +13,7 @@ html,
 body,
 #root {
   height: 100%;
+  background-color: $secondary;
 }
 
 .layout {
@@ -21,7 +23,6 @@ body,
   background-color: $secondary;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
 }
 
 html {
@@ -45,6 +46,23 @@ input {
   font-size: 1.5rem;
   font-family: 'PT-Sans', sans-serif;
   font-weight: 700;
+
+  &:disabled {
+    background: $light;
+    border-color: $light;
+    opacity: .5;
+  }
+}
+
+.custom-file-input {
+  width: 3rem;
+  height: 3rem;
+  background: url("@/assets/images/image-icon.svg") 50% $primary no-repeat;
+  border-radius: 50%;
+  cursor: pointer;
+  margin: 0 auto;
+  position: relative;
+  top: -2rem;
 }
 
 label {
@@ -73,6 +91,49 @@ button {
   font-size: $large;
   font-weight: 700;
   margin: $large 0;
+
+  &:disabled {
+    background-color: $silver;
+    opacity: .25;
+  }
+}
+
+.button-group {
+  display: flex;
+  align-items: center;
+
+  &__edit-button {
+    margin-right: 1rem;
+  }
+}
+
+.link-button {
+  background: none;
+  color: $dark;
+  min-height: auto;
+}
+
+.custom-link {
+  background: $dark;
+  color: $light;
+  width: 100%;
+  min-height: $extra-large;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.75rem;
+}
+
+.mb-0 {
+  margin: 0;
+}
+
+.mb-1 {
+  margin-bottom: $medium;
+}
+
+.mb-2 {
+  margin-bottom: $large;
 }
 
 .text-align-center {
@@ -84,6 +145,7 @@ button {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 2rem 0;
 }
 
 .form {
@@ -114,14 +176,57 @@ button {
   label {
     color: $danger;
   }
+
   input {
     margin-bottom: 0.25rem;
     color: $danger;
     border-color: $danger;
   }
+
   span {
     color: $danger;
     margin-top: 0.5rem;
     font-size: 0.75rem;
   }
+}
+
+.avatar {
+  position: relative;
+
+  &__file-name {
+    position: absolute;
+    left: 0;
+    top: 25%;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    max-width: 35%;
+  }
+
+  &__submit-button {
+    @include avatar-button;
+    top: 50%;
+  }
+
+  &__profile {
+    width: 8.5rem;
+    height: 8.5rem;
+    border-radius: 50%;
+    background: $light center/cover;
+    margin: 0 auto;
+    object-fit: cover;
+    position: relative;
+    left: 40%;
+  }
+}
+
+.ellipsis-content {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.spinner {
+  font-size: 4rem;
 }

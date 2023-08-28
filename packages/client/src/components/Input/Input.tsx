@@ -9,6 +9,8 @@ interface InputProps {
   onBlur?: () => void
   error?: any
   required?: boolean
+  value?: string
+  disabled?: boolean
 }
 
 const Input: React.FC<InputProps> = ({
@@ -20,6 +22,8 @@ const Input: React.FC<InputProps> = ({
   onBlur,
   error,
   required,
+  value,
+  disabled,
 }) => {
   return (
     <div className={`form-group ${error && 'validation-error'}`}>
@@ -32,7 +36,9 @@ const Input: React.FC<InputProps> = ({
         id={id}
         name={name}
         onChange={onChange}
+        value={value || ''}
         onBlur={onBlur}
+        disabled={disabled}
       />
       {error && <span className="error-message">{error}</span>}
     </div>

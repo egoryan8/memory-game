@@ -13,6 +13,9 @@ const Game = lazy(() => import('./pages/Game/Game'))
 const Login = lazy(() => import('./pages/Login/Login'))
 const Register = lazy(() => import('./pages/Register/Register'))
 const Profile = lazy(() => import('./pages/Profile/Profile'))
+const ChangePassword = lazy(
+  () => import('./pages/ChangePassword/ChangePassword')
+)
 
 const routes = [
   {
@@ -38,6 +41,10 @@ const routes = [
   {
     path: AppPath.PROFILE,
     element: <Profile />,
+  },
+  {
+    path: AppPath.CHANGE_PASS,
+    element: <ChangePassword />,
   },
   {
     path: AppPath.LEADERBOARD,
