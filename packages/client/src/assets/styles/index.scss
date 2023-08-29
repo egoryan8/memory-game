@@ -1,6 +1,28 @@
-@import 'variables';
 @import 'mixins';
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&family=Overpass:wght@400;500;600;700;900&display=swap');
+
+:root {
+  /* Sizes */
+  --base-font-size: 16px;
+  --medium: 1rem;
+  --large: 2rem;
+  --extra-large: 4rem;
+
+  /* Base Colors */
+  --primary: #1e85e4;
+  --gray: #cfd3d9;
+  --link-active: #eaeced;
+  --gray-hover: #e8e8e8;
+  --bg-light: #FFFFFF;
+  --secondary: #f4f4f6;
+  --success: #04b420;
+  --warning: #ffca2b;
+  --danger: #d21212;
+  --light: #ffffff;
+  --dark: #1F252D;
+  --silver: #a5aab2;
+}
+
 
 * {
   box-sizing: border-box;
@@ -13,43 +35,43 @@ html,
 body,
 #root {
   height: 100%;
-  background-color: $secondary;
+  background-color: var(--secondary);
 }
 
 .layout {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $secondary;
+  background-color: var(--secondary);
   width: 100vw;
   height: 100vh;
 }
 
 html {
   font-family: 'PT-Sans', sans-serif;
-  font-size: $base-font-size;
+  font-size: var(--base-font-size);
 }
 
 h1 {
   font-family: 'Overpass', sans-serif;
-  font-size: $extra-large;
+  font-size: var(--extra-large);
   font-weight: 900;
-  margin-bottom: $large;
+  margin-bottom: var(--large);
 }
 
 input {
   width: 100%;
-  min-height: $extra-large;
+  min-height: var(--extra-large);
   padding: 0.75rem;
-  border: 2px solid $dark;
+  border: 2px solid var(--dark);
   border-radius: 0.75rem;
   font-size: 1.5rem;
   font-family: 'PT-Sans', sans-serif;
   font-weight: 700;
 
   &:disabled {
-    background: $light;
-    border-color: $light;
+    background: var(--light);
+    border-color: var(--light);
     opacity: .5;
   }
 }
@@ -57,7 +79,7 @@ input {
 .custom-file-input {
   width: 3rem;
   height: 3rem;
-  background: url("@/assets/images/image-icon.svg") 50% $primary no-repeat;
+  background: url("@/assets/images/image-icon.svg") 50% var(--primary) no-repeat;
   border-radius: 50%;
   cursor: pointer;
   margin: 0 auto;
@@ -72,28 +94,28 @@ label {
 }
 
 a {
-  font-size: $large;
+  font-size: var(--large);
   font-weight: 700;
   line-height: 2.5rem;
   text-align: center;
-  color: $dark;
+  color: var(--dark);
 }
 
 button {
   display: block;
   width: 100%;
-  min-height: $extra-large;
-  background-color: $primary;
-  color: $light;
+  min-height: var(--extra-large);
+  background-color: var(--primary);
+  color: var(--light);
   border: none;
   border-radius: 0.75rem;
   cursor: pointer;
-  font-size: $large;
+  font-size: var(--large);
   font-weight: 700;
-  margin: $large 0;
+  margin: var(--large) 0;
 
   &:disabled {
-    background-color: $silver;
+    background-color: var(--silver);
     opacity: .25;
   }
 }
@@ -109,15 +131,15 @@ button {
 
 .link-button {
   background: none;
-  color: $dark;
+  color: var(--dark);
   min-height: auto;
 }
 
 .custom-link {
-  background: $dark;
-  color: $light;
+  background: var(--dark);
+  color: var(--light);
   width: 100%;
-  min-height: $extra-large;
+  min-height: var(--extra-large);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -129,11 +151,11 @@ button {
 }
 
 .mb-1 {
-  margin-bottom: $medium;
+  margin-bottom: var(--medium);
 }
 
 .mb-2 {
-  margin-bottom: $large;
+  margin-bottom: var(--large);
 }
 
 .text-align-center {
@@ -174,17 +196,17 @@ button {
 
 .validation-error {
   label {
-    color: $danger;
+    color: var(--danger);
   }
 
   input {
     margin-bottom: 0.25rem;
-    color: $danger;
-    border-color: $danger;
+    color: var(--danger);
+    border-color: var(--danger);
   }
 
   span {
-    color: $danger;
+    color: var(--danger);
     margin-top: 0.5rem;
     font-size: 0.75rem;
   }
@@ -212,7 +234,7 @@ button {
     width: 8.5rem;
     height: 8.5rem;
     border-radius: 50%;
-    background: $light center/cover;
+    background: var(--light) center/cover;
     margin: 0 auto;
     object-fit: cover;
     position: relative;

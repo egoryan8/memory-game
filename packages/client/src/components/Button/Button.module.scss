@@ -1,20 +1,18 @@
-@import '../../assets/styles/variables';
-
 .button {
   display: inline-block;
   width: 100%;
-  min-height: $extra-large;
+  min-height: var(--extra-large);
   border-radius: 0.75rem;
   cursor: pointer;
-  font-size: $large;
+  font-size: var(--large);
   font-weight: 700;
   padding: 1rem;
-  margin: $large 0;
+  margin: var(--large) 0;
 }
 
 .buttonPrimary {
-  background-color: $primary;
-  color: $light;
+  background-color: var(--primary);
+  color: var(--light);
   border: none;
   transition: opacity 0.3s ease-in-out;
 
