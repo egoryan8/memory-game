@@ -14,7 +14,9 @@ const Register: React.FC = () => {
     registerAsync(data)
   }
 
-  const inputNames = Object.keys(INPUTS_DATA)
+  const inputNames = Object.keys(INPUTS_DATA).filter(
+    item => item !== 'oldPassword' && item !== 'newPassword'
+  )
 
   return (
     <div className="page-container">
