@@ -110,16 +110,10 @@ const Game = () => {
       const mouseX = event.clientX - rect.left - config.spacing
       const mouseY = event.clientY - rect.top - config.spacing
 
-      const card = cards.find(item => {
-        const checkX =
-          mouseX >= item.position.x &&
-          mouseX <= item.position.x + config.boxSize
-        const checkY =
-          mouseY >= item.position.y &&
-          mouseY <= item.position.y + config.boxSize
+      const colIndex = Math.floor(mouseX / (config.spacing + config.boxSize))
+      const rowIndex = Math.floor(mouseY / (config.spacing + config.boxSize))
 
-        return checkX && checkY
-      })
+      const card = rows[rowIndex][colIndex]
 
       if (card) {
         ctx.clearRect(
@@ -128,6 +122,7 @@ const Game = () => {
           config.boxSize,
           config.boxSize
         )
+
         drawCard(ctx, card.position, card.color)
       }
     }
