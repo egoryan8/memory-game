@@ -23,6 +23,45 @@ const config = {
   borderRadius: 10,
 }
 
+// Функция отрисовки карточки
+const drawCard = (
+  ctx: CanvasRenderingContext2D,
+  { x, y }: Coordinates,
+  color: Colors
+) => {
+  ctx.fillStyle = color
+  ctx.beginPath()
+  ctx.moveTo(x + config.borderRadius, y)
+  ctx.lineTo(x + config.boxSize - config.borderRadius, y)
+  ctx.arcTo(
+    x + config.boxSize,
+    y,
+    x + config.boxSize,
+    y + config.borderRadius,
+    config.borderRadius
+  )
+  ctx.lineTo(x + config.boxSize, y + config.boxSize - config.borderRadius)
+  ctx.arcTo(
+    x + config.boxSize,
+    y + config.boxSize,
+    x + config.boxSize - config.borderRadius,
+    y + config.boxSize,
+    config.borderRadius
+  )
+  ctx.lineTo(x + config.borderRadius, y + config.boxSize)
+  ctx.arcTo(
+    x,
+    y + config.boxSize,
+    x,
+    y + config.boxSize - config.borderRadius,
+    config.borderRadius
+  )
+  ctx.lineTo(x, y + config.borderRadius)
+  ctx.arcTo(x, y, x + config.borderRadius, y, config.borderRadius)
+  ctx.closePath()
+  ctx.fill()
+}
+
 const Game = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -44,45 +83,6 @@ const Game = () => {
 
     canvas.width = boardWidth
     canvas.height = boardHeight
-
-    // Функция отрисовки карточки
-    const drawCard = (
-      ctx: CanvasRenderingContext2D,
-      { x, y }: Coordinates,
-      color: Colors
-    ) => {
-      ctx.fillStyle = color
-      ctx.beginPath()
-      ctx.moveTo(x + config.borderRadius, y)
-      ctx.lineTo(x + config.boxSize - config.borderRadius, y)
-      ctx.arcTo(
-        x + config.boxSize,
-        y,
-        x + config.boxSize,
-        y + config.borderRadius,
-        config.borderRadius
-      )
-      ctx.lineTo(x + config.boxSize, y + config.boxSize - config.borderRadius)
-      ctx.arcTo(
-        x + config.boxSize,
-        y + config.boxSize,
-        x + config.boxSize - config.borderRadius,
-        y + config.boxSize,
-        config.borderRadius
-      )
-      ctx.lineTo(x + config.borderRadius, y + config.boxSize)
-      ctx.arcTo(
-        x,
-        y + config.boxSize,
-        x,
-        y + config.boxSize - config.borderRadius,
-        config.borderRadius
-      )
-      ctx.lineTo(x, y + config.borderRadius)
-      ctx.arcTo(x, y, x + config.borderRadius, y, config.borderRadius)
-      ctx.closePath()
-      ctx.fill()
-    }
 
     for (let row = 0; row < config.gameSize; row++) {
       const columns: Card[] = []
