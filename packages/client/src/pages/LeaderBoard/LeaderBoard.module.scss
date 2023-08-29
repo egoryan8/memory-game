@@ -1,0 +1,11 @@
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 24px);
+  overflow: hidden;
+}
+
+.leaderboard__table {
+  flex: 1;
+  height: 0;
+}
