@@ -73,7 +73,6 @@ const Game = () => {
     if (!ctx) return
 
     const rows: Card[][] = []
-    const cards: Card[] = []
 
     // Получение и установка размеров canvas
     const boardWidth =
@@ -92,7 +91,6 @@ const Game = () => {
         const card = { position: { x, y }, color: Colors.yellow }
 
         columns.push(card)
-        cards.push(card)
       }
       rows.push(columns)
     }
