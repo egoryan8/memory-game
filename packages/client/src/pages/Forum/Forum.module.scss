@@ -9,7 +9,7 @@
   flex: 1;
   width: 100%;
   padding: 48px;
-  background: #cfd3d9;
+  background: var(--gray);
 }
 
 .title {
@@ -40,7 +40,7 @@
     column-gap: 10px;
     font-weight: 900;
     text-transform: uppercase;
-    border-bottom: 1px solid #cfd3d9;
+    border-bottom: 1px solid var(--gray);
 
     div {
       display: flex;
@@ -61,11 +61,11 @@
     cursor: pointer;
 
     &:hover {
-      background: #e8e8e8;
+      background: var(--gray-hover);
     }
 
     &:not(:last-child) {
-      border-bottom: 1px solid #f4f4f6;
+      border-bottom: 1px solid var(--secondary);
     }
 
     &:last-child {

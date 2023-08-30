@@ -14,3 +14,8 @@ interface ILogin {
   login: string
   password: string
 }
+
+interface IPassword {
+  oldPassword: string
+  newPassword: string
+}

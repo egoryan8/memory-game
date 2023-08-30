@@ -1,0 +1,48 @@
+@import '@/assets/styles/variables';
+
+.table {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 12px;
+  background-color: $light;
+  border-radius: 12px;
+
+  .table__header {
+    font-size: 24px;
+    letter-spacing: 3%;
+    font-weight: 700;
+  }
+
+  > .table__row:first-child {
+    height: 60px;
+    border-bottom: 1px solid $silver;
+  }
+
+  .table__body {
+    height: 100%;
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .table__row {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin: 0;
+    padding: 12px;
+  }
+
+  .table__header, .table__cell {
+    flex: 1 1 0;
+  }
+
+  .table__cell {
+    padding: 10px 0;
+    width: 50%;
+    color: var(--color-messages);
+    text-align: left;
+  }
+}
