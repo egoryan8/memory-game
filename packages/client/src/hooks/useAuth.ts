@@ -25,5 +25,5 @@ export const useAuth = () => {
     }
   }, [user, location])
 
-  return [user.data, user.loading]
+  return { user: user.data, loading: user.loading }
 }

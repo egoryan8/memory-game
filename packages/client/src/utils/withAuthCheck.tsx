@@ -6,7 +6,7 @@ interface RequiredAuthProps {
 }
 function withAuthCheck(Component: React.ComponentType) {
   const RequiredAuth: FC<RequiredAuthProps> = ({ children }) => {
-    const [_, loading] = useAuth()
+    const { loading } = useAuth()
     return loading ? <Spinner /> : children
   }
 

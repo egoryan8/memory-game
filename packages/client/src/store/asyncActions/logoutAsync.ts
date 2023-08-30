@@ -9,8 +9,6 @@ const logoutAsync = () => {
 
       try {
         const response = await AuthApi.logout()
-        const text = await response.text()
-
         switch (response.status) {
           case 200:
             logout()
