@@ -17,4 +17,8 @@ export const navConfig = [
     text: 'Таблица лидеров',
     path: AppPath.LEADERBOARD,
   },
+  {
+    text: 'Профиль',
+    path: AppPath.PROFILE,
+  },
 ]
