@@ -8,4 +8,5 @@ export enum AppPath {
   PROFILE = '/profile',
   LEADERBOARD = '/leaderboard',
   RULES = '/rules',
+  CHANGE_PASS = '/change-password',
 }

@@ -1,62 +1,69 @@
-import * as React from 'react'
-import s from './Game.module.scss'
-import Button from '@/components/Button/Button'
-import { useNavigate } from 'react-router-dom'
-import { AppPath } from '@/types/AppPath'
+import React, { useEffect, useRef } from 'react'
+
+interface Coordinates {
+  x: number
+  y: number
+}
+
+enum Colors {
+  grey = 'lightgray',
+  yellow = '#FFDB8B',
+}
+
+interface Card {
+  position: Coordinates
+  color: Colors
+}
+
+const config = {
+  gameSize: 4,
+  restSize: 50,
+  boxSize: 120,
+  spacing: 15,
+  borderRadius: 10,
+}
+
+// Функция отрисовки карточки
+const drawCard = (
+  ctx: CanvasRenderingContext2D,
+  { x, y }: Coordinates,
+  color: Colors
+) => {
+  ctx.fillStyle = color
+  ctx.beginPath()
+  ctx.moveTo(x + config.borderRadius, y)
+  ctx.lineTo(x + config.boxSize - config.borderRadius, y)
+  ctx.arcTo(
+    x + config.boxSize,
+    y,
+    x + config.boxSize,
+    y + config.borderRadius,
+    config.borderRadius
+  )
+  ctx.lineTo(x + config.boxSize, y + config.boxSize - config.borderRadius)
+  ctx.arcTo(
+    x + config.boxSize,
+    y + config.boxSize,
+    x + config.boxSize - config.borderRadius,
+    y + config.boxSize,
+    config.borderRadius
+  )
+  ctx.lineTo(x + config.borderRadius, y + config.boxSize)
+  ctx.arcTo(
+    x,
+    y + config.boxSize,
+    x,
+    y + config.boxSize - config.borderRadius,
+    config.borderRadius
+  )
+  ctx.lineTo(x, y + config.borderRadius)
+  ctx.arcTo(x, y, x + config.borderRadius, y, config.borderRadius)
+  ctx.closePath()
+  ctx.fill()
+}
 
 const Game = () => {
-  const navigate = useNavigate()
-
-  const onMainClick = () => {
-    navigate(AppPath.MAIN)
-  }
-
-  return (
-    <main className={s.wrapper}>
-      <div className={s.field}>
-        <ul className={s.cards}>
-          <li className={s.card}></li>
-          <li className={s.card}></li>
-          <li className={s.card}></li>
-          <li className={s.card}></li>
-          <li className={s.card}></li>
-          <li className={s.card}></li>
-          <li className={s.card}></li>
-          <li className={s.card}></li>
-          <li className={s.card}></li>
-          <li className={s.card}></li>
-          <li className={s.card}></li>
-          <li className={s.card}></li>
-          <li className={s.card}></li>
-          <li className={s.card}></li>
-          <li className={s.card}></li>
-          <li className={s.card}></li>
-        </ul>
-      </div>
-      <div className={s.handlers}>
-        <ul className={s.options}>
-          <li className={s.option}>
-            <span className={s.optionName}>Таймер</span>
-            <span className={s.optionValue}>01:00</span>
-          </li>
-          <li className={s.option}>
-            <span className={s.optionName}>Отгадано</span>
-            <span className={s.optionValue}>0 из 16</span>
-          </li>
-          <li className={s.option}>
-            <span className={s.optionName}>Очки</span>
-            <span className={s.optionValue}>0</span>
-          </li>
-        </ul>
-        <div className={s.buttons}>
-          <Button className={s.button}>Поехали!</Button>
-          <Button theme="dark" className={s.button} onClick={onMainClick}>
-            На главную
-          </Button>
-        </div>
-      </div>
-    </main>
-  )
+  return <div>Game</div>
 }
 
 export default Game

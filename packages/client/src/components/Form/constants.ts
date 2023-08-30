@@ -41,9 +41,24 @@ export const INPUTS_DATA = {
     type: 'password',
     required: true,
   },
+  oldPassword: {
+    id: 'oldPassword',
+    name: 'oldPassword',
+    label: 'Старый пароль',
+    type: 'password',
+    required: true,
+  },
+  newPassword: {
+    id: 'newPassword',
+    name: 'newPassword',
+    label: 'Новый пароль',
+    type: 'password',
+    required: true,
+  },
 }
 
 export const FORM_TYPE = {
   LOGIN: 'Войти',
   REGISTER: 'Зарегистрироваться',
+  EDIT_PROFILE: 'Сохранить',
 }

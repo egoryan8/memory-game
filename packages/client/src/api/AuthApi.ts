@@ -1,4 +1,4 @@
-import HTTPClient from '../utils/HTTPClient'
+import HTTPClient from '@/utils/HTTPClient'
 
 function AuthApi() {
   const client = HTTPClient('/auth')

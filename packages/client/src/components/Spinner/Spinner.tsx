@@ -1,5 +1,5 @@
 import React from 'react'
 
 export const Spinner = () => {
-  return <div>Spinner</div>
+  return <div className="spinner">⏳</div>
 }

@@ -1,27 +1,21 @@
-@import '../../assets/styles/variables';
-
 .button {
   display: inline-block;
   width: 100%;
-  min-height: $extra-large;
+  min-height: var(--extra-large);
   border-radius: 0.75rem;
   cursor: pointer;
-  font-size: $large;
+  font-size: var(--large);
   font-weight: 700;
   padding: 1rem;
+}
+
+.buttonPrimary {
+  background-color: var(--primary);
+  color: var(--light);
   border: none;
   transition: opacity 0.3s ease-in-out;
 
   &:hover {
     opacity: 0.8;
   }
-}
-
-.blue {
-  background-color: $primary;
-  color: $light;
-}
-
-.dark {
-  background-color: $dark;
 }

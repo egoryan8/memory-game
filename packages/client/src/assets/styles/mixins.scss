@@ -1,6 +1,16 @@
+
 @mixin page-container {
   display: grid;
   place-items: center;
   width: 100%;
   height: 100%;
+}
+
+@mixin avatar-button {
+  font-size: var(--medium);
+  width: 20%;
+  min-height: 3rem;
+  margin: 0 auto;
+  position: absolute;
+  left: 0;
 }
