@@ -1,0 +1,78 @@
+.wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex-grow: 1;
+  background-color: #f4f4f6;
+  display: flex;
+  padding: 48px 92px;
+  gap: 145px;
+  justify-content: center;
+}
+
+.textWrapper {
+  max-width: 569px;
+}
+
+.mainTitle {
+  font-family: Roboto Slab, 'sans-serif';
+  font-size: 96px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 110px; /* 114.583% */
+  letter-spacing: 7.68px;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  max-width: 480px;
+  font-family: PT Sans, 'sans-serif';
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.levelWrapper {
+  margin-top: 50px;
+}
+
+.pickLevelTitle {
+  font-family: PT Sans, 'sans-serif';
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.levels {
+  margin-top: 24px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.level {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 24px;
+}
+
+.radio {
+  width: 48px;
+  height: 48px;
+}
+
+.levelText {
+  font-family: PT Sans, 'sans-serif';
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 1.2px;
+}

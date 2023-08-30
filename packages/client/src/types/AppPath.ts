@@ -1,5 +1,6 @@
 export enum AppPath {
-  GAME = '/',
+  MAIN = '/',
+  GAME = '/game',
   LOGIN = '/login',
   REGISTER = '/register',
   FORUM = '/forum',
@@ -7,4 +8,5 @@ export enum AppPath {
   PROFILE = '/profile',
   LEADERBOARD = '/leaderboard',
   CHANGE_PASS = '/change-password',
+  RULES = '/rules',
 }

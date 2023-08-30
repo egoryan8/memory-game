@@ -3,12 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { ReactComponent as ExitIcon } from './exit.svg'
 import s from './Navigation.module.scss'
 import useStore from '@/store'
-
-const navList = [
-  { id: 1, heading: 'Играть', href: '/new-game' },
-  { id: 2, heading: 'форум', href: '/forum' },
-  { id: 3, heading: 'таблица лидеров', href: '/leaderboard' },
-]
+import { navConfig } from '@/config/navConfig'
 
 const Navigation = () => {
   const [logoutAsync] = useStore(s => [s.logoutAsync])
@@ -20,22 +15,20 @@ const Navigation = () => {
     <nav className={s.nav}>
       <div className={s.logo}>Лого</div>
       <ul>
-        {navList.map(({ id, heading, href }) => (
-          <li key={id}>
+        {navConfig.map(item => (
+          <li key={item.path}>
             <NavLink
-              to={href}
+              to={item.path}
               className={({ isActive }) => (isActive ? s.active : '')}>
-              {heading}
+              {item.text}
             </NavLink>
           </li>
         ))}
-        <li>
-          <Button className={s.btnExit} onClick={handleClick}>
-            <ExitIcon />
-            выйти
-          </Button>
-        </li>
       </ul>
+      <Button className={s.btnExit} onClick={handleClick}>
+        <ExitIcon />
+        выйти
+      </Button>
     </nav>
   )
 }
