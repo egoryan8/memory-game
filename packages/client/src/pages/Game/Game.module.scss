@@ -27,12 +27,12 @@
 .card {
   border-radius: 12px;
   padding: 20px;
-  background: #E7E9ED;
+  background: var(--gray-card);
 }
 
 .handlers {
   border-radius: 12px;
-  background: #F4F4F6;
+  background: var(--secondary);
   display: flex;
   flex-direction: column;
   padding: 48px 24px;
@@ -54,7 +54,7 @@
 }
 
 .optionName {
-  color: #A5AAB2;
+  color: var(--silver);
   text-align: center;
   font-family: PT Sans, 'sans-serif';
   font-size: 24px;

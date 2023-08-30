@@ -13,11 +13,16 @@ const Game = lazy(() => import('./pages/Game/Game'))
 const Login = lazy(() => import('./pages/Login/Login'))
 const Register = lazy(() => import('./pages/Register/Register'))
 const Profile = lazy(() => import('./pages/Profile/Profile'))
+const Main = lazy(() => import('./pages/Main/Main'))
 const ChangePassword = lazy(
   () => import('./pages/ChangePassword/ChangePassword')
 )
 
 const routes = [
+  {
+    path: AppPath.MAIN,
+    element: <Main />,
+  },
   {
     path: AppPath.GAME,
     element: <Game />,

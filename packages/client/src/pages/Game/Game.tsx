@@ -1,4 +1,8 @@
 import React, { useEffect, useRef } from 'react'
+import s from './Game.module.scss'
+import Button from '@/components/Button/Button'
+import { useNavigate } from 'react-router-dom'
+import { AppPath } from '@/types/AppPath'
 
 interface Coordinates {
   x: number
@@ -63,7 +67,102 @@ const drawCard = (
 }
 
 const Game = () => {
-  return <div>Game</div>
+  const navigate = useNavigate()
+  const onMainClick = () => {
+    navigate(AppPath.MAIN)
+  }
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const rows: Card[][] = []
+
+    // Получение и установка размеров canvas
+    const boardWidth =
+      (config.boxSize + config.spacing) * config.gameSize + config.spacing
+    const boardHeight =
+      (config.boxSize + config.spacing) * config.gameSize + config.spacing
+
+    canvas.width = boardWidth
+    canvas.height = boardHeight
+
+    for (let row = 0; row < config.gameSize; row++) {
+      const columns: Card[] = []
+      for (let col = 0; col < config.gameSize; col++) {
+        const x = col * (config.boxSize + config.spacing) + config.spacing
+        const y = row * (config.boxSize + config.spacing) + config.spacing
+        const card = { position: { x, y }, color: Colors.yellow }
+
+        columns.push(card)
+      }
+      rows.push(columns)
+    }
+
+    // Отрисовка поля с карточками в начальном состоянии
+    rows.forEach(row => {
+      row.forEach(({ position: { x, y } }) => {
+        drawCard(ctx, { x, y }, Colors.grey)
+      })
+    })
+
+    // Обработка клика по canvas
+    canvas.onmousedown = event => {
+      const rect = canvas.getBoundingClientRect()
+      const mouseX = event.clientX - rect.left - config.spacing
+      const mouseY = event.clientY - rect.top - config.spacing
+
+      const colIndex = Math.floor(mouseX / (config.spacing + config.boxSize))
+      const rowIndex = Math.floor(mouseY / (config.spacing + config.boxSize))
+
+      const card = rows[rowIndex][colIndex]
+
+      if (card) {
+        ctx.clearRect(
+          card.position.x,
+          card.position.y,
+          config.boxSize,
+          config.boxSize
+        )
+
+        drawCard(ctx, card.position, card.color)
+      }
+    }
+  }, [canvasRef])
+
+  return (
+    <main className={s.wrapper}>
+      <div className={s.field}>
+        <canvas ref={canvasRef} />
+      </div>
+      <div className={s.handlers}>
+        <ul className={s.options}>
+          <li className={s.option}>
+            <span className={s.optionName}>Таймер</span>
+            <span className={s.optionValue}>01:00</span>
+          </li>
+          <li className={s.option}>
+            <span className={s.optionName}>Отгадано</span>
+            <span className={s.optionValue}>0 из 16</span>
+          </li>
+          <li className={s.option}>
+            <span className={s.optionName}>Очки</span>
+            <span className={s.optionValue}>0</span>
+          </li>
+        </ul>
+        <div className={s.buttons}>
+          <Button className={s.button}>Поехали!</Button>
+          <Button theme="dark" className={s.button} onClick={onMainClick}>
+            На главную
+          </Button>
+        </div>
+      </div>
+    </main>
+  )
 }
 
 export default Game
