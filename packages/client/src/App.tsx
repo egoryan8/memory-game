@@ -4,6 +4,7 @@ import { Spinner } from './components/Spinner/Spinner'
 import { Layout } from './components/Layout/Layout'
 import useStore from './store'
 import { routes } from '@/config/routerConfig'
+import withAuthCheck from '@/utils/withAuthCheck'
 
 const routeComponents = routes.map(route => (
   <Route key={route.path} path={route.path} element={route.element} />
@@ -26,7 +27,7 @@ function App() {
     <BrowserRouter>
       <Suspense fallback={<Spinner />}>
         <Routes>
-          <Route element={<Layout />}>{routeComponents}</Route>
+          <Route element={withAuthCheck(Layout)}>{routeComponents}</Route>
         </Routes>
       </Suspense>
     </BrowserRouter>
