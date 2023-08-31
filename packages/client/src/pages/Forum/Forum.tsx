@@ -1,5 +1,4 @@
 import Button from '@/components/Button/Button'
-import Input from '@/components/Input/Input'
 import Navigation from '@/components/Navigation/Navigation'
 import Title from '@/components/Title/Title'
 import { useState } from 'react'
