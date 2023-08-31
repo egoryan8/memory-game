@@ -1,42 +1,39 @@
 import useStore from '@/store'
 import AuthApi from '@/api/AuthApi'
 
-export const fetchUserAsync = () => ({
-  fetchUserAsync: () => {
-    const state = useStore.getState()
-    const { user, setUser } = state
+const fetchUserAsync = () => {
+  return {
+    fetchUserAsync: async () => {
+      const state = useStore.getState()
+      const { user, setUser } = state
 
-    if (user.data) return
+      if (user.data) return
 
-    setUser({ loading: true })
+      setUser({ loading: true })
 
-    ;(async () => {
-      AuthApi.getUser()
-        .then(async response => {
-          return {
-            status: response.status,
-            body: await response.json(),
+      try {
+        const response = await AuthApi.getUser()
+        const data = await response.json()
+
+        switch (response.status) {
+          case 200: {
+            setUser({
+              loading: false,
+              data: data as IUser,
+            })
+            break
           }
-        })
-        .then(response => {
-          switch (response.status) {
-            case 200: {
-              setUser({
-                loading: false,
-                data: response.body as unknown as IUser,
-              })
-              break
-            }
-            default: {
-              setUser({ loading: false })
-              console.log('GET_USER_FAILED', response)
-            }
+          default: {
+            setUser({ loading: false })
+            console.log('GET_USER_FAILED', response)
           }
-        })
-        .catch(e => {
-          setUser({ loading: false })
-          console.log('GET_USER_FAILED', e.message)
-        })
-    })()
-  },
-})
+        }
+      } catch (e) {
+        setUser({ loading: false })
+        console.log('GET_USER_FAILED', (e as Error).message)
+      }
+    },
+  }
+}
+
+export default fetchUserAsync
