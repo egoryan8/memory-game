@@ -4,7 +4,7 @@ import { Spinner } from './components/Spinner/Spinner'
 import { Layout } from './components/Layout/Layout'
 import useStore from './store'
 import { routes } from '@/config/routerConfig'
-import withAuthCheck from '@/utils/withAuthCheck'
+import withAuthCheck from '@/utils/hocs/withAuthCheck'
 
 const routeComponents = routes.map(route => (
   <Route key={route.path} path={route.path} element={route.element} />
