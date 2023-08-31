@@ -1,6 +1,7 @@
 import Button from '@/components/Button/Button'
 import Navigation from '@/components/Navigation/Navigation'
 import Title from '@/components/Title/Title'
+import { declensionWords } from '@/utils/declensionWords'
 import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import * as React from 'react'
@@ -82,7 +83,13 @@ const Forum = () => {
                     <div className={s['topic-name']}>{theme}</div>
                     <div className={s['last-mess']}>{lastMessage}</div>
                   </div>
-                  <div className={s.answers}>{numberOfResponses} ответов</div>
+                  <div className={s.answers}>
+                    {declensionWords(numberOfResponses, [
+                      'ответ',
+                      'ответа',
+                      'ответов',
+                    ])}
+                  </div>
                 </Link>
               </li>
             )
