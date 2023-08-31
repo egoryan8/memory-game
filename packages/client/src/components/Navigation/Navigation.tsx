@@ -1,34 +1,30 @@
-import Button from '@/components/Button/Button'
 import { NavLink } from 'react-router-dom'
-import { ReactComponent as ExitIcon } from './exit.svg'
+import { ReactComponent as Logo } from './logo.svg'
 import s from './Navigation.module.scss'
-import useStore from '@/store'
 import { navConfig } from '@/config/navConfig'
 
 const Navigation = () => {
-  const [logoutAsync] = useStore(s => [s.logoutAsync])
-  const handleClick = () => {
-    logoutAsync()
-  }
-
   return (
     <nav className={s.nav}>
-      <div className={s.logo}>Лого</div>
-      <ul>
-        {navConfig.map(item => (
-          <li key={item.path}>
-            <NavLink
-              to={item.path}
-              className={({ isActive }) => (isActive ? s.active : '')}>
-              {item.text}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
-      <Button className={s.btnExit} onClick={handleClick}>
-        <ExitIcon />
-        выйти
-      </Button>
+      <div className={s.wrapper}>
+        <div>
+          <Logo />
+        </div>
+        <ul>
+          {navConfig.map(item => (
+            <li key={item.path}>
+              {item.logo}
+              <NavLink
+                to={item.path}
+                className={({ isActive }) =>
+                  isActive ? `${s.link} ${s.active}` : s.link
+                }>
+                {item.text}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </div>
     </nav>
   )
 }
