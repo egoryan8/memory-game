@@ -1,6 +1,6 @@
 import Button from '@/components/Button/Button'
 import { NavLink } from 'react-router-dom'
-import { ReactComponent as ExitIcon } from './exit.svg'
+import ExitIcon from './exit.svg'
 import s from './Navigation.module.scss'
 import useStore from '@/store'
 import { navConfig } from '@/config/navConfig'
@@ -26,7 +26,7 @@ const Navigation = () => {
         ))}
       </ul>
       <Button className={s.btnExit} onClick={handleClick}>
-        <ExitIcon />
+        <img src={ExitIcon} alt="Exit icon" />
         выйти
       </Button>
     </nav>
