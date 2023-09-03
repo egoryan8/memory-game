@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 interface Coordinates {
   x: number
@@ -13,15 +13,19 @@ enum Colors {
 interface Card {
   position: Coordinates
   color: Colors
+  emoji: string
+  isOpen: boolean
+  isMatched: boolean
 }
 
 const config = {
   gameSize: 4,
-  restSize: 50,
   boxSize: 120,
   spacing: 15,
   borderRadius: 10,
 }
+
+const emojis = ['🍎', '🍌', '🍒', '🍇', '🍉', '🍍', '🍑', '🍓']
 
 // Функция отрисовки карточки
 const drawCard = (
@@ -62,8 +66,21 @@ const drawCard = (
   ctx.fill()
 }
 
+const drawEmoji = (
+  ctx: CanvasRenderingContext2D,
+  { x, y }: Coordinates,
+  emoji: string
+) => {
+  ctx.font = '40px Arial'
+  ctx.fillText(emoji, x + 40, y + 80)
+}
+
 const Game = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [cards, setCards] = useState<Card[]>([])
+  const [openCards, setOpenCards] = useState<number[]>([])
+  const [matchedPairs, setMatchedPairs] = useState(0)
+  const [initialDisplay, setInitialDisplay] = useState(true)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -83,52 +100,172 @@ const Game = () => {
     canvas.width = boardWidth
     canvas.height = boardHeight
 
-    for (let row = 0; row < config.gameSize; row++) {
-      const columns: Card[] = []
-      for (let col = 0; col < config.gameSize; col++) {
-        const x = col * (config.boxSize + config.spacing) + config.spacing
-        const y = row * (config.boxSize + config.spacing) + config.spacing
-        const card = { position: { x, y }, color: Colors.yellow }
+    const allEmojis = [...emojis, ...emojis].sort(() => Math.random() - 0.5)
 
-        columns.push(card)
+    allEmojis.forEach((emoji, index) => {
+      const row = Math.floor(index / config.gameSize)
+      const col = index % config.gameSize
+
+      const x = col * (config.boxSize + config.spacing) + config.spacing
+      const y = row * (config.boxSize + config.spacing) + config.spacing
+
+      const card = {
+        position: { x, y },
+        color: Colors.grey,
+        emoji: emoji,
+        isOpen: true,
+        isMatched: false,
       }
-      rows.push(columns)
-    }
 
-    // Отрисовка поля с карточками в начальном состоянии
-    rows.forEach(row => {
-      row.forEach(({ position: { x, y } }) => {
-        drawCard(ctx, { x, y }, Colors.grey)
-      })
+      drawCard(ctx, card.position, card.color)
+      drawEmoji(ctx, card.position, emoji)
+
+      if (!rows[row]) {
+        rows[row] = []
+      }
+
+      rows[row].push(card)
     })
 
-    // Обработка клика по canvas
-    canvas.onmousedown = event => {
-      const rect = canvas.getBoundingClientRect()
-      const mouseX = event.clientX - rect.left - config.spacing
-      const mouseY = event.clientY - rect.top - config.spacing
-
-      const colIndex = Math.floor(mouseX / (config.spacing + config.boxSize))
-      const rowIndex = Math.floor(mouseY / (config.spacing + config.boxSize))
-
-      const card = rows[rowIndex][colIndex]
-
-      if (card) {
-        ctx.clearRect(
-          card.position.x,
-          card.position.y,
-          config.boxSize,
-          config.boxSize
-        )
-
-        drawCard(ctx, card.position, card.color)
-      }
-    }
+    setCards(rows.flat())
   }, [canvasRef])
+
+  useEffect(() => {
+    if (openCards.length === 2) {
+      const [firstIndex, secondIndex] = openCards
+      const firstCard = cards[firstIndex]
+      const secondCard = cards[secondIndex]
+
+      if (firstCard.emoji === secondCard.emoji) {
+        setMatchedPairs(matchedPairs + 1)
+        setCards(prevCards => {
+          const newCards = [...prevCards]
+          newCards[firstIndex].isMatched = true
+          newCards[secondIndex].isMatched = true
+          return newCards
+        })
+      } else {
+        setTimeout(() => {
+          const canvas = canvasRef.current
+          const ctx = canvas?.getContext('2d')
+          if (ctx) {
+            drawCard(ctx, firstCard.position, Colors.grey)
+            drawCard(ctx, secondCard.position, Colors.grey)
+          }
+          setCards(prevCards => {
+            const newCards = [...prevCards]
+            newCards[firstIndex].isOpen = false
+            newCards[secondIndex].isOpen = false
+            return newCards
+          })
+        }, 1000)
+      }
+      setOpenCards([])
+    }
+  }, [openCards])
+
+  useEffect(() => {
+    if (initialDisplay) {
+      setTimeout(() => {
+        const canvas = canvasRef.current
+        const ctx = canvas?.getContext('2d')
+        if (ctx) {
+          cards.forEach(card => {
+            if (!card.isMatched) {
+              drawCard(ctx, card.position, Colors.grey) // Закрыть карточку на холсте
+            }
+          })
+        }
+
+        // Закрытие всех карточек и их перерисовка
+        setCards(prevCards => {
+          return prevCards.map(card => ({
+            ...card,
+            isOpen: false,
+          }))
+        })
+
+        setInitialDisplay(false) // Завершение начального отображения
+      }, 1000)
+    }
+  }, [initialDisplay, cards])
+
+  useEffect(() => {
+    if (matchedPairs === emojis.length) {
+      alert('ПОБЕДА!')
+    }
+  }, [matchedPairs])
+
+  // Обработка клика по canvas
+  const handleMouseDown = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current
+    const ctx = canvas?.getContext('2d')
+    if (!canvas || !ctx) return
+
+    const rect = canvas.getBoundingClientRect()
+    const mouseX = event.clientX - rect.left
+    const mouseY = event.clientY - rect.top
+
+    cards.forEach((card, index) => {
+      const { x, y } = card.position
+
+      if (
+        mouseX >= x &&
+        mouseX <= x + config.boxSize &&
+        mouseY >= y &&
+        mouseY <= y + config.boxSize
+      ) {
+        if (card.isMatched || card.isOpen) return
+
+        drawCard(ctx, card.position, Colors.yellow)
+        drawEmoji(ctx, card.position, card.emoji)
+
+        setOpenCards(prevOpenCards => [...prevOpenCards, index])
+        setCards(prevCards => {
+          const newCards = [...prevCards]
+          newCards[index].isOpen = true
+          return newCards
+        })
+      }
+    })
+  }
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const rect = canvas.getBoundingClientRect()
+    const mouseX = event.clientX - rect.left
+    const mouseY = event.clientY - rect.top
+
+    let isOverBox = false
+
+    cards.forEach(card => {
+      const { x, y } = card.position
+      if (
+        mouseX >= x &&
+        mouseX <= x + config.boxSize &&
+        mouseY >= y &&
+        mouseY <= y + config.boxSize
+      ) {
+        isOverBox = true
+      }
+    })
+
+    if (isOverBox) {
+      canvas.style.cursor = 'pointer'
+    } else {
+      canvas.style.cursor = 'default'
+    }
+  }
 
   return (
     <main>
-      <canvas ref={canvasRef} />
+      <canvas
+        ref={canvasRef}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+      />
     </main>
   )
 }
