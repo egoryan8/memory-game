@@ -1,5 +1,6 @@
 import { AppPath } from '@/types/AppPath'
 import React, { lazy } from 'react'
+import ChangePassword from '@/pages/ChangePassword/ChangePassword'
 
 const Error = lazy(() => import('../pages/Error/Error'))
 const Forum = lazy(() => import('../pages/Forum/Forum'))
@@ -39,6 +40,10 @@ export const routes = [
   {
     path: AppPath.PROFILE,
     element: <Profile />,
+  },
+  {
+    path: AppPath.CHANGE_PASS,
+    element: <ChangePassword />,
   },
   {
     path: AppPath.LEADERBOARD,
