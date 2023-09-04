@@ -2,14 +2,12 @@ import Button from '@/components/Button/Button'
 import { NavLink } from 'react-router-dom'
 import ExitIcon from './exit.svg'
 import s from './Navigation.module.scss'
-import useStore from '@/store'
 import { navConfig } from '@/config/navConfig'
+import { useAppDispatch } from '@/hooks/useAppDispatch'
+import logout from '@/store/asyncActions/auth/logout'
 
 const Navigation = () => {
-  const [logoutAsync] = useStore(s => [s.logoutAsync])
-  const handleClick = () => {
-    logoutAsync()
-  }
+  const dispatch = useAppDispatch()
 
   return (
     <nav className={s.nav}>
@@ -25,7 +23,7 @@ const Navigation = () => {
           </li>
         ))}
       </ul>
-      <Button className={s.btnExit} onClick={handleClick}>
+      <Button className={s.btnExit} onClick={() => dispatch(logout())}>
         <img src={ExitIcon} alt="Exit icon" />
         выйти
       </Button>

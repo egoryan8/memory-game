@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom'
 import Form from '@/components/Form/Form'
 import { INPUTS_DATA } from '@/components/Form/constants'
 import { SubmitHandler } from 'react-hook-form'
-import useStore from '@/store'
+import { useAppDispatch } from '@/hooks/useAppDispatch'
+import editPassword from '@/store/asyncActions/users/editPassword'
 
 const ChangePassword: React.FC = () => {
-  const [editPasswordAsync] = useStore(store => [store.editPasswordAsync])
-
-  const onSubmit: SubmitHandler<IPassword> = data => editPasswordAsync(data)
-
+  const dispatch = useAppDispatch()
+  const onSubmit: SubmitHandler<IPassword> = data =>
+    dispatch(editPassword(data))
   const inputNames = ['oldPassword', 'newPassword']
 
   return (
