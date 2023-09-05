@@ -1,18 +1,14 @@
-import { useLocation, useNavigate } from 'react-router-dom'
-import { FC, useEffect } from 'react'
 import useStore from '@/store'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { AppPath } from '@/types/AppPath'
-import { Spinner } from '@/components/Spinner/Spinner'
+import { useEffect } from 'react'
 
-interface RequiredAuthProps {
-  children: JSX.Element
-}
-
-const RequiredAuth: FC<RequiredAuthProps> = ({ children }) => {
+export const useAuth = () => {
   const [user] = useStore(s => [s.user])
   const navigate = useNavigate()
   const location = useLocation()
   const routes = Object.values(AppPath) as string[]
+
   useEffect(() => {
     if (user.loading) return
     if (routes.includes(location.pathname)) {
@@ -29,7 +25,5 @@ const RequiredAuth: FC<RequiredAuthProps> = ({ children }) => {
     }
   }, [user, location])
 
-  return user.loading ? <Spinner /> : children
+  return { user: user.data, loading: user.loading }
 }
-
-export default RequiredAuth
