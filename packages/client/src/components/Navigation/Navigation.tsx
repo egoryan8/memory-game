@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { ReactComponent as Logo } from './logo.svg'
+import Logo from './logo.svg'
 import s from './Navigation.module.scss'
 import { navConfig } from '@/config/navConfig'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
@@ -8,12 +8,12 @@ import logout from '@/store/asyncActions/auth/logout'
 const Navigation = () => {
   const dispatch = useAppDispatch()
   const handleLogout = () => dispatch(logout())
-  
+
   return (
     <nav className={s.nav}>
       <div className={s.wrapper}>
         <div>
-          <Logo />
+          <img src={Logo} alt="Logo icon" />
         </div>
         <ul>
           {navConfig.map(item => (
