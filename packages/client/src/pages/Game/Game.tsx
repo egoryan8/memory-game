@@ -5,11 +5,6 @@ interface Coordinates {
   y: number
 }
 
-enum Colors {
-  grey = 'lightgray',
-  yellow = '#FFDB8B',
-}
-
 interface Card {
   position: Coordinates
   color: Colors
@@ -18,61 +13,135 @@ interface Card {
   isMatched: boolean
 }
 
-const config = {
-  gameSize: 4,
-  boxSize: 120,
-  spacing: 15,
-  borderRadius: 10,
+enum Colors {
+  bg = '#23272F',
+  closed = '#556075',
+  opened = '#35495E',
+  green = '#048100',
+  red = '#930000',
 }
 
-const emojis = ['🍎', '🍌', '🍒', '🍇', '🍉', '🍍', '🍑', '🍓']
+const config = {
+  gameSize: 4, // Колличество рядов и колонок
+  boxSize: 120, // Размер карточек
+  spacing: 15, // Отступы между карточками
+  borderRadius: 10, // Скругление углов
+}
 
-// Функция отрисовки карточки
+// Получаем нужное колличество эмодзи в зависимости от config.gameSize
+const emojiCounts: { [key: number]: number } = {
+  4: 8,
+  6: 18,
+}
+const allEmojis = [
+  '🍎',
+  '🍌',
+  '🍒',
+  '🍇',
+  '🍉',
+  '🍍',
+  '🍑',
+  '🍓',
+  '🥕',
+  '🥦',
+  '🥔',
+  '🍅',
+  '🌽',
+  '🥑',
+  '🍆',
+  '🍔',
+  '🍟',
+  '🍕',
+  '🌭',
+  '🍝',
+  '🍜',
+  '🍲',
+  '🍛',
+  '🍣',
+  '🍤',
+  '🍥',
+  '🍦',
+  '🍧',
+  '🍨',
+  '🍩',
+  '🍪',
+  '🍰',
+]
+const emojis =
+  config.gameSize === 8
+    ? allEmojis
+    : allEmojis.slice(0, emojiCounts[config.gameSize])
+
+// Отрисовка карточки с анимацией масштабирования
 const drawCard = (
   ctx: CanvasRenderingContext2D,
   { x, y }: Coordinates,
-  color: Colors
+  color: Colors,
+  scale = 1,
+  width = config.boxSize,
+  height = config.boxSize
 ) => {
+  ctx.save()
+  ctx.translate(x + width / 2, y + height / 2)
+  ctx.scale(scale, 1) // Устанавливаем масштаб только по X
+
   ctx.fillStyle = color
   ctx.beginPath()
-  ctx.moveTo(x + config.borderRadius, y)
-  ctx.lineTo(x + config.boxSize - config.borderRadius, y)
-  ctx.arcTo(
-    x + config.boxSize,
-    y,
-    x + config.boxSize,
-    y + config.borderRadius,
-    config.borderRadius
-  )
-  ctx.lineTo(x + config.boxSize, y + config.boxSize - config.borderRadius)
-  ctx.arcTo(
-    x + config.boxSize,
-    y + config.boxSize,
-    x + config.boxSize - config.borderRadius,
-    y + config.boxSize,
-    config.borderRadius
-  )
-  ctx.lineTo(x + config.borderRadius, y + config.boxSize)
-  ctx.arcTo(
-    x,
-    y + config.boxSize,
-    x,
-    y + config.boxSize - config.borderRadius,
-    config.borderRadius
-  )
-  ctx.lineTo(x, y + config.borderRadius)
-  ctx.arcTo(x, y, x + config.borderRadius, y, config.borderRadius)
-  ctx.closePath()
+  ctx.roundRect(-width / 2, -height / 2, width, height, config.borderRadius)
   ctx.fill()
+
+  ctx.restore()
 }
 
+// Отображение эмодзи
 const drawEmoji = (
   ctx: CanvasRenderingContext2D,
   { x, y }: Coordinates,
-  emoji: string
+  emoji: string,
+  scaleX: number,
+  scaleY = 1
 ) => {
-  ctx.font = '40px Arial'
-  ctx.fillText(emoji, x + 40, y + 80)
+  const xCenter = 0
+  const yCenter = 0
+
+  ctx.save()
+  ctx.translate(x + config.boxSize / 2, y + config.boxSize / 2)
+  ctx.scale(scaleX, scaleY)
+
+  ctx.font = `70px Arial`
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText(emoji, xCenter, yCenter)
+
+  ctx.restore()
+}
+
+// Кнопка перезапуска
+const drawRestartButton = (ctx: CanvasRenderingContext2D) => {
+  // Координаты временные. Кнопка потом переедет в сайдбар.
+  const x = 177.5
+  const y = 250
+  const width = 200
+  const height = 50
+  const xCenter = x + width / 2
+  const yCenter = y + height / 2
+
+  ctx.fillStyle = Colors.green
+
+  // Рисование кнопки и скругление углов
+  ctx.beginPath()
+  ctx.roundRect(x, y, width, height, config.borderRadius)
+  ctx.fill()
+
+  // Рисование текста
+  ctx.fillStyle = '#ffffff'
+  ctx.font = '15px Arial'
+
+  // Установка параметров для центрирования текста
+  ctx.textBaseline = 'middle'
+  ctx.textAlign = 'center'
+
+  ctx.fillText('Начать новую игру', xCenter, yCenter)
 }
 
 const Game = () => {
@@ -81,15 +150,15 @@ const Game = () => {
   const [openCards, setOpenCards] = useState<number[]>([])
   const [matchedPairs, setMatchedPairs] = useState(0)
   const [initialDisplay, setInitialDisplay] = useState(true)
+  let scale = 0.1
 
-  useEffect(() => {
+  // Функция для запуска иницилизации игры
+  const initializeGame = () => {
     const canvas = canvasRef.current
     if (!canvas) return
 
     const ctx = canvas.getContext('2d')
     if (!ctx) return
-
-    const rows: Card[][] = []
 
     // Получение и установка размеров canvas
     const boardWidth =
@@ -100,7 +169,10 @@ const Game = () => {
     canvas.width = boardWidth
     canvas.height = boardHeight
 
+    canvas.style.background = Colors.bg
+
     const allEmojis = [...emojis, ...emojis].sort(() => Math.random() - 0.5)
+    const cards: Card[] = []
 
     allEmojis.forEach((emoji, index) => {
       const row = Math.floor(index / config.gameSize)
@@ -111,25 +183,52 @@ const Game = () => {
 
       const card = {
         position: { x, y },
-        color: Colors.grey,
+        color: Colors.opened,
         emoji: emoji,
         isOpen: true,
         isMatched: false,
       }
 
       drawCard(ctx, card.position, card.color)
-      drawEmoji(ctx, card.position, emoji)
+      drawEmoji(ctx, card.position, emoji, 1)
 
-      if (!rows[row]) {
-        rows[row] = []
-      }
-
-      rows[row].push(card)
+      cards.push(card)
     })
 
-    setCards(rows.flat())
-  }, [canvasRef])
+    setCards(cards)
+  }
 
+  // Иницилизация игры
+  useEffect(() => {
+    initializeGame()
+  }, [])
+
+  // Логика закрытия всех карточек до начала игры
+  useEffect(() => {
+    if (initialDisplay) {
+      setTimeout(() => {
+        const canvas = canvasRef.current
+        const ctx = canvas?.getContext('2d')
+
+        if (ctx) {
+          cards.forEach(card => {
+            drawCard(ctx, card.position, Colors.closed)
+          })
+        }
+
+        setCards(prevCards => {
+          return prevCards.map(card => ({
+            ...card,
+            isOpen: false,
+          }))
+        })
+
+        setInitialDisplay(false) // Завершение начального отображения
+      }, 2000)
+    }
+  }, [initialDisplay, cards])
+
+  // Логика поиска пар
   useEffect(() => {
     if (openCards.length === 2) {
       const [firstIndex, secondIndex] = openCards
@@ -145,54 +244,32 @@ const Game = () => {
           return newCards
         })
       } else {
-        setTimeout(() => {
-          const canvas = canvasRef.current
-          const ctx = canvas?.getContext('2d')
-          if (ctx) {
-            drawCard(ctx, firstCard.position, Colors.grey)
-            drawCard(ctx, secondCard.position, Colors.grey)
-          }
-          setCards(prevCards => {
-            const newCards = [...prevCards]
-            newCards[firstIndex].isOpen = false
-            newCards[secondIndex].isOpen = false
-            return newCards
-          })
-        }, 1000)
+        const canvas = canvasRef.current
+        const ctx = canvas?.getContext('2d')
+        if (ctx) {
+          drawCard(ctx, firstCard.position, Colors.closed)
+          drawCard(ctx, secondCard.position, Colors.closed)
+        }
+        setCards(prevCards => {
+          const newCards = [...prevCards]
+          newCards[firstIndex].isOpen = false
+          newCards[secondIndex].isOpen = false
+          return newCards
+        })
       }
       setOpenCards([])
     }
   }, [openCards])
 
-  useEffect(() => {
-    if (initialDisplay) {
-      setTimeout(() => {
-        const canvas = canvasRef.current
-        const ctx = canvas?.getContext('2d')
-        if (ctx) {
-          cards.forEach(card => {
-            if (!card.isMatched) {
-              drawCard(ctx, card.position, Colors.grey) // Закрыть карточку на холсте
-            }
-          })
-        }
-
-        // Закрытие всех карточек и их перерисовка
-        setCards(prevCards => {
-          return prevCards.map(card => ({
-            ...card,
-            isOpen: false,
-          }))
-        })
-
-        setInitialDisplay(false) // Завершение начального отображения
-      }, 1000)
-    }
-  }, [initialDisplay, cards])
-
+  // Логика завершения игры победой и отображение кнопки перезапуска
   useEffect(() => {
     if (matchedPairs === emojis.length) {
       alert('ПОБЕДА!')
+      const canvas = canvasRef.current
+      const ctx = canvas?.getContext('2d')
+      if (ctx) {
+        drawRestartButton(ctx)
+      }
     }
   }, [matchedPairs])
 
@@ -217,19 +294,53 @@ const Game = () => {
       ) {
         if (card.isMatched || card.isOpen) return
 
-        drawCard(ctx, card.position, Colors.yellow)
-        drawEmoji(ctx, card.position, card.emoji)
+        const animationFrame = () => {
+          drawCard(ctx, card.position, Colors.opened, scale)
+          drawEmoji(ctx, card.position, card.emoji, scale)
 
-        setOpenCards(prevOpenCards => [...prevOpenCards, index])
-        setCards(prevCards => {
-          const newCards = [...prevCards]
-          newCards[index].isOpen = true
-          return newCards
-        })
+          scale += 0.075
+
+          if (scale <= 1) {
+            requestAnimationFrame(animationFrame)
+          } else {
+            setOpenCards(prevOpenCards => [...prevOpenCards, index])
+            setCards(prevCards => {
+              const newCards = [...prevCards]
+              newCards[index].isOpen = true
+              return newCards
+            })
+          }
+        }
+        animationFrame()
       }
     })
+
+    // Проверка на нажатие кнопки "Restart"
+    // Координаты временные. Кнопка потом переедет в сайдбар.
+    const restartX = 177.5
+    const restartY = 250
+    const restartWidth = 200
+    const restartHeight = 50
+
+    if (
+      mouseX >= restartX &&
+      mouseX <= restartX + restartWidth &&
+      mouseY >= restartY &&
+      mouseY <= restartY + restartHeight &&
+      matchedPairs === emojis.length
+    ) {
+      // Сбрасываем все состояния к начальным значениям
+      setCards([])
+      setOpenCards([])
+      setMatchedPairs(0)
+      setInitialDisplay(true)
+
+      // Заново инициализируем игру
+      initializeGame()
+    }
   }
 
+  // Отображение курсора над canvas
   const handleMouseMove = (event: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -238,21 +349,31 @@ const Game = () => {
     const mouseX = event.clientX - rect.left
     const mouseY = event.clientY - rect.top
 
-    let isOverBox = false
-
-    cards.forEach(card => {
+    const isOverBox = cards.some(card => {
       const { x, y } = card.position
-      if (
+      return (
         mouseX >= x &&
         mouseX <= x + config.boxSize &&
         mouseY >= y &&
-        mouseY <= y + config.boxSize
-      ) {
-        isOverBox = true
-      }
+        mouseY <= y + config.boxSize &&
+        matchedPairs !== emojis.length &&
+        !initialDisplay
+      )
     })
 
-    if (isOverBox) {
+    // Координаты временные. Кнопка потом переедет в сайдбар.
+    const restartButtonX = 177.5
+    const restartButtonY = 250
+    const restartButtonWidth = 200
+    const restartButtonHeight = 50
+
+    const isOverRestartButton =
+      mouseX >= restartButtonX &&
+      mouseX <= restartButtonX + restartButtonWidth &&
+      mouseY >= restartButtonY &&
+      mouseY <= restartButtonY + restartButtonHeight
+
+    if (isOverBox || (isOverRestartButton && matchedPairs === emojis.length)) {
       canvas.style.cursor = 'pointer'
     } else {
       canvas.style.cursor = 'default'
