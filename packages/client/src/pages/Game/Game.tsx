@@ -1,4 +1,6 @@
+import useFullscreen from '@/hooks/useFullscreen'
 import React, { useEffect, useRef } from 'react'
+import s from './Game.module.scss'
 
 interface Coordinates {
   x: number
@@ -64,6 +66,7 @@ const drawCard = (
 
 const Game = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const fullscreen = useFullscreen()
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -127,8 +130,18 @@ const Game = () => {
   }, [canvasRef])
 
   return (
-    <main>
+    <main className={s.main}>
       <canvas ref={canvasRef} />
+
+      {!fullscreen.isFullscreen ? (
+        <button className={s['resize-button']} onClick={fullscreen.enter}>
+          Open
+        </button>
+      ) : (
+        <button className={s['resize-button']} onClick={fullscreen.exit}>
+          Exit
+        </button>
+      )}
     </main>
   )
 }
