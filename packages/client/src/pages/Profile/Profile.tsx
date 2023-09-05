@@ -4,8 +4,12 @@ import Form from '@/components/Form/Form'
 import { INPUTS_DATA } from '@/components/Form/constants'
 import { SubmitHandler } from 'react-hook-form'
 import DefaultAvatar from '@/assets/images/default-avatar-icon.svg'
-import useStore from '@/store'
 import { BASE_URI } from '@/utils/HTTPClient'
+import { useAppDispatch } from '@/hooks/useAppDispatch'
+import updateProfile from '@/store/asyncActions/users/updateProfile'
+import editAvatar from '@/store/asyncActions/users/editAvatar'
+import { useAppSelector } from '@/hooks/useAppSelector'
+import { userSelector } from '@/store/features/userSlice'
 
 interface IProfile {
   first_name: string
@@ -16,16 +20,16 @@ interface IProfile {
 }
 
 const Profile: React.FC = () => {
-  const { user } = useStore()
-  const [editProfileAsync] = useStore(store => [store.editProfileAsync])
-  const [editAvatarAsync] = useStore(store => [store.editAvatarAsync])
+  const dispatch = useAppDispatch()
+  const user = useAppSelector(userSelector)
+
   const [editProfile, setEditProfile] = useState<boolean>(true)
   const [avatar, setAvatar] = useState<File | undefined>()
 
   const handleEditProfile = () => setEditProfile(!editProfile)
 
   const handleFormOnSubmit: SubmitHandler<IProfile> = data => {
-    editProfileAsync(data)
+    dispatch(updateProfile(data))
     handleEditProfile()
   }
 
@@ -35,7 +39,7 @@ const Profile: React.FC = () => {
 
   const handleAvatarUpload = async () => {
     if (!avatar) return
-    await editAvatarAsync(avatar)
+    dispatch(editAvatar(avatar))
     setAvatar(undefined)
   }
 

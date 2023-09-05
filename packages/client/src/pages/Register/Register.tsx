@@ -3,17 +3,12 @@ import { Link } from 'react-router-dom'
 import Form from '@/components/Form/Form'
 import { INPUTS_DATA } from '@/components/Form/constants'
 import { SubmitHandler } from 'react-hook-form'
-import useStore from '@/store'
+import { useAppDispatch } from '@/hooks/useAppDispatch'
+import register from '@/store/asyncActions/auth/register'
 
 const Register: React.FC = () => {
-  const [registerAsync] = useStore(s => [s.registerAsync])
-
-  const onSubmit: SubmitHandler<IUser> = (data, event) => {
-    event?.preventDefault()
-    console.log('REGISTER', data)
-    registerAsync(data)
-  }
-
+  const dispatch = useAppDispatch()
+  const onSubmit: SubmitHandler<IUser> = data => dispatch(register(data))
   const inputNames = Object.keys(INPUTS_DATA).filter(
     item => item !== 'oldPassword' && item !== 'newPassword'
   )

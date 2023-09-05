@@ -1,50 +1,17 @@
-import { create } from 'zustand'
-import fetchUserAsync from '@/store/asyncActions/fetchUserAsync'
-import registerAsync from '@/store/asyncActions/registerAsync'
-import loginAsync from '@/store/asyncActions/loginAsync'
-import logoutAsync from '@/store/asyncActions/logoutAsync'
-import editProfileAsync from '@/store/asyncActions/editProfileAsync'
-import editPasswordAsync from '@/store/asyncActions/editPasswordAsync'
-import editAvatarAsync from '@/store/asyncActions/editAvatarAsync'
+import { ThunkAction } from 'redux-thunk'
+import { Action, configureStore } from '@reduxjs/toolkit'
 
-export interface IState {
-  user: IUserState
-}
+import userSliceReducer from '@/store/features/userSlice'
 
-export interface IUserState {
-  loading: boolean
-  data?: IUser | null
-}
-
-export interface IStateActions {
-  logout: () => void
-  setUser: (user: IState['user']) => void
-  loginAsync: (data: ILogin) => void
-  logoutAsync: () => void
-  registerAsync: (data: IUser) => void
-  fetchUserAsync: () => void
-  editProfileAsync: (data: IUser) => void
-  editPasswordAsync: (data: IPassword) => void
-  editAvatarAsync: (data: File) => Promise<boolean>
-}
-
-const useStore = create<IState & IStateActions>(set => ({
-  user: {
-    loading: false,
-    data: null,
+const store = configureStore({
+  reducer: {
+    userStore: userSliceReducer,
   },
-  logout: () =>
-    set(() => ({
-      user: { loading: false, data: null },
-    })),
-  setUser: userState => set(() => ({ user: userState })),
-  ...loginAsync(),
-  ...logoutAsync(),
-  ...registerAsync(),
-  ...fetchUserAsync(),
-  ...editProfileAsync(),
-  ...editPasswordAsync(),
-  ...editAvatarAsync,
-}))
+  devTools: process.env.NODE_ENV === 'development',
+})
 
-export default useStore
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
+export type AppThunk = ThunkAction<void, RootState, unknown, Action<string>>
+
+export default store
