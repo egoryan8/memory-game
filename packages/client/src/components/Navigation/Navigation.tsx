@@ -1,19 +1,19 @@
-import Button from '@/components/Button/Button'
 import { NavLink } from 'react-router-dom'
-import ExitIcon from './exit.svg'
+import Logo from './logo.svg'
 import s from './Navigation.module.scss'
-import useStore from '@/store'
 import { navConfig } from '@/config/navConfig'
+import { useAppDispatch } from '@/hooks/useAppDispatch'
+import logout from '@/store/asyncActions/auth/logout'
 
 const Navigation = () => {
-  const [logoutAsync] = useStore(s => [s.logoutAsync])
-  const handleClick = () => {
-    logoutAsync()
-  }
+  const dispatch = useAppDispatch()
+  const handleLogout = () => dispatch(logout())
 
   return (
     <nav className={s.nav}>
-      <div className={s.logo}>Лого</div>
+       <div>
+          <img src={Logo} alt="Logo icon" />
+        </div>
       <ul>
         {navConfig.map(item => (
           <li key={item.path}>

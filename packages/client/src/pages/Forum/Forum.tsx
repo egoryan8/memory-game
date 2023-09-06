@@ -1,29 +1,52 @@
 import Button from '@/components/Button/Button'
-import Input from '@/components/Input/Input'
 import Navigation from '@/components/Navigation/Navigation'
 import Title from '@/components/Title/Title'
+import { declensionWords } from '@/utils/declensionWords'
 import { useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 import * as React from 'react'
+import { Link } from 'react-router-dom'
 import s from './Forum.module.scss'
-import { ReactComponent as ThemeIcon } from './theme.svg'
-import { ReactComponent as AnswersIcon } from './answers.svg'
+import { ReactComponent as NoteIcon } from './note.svg'
 
 const themesList = [
-  { id: 1, theme: 'Тема 1', numberOfResponses: 46, lastMessage: 'as usual' },
-  { id: 2, theme: 'Тема 2', numberOfResponses: 43, lastMessage: 'normally' },
   {
-    id: 3,
-    theme: 'Тема 3',
-    numberOfResponses: 2,
-    lastMessage: 'somewhere out there',
+    id: '1',
+    theme: 'Requests',
+    numberOfResponses: 1600,
+    lastMessage: 'Read before you ask (again...)',
+  },
+  {
+    id: '2',
+    theme: 'Нашествие белок',
+    numberOfResponses: 1324,
+    lastMessage: 'Free Download Message Square',
+  },
+  {
+    id: '3',
+    theme: 'Поиск Жилья',
+    numberOfResponses: 1,
+    lastMessage: 'Promokod ererer4gbf',
+  },
+  {
+    id: '4',
+    theme: 'Нашествие белок',
+    numberOfResponses: 1324,
+    lastMessage: 'Free Download Message Square',
   },
 ]
 
 const Forum = () => {
-  const [showInput, setShowInput] = useState(false)
+  const [value, setValue] = useState('')
+  const [themes, setThemes] = useState(themesList)
 
-  const handleClick = () => {
-    setShowInput(!showInput)
+  const handleClick = (e: React.SyntheticEvent) => {
+    e.preventDefault()
+
+    setThemes([
+      ...themes,
+      { id: uuidv4(), theme: value, numberOfResponses: 0, lastMessage: ' ' },
+    ])
   }
 
   return (
@@ -32,45 +55,46 @@ const Forum = () => {
 
       <div className={s.forum}>
         <Title tag={'h1'} className={s.title}>
-          Форум
+          Темы
         </Title>
-        <div className={s.newTheme}>
-          {showInput && (
-            <Input
-              id="chat-topic"
-              name="chat-topic"
-              label="Создать тему:"
-              type={'text'}
-              onChange={() => console.log('12')}
-            />
-          )}
+        <form className={s.newTheme}>
+          <input
+            type="text"
+            placeholder={'Новая тема'}
+            value={value}
+            onChange={e => setValue(e.target.value)}
+          />
           <Button className={s.btn} theme="blue" onClick={handleClick}>
-            {!showInput ? 'Создать тему' : 'Создать'}
+            Создать
           </Button>
-        </div>
+        </form>
 
-        <div className={s.container}>
-          <div className={s.headings}>
-            <div>
-              <ThemeIcon />
-              тема
-            </div>
-            <div>
-              <AnswersIcon />
-              ответов
-            </div>
-            <div>последнее сообщение</div>
-          </div>
-          <ul>
-            {themesList.map(({ id, theme, numberOfResponses, lastMessage }) => (
+        <ul className={s.container}>
+          {themes.map(item => {
+            const { id, theme, numberOfResponses, lastMessage } = item
+
+            return (
               <li key={id}>
-                <div>{theme}</div>
-                <div>{numberOfResponses}</div>
-                <div>{lastMessage}</div>
+                <Link to={`/forum/thread/${id}`}>
+                  <div className={s['topic-ico']}>
+                    <NoteIcon />
+                  </div>
+                  <div className={s.details}>
+                    <div className={s['topic-name']}>{theme}</div>
+                    <div className={s['last-mess']}>{lastMessage}</div>
+                  </div>
+                  <div className={s.answers}>
+                    {declensionWords(numberOfResponses, [
+                      'ответ',
+                      'ответа',
+                      'ответов',
+                    ])}
+                  </div>
+                </Link>
               </li>
-            ))}
-          </ul>
-        </div>
+            )
+          })}
+        </ul>
       </div>
     </div>
   )
