@@ -1,4 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
+import s from './Game.module.scss'
+import Button from '@/components/Button/Button'
+import { useNavigate } from 'react-router-dom'
+import { AppPath } from '@/types/AppPath'
+
 
 interface Coordinates {
   x: number
@@ -145,6 +150,10 @@ const drawRestartButton = (ctx: CanvasRenderingContext2D) => {
 }
 
 const Game = () => {
+  const navigate = useNavigate()
+  const onMainClick = () => {
+    navigate(AppPath.MAIN)
+  }
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [cards, setCards] = useState<Card[]>([])
   const [openCards, setOpenCards] = useState<number[]>([])
@@ -381,12 +390,32 @@ const Game = () => {
   }
 
   return (
-    <main>
-      <canvas
-        ref={canvasRef}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-      />
+    <main className={s.wrapper}>
+      <div className={s.field}>
+        <canvas ref={canvasRef} />
+      </div>
+      <div className={s.handlers}>
+        <ul className={s.options}>
+          <li className={s.option}>
+            <span className={s.optionName}>Таймер</span>
+            <span className={s.optionValue}>01:00</span>
+          </li>
+          <li className={s.option}>
+            <span className={s.optionName}>Отгадано</span>
+            <span className={s.optionValue}>0 из 16</span>
+          </li>
+          <li className={s.option}>
+            <span className={s.optionName}>Очки</span>
+            <span className={s.optionValue}>0</span>
+          </li>
+        </ul>
+        <div className={s.buttons}>
+          <Button className={s.button}>Поехали!</Button>
+          <Button theme="dark" className={s.button} onClick={onMainClick}>
+            На главную
+          </Button>
+        </div>
+      </div>
     </main>
   )
 }

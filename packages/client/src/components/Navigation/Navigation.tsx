@@ -11,25 +11,24 @@ const Navigation = () => {
 
   return (
     <nav className={s.nav}>
-      <div className={s.wrapper}>
-        <div>
+       <div>
           <img src={Logo} alt="Logo icon" />
         </div>
-        <ul>
-          {navConfig.map(item => (
-            <li key={item.path}>
-              {item.logo}
-              <NavLink
-                to={item.path}
-                className={({ isActive }) =>
-                  isActive ? `${s.link} ${s.active}` : s.link
-                }>
-                {item.text}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ul>
+        {navConfig.map(item => (
+          <li key={item.path}>
+            <NavLink
+              to={item.path}
+              className={({ isActive }) => (isActive ? s.active : '')}>
+              {item.text}
+            </NavLink>
+          </li>
+        ))}
+      </ul>
+      <Button className={s.btnExit} onClick={handleClick}>
+        <img src={ExitIcon} alt="ExitIcon" />
+        выйти
+      </Button>
     </nav>
   )
 }
