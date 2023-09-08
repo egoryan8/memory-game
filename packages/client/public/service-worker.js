@@ -5,11 +5,7 @@ const resources = [
 
 this.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(resources))
-      .catch((err) => {
-        throw err
-      })
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(resources)),
   )
 })
 
