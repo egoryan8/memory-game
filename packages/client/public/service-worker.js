@@ -13,16 +13,6 @@ this.addEventListener('install', (event) => {
   )
 })
 
-this.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => Promise.all(
-      cacheNames
-        .filter(() => false)
-        .map((name) => caches.delete(name))
-    ))
-  )
-})
-
 const MAX_AGE = 3600
 
 this.addEventListener('fetch', (event) => {
@@ -48,7 +38,7 @@ this.addEventListener('fetch', (event) => {
       // если ресурс устаревший
       if (lastModified && (Date.now() - lastModified.getTime()) > MAX_AGE) {
         return fetch(fetchRequest).then((response) => {
-          if (!response || response.status > 500) {
+          if (!response || response.status >= 500) {
             return cachedResponse
           }
           updateCache(event.request, response.clone())
