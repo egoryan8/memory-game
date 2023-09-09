@@ -13,9 +13,25 @@ const routeComponents = routes.map(route => (
   <Route key={route.path} path={route.path} element={route.element} />
 ))
 
+function startServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker
+        .register('/service-worker.js')
+        .then(registration => {
+          console.log('SW registration successful: ', registration.scope)
+        })
+        .catch((error: string) => {
+          console.log('SW registration failed: ', error)
+        })
+    })
+  }
+}
+
 function App() {
   const user = useAppSelector(userSelector)
   const dispatch = useAppDispatch()
+
   useEffect(() => {
     if (!user.data && !user.loading) {
       dispatch(fetchUser())
@@ -29,6 +45,7 @@ function App() {
 
     fetchServerData()
   }, [])
+
   return (
     <BrowserRouter>
       <Suspense fallback={<Spinner />}>
@@ -40,4 +57,5 @@ function App() {
   )
 }
 
+startServiceWorker()
 export default App
