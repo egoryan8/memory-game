@@ -116,8 +116,8 @@ const Game: React.FC = () => {
     return { canvas, context }
   }
 
-  const minutes = String(Math.floor(timer / 60)).padStart(2, '0')
-  const seconds = String(timer % 60).padStart(2, '0')
+  const minutes = `${Math.floor(timer / 60)}`.padStart(2, '0')
+  const seconds = `${timer % 60}`.padStart(2, '0')
 
   const calculateCardPositions = (): Card[] => {
     const { canvas } = getCanvasContext(canvasRef)
@@ -205,11 +205,8 @@ const Game: React.FC = () => {
     context.font = '20px Arial'
     context.textAlign = 'center'
     context.textBaseline = 'middle'
-    context.fillText(
-      !timer ? '00:00' : `${minutes}:${seconds}`,
-      canvas.width / 2,
-      timerHeight * 2
-    )
+    context.fillStyle = Colors.main
+    context.fillText(`${minutes}:${seconds}`, canvas.width / 2, timerHeight * 2)
   }
 
   // Кнопка перезапуска
