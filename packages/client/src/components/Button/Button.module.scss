@@ -7,12 +7,6 @@
   font-size: var(--large);
   font-weight: 700;
   padding: 1rem;
-  margin: var(--large) 0;
-}
-
-.buttonPrimary {
-  background-color: var(--primary);
-  color: var(--light);
   border: none;
   transition: opacity 0.3s ease-in-out;
 
@@ -20,3 +14,13 @@
     opacity: 0.8;
   }
 }
+
+.blue {
+  background-color: var(--primary);
+  color: var(--light);
+}
+
+.dark {
+  background-color: var(--dark);
+}
+

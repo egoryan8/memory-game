@@ -5,12 +5,12 @@
   flex-direction: column;
 }
 
-.forum {
+.forum-thread {
   align-self: center;
   flex-grow: 1;
   width: 100%;
-  max-width: 620px;
-  padding: 55px 10px;
+  max-width: 1024px;
+  padding: 55px 50px;
   background: #FFFFFF;
   text-align: center;
 }
@@ -20,16 +20,15 @@
   border-bottom: 1px solid #E5E5E5;
 }
 
-.newTheme {
+.send-message {
   display: flex;
-  justify-content: center;
   align-items: center;
   gap: 15px;
   margin-bottom: 20px;
 
   input {
     min-height: auto;
-    max-width: 270px;
+    width: 100%;
     padding: 12px 25px;
     border-radius: 12px;
     border: 2px solid #E5E5E5;
@@ -47,7 +46,7 @@
 
   button {
     min-height: auto;
-    width: 142px;
+    width: 300px;
     margin: 0;
     display: flex;
     padding: 15px 12px;
@@ -62,66 +61,71 @@
   }
 }
 
-
-.container {
-  width: 100%;
-
-
-  li {
-    list-style: none;
-    padding-bottom: 1px;
-
-  }
-
-  a {
-    padding: 8px 28px 8px 21px;
-    display: flex;
-    align-items: center;
-    border-radius: 16px;
-    border: 1px solid #FFF;
-
-    &:hover {
-      border: 1px solid #F0F0F0;
-    }
-  }
-
+.cards {
+  display: grid;
+  row-gap: 24px;
 }
 
-.details {
+.card {
+  border-radius: 16px;
   display: flex;
+  padding: 15px;
+  border: 1px solid #E5E5E5;
+}
+
+.avatarBlock {
+  min-width: 145px;
+  display: flex;
+  justify-content: center;
   flex-direction: column;
-  align-items: start;
-
+  align-items: center;
+  padding-right: 15px;
+  margin-right: 24px;
+  border-right: 1px solid #E5E5E5;
 }
 
-.topic-ico {
-  margin-right: 20px;
+.avatar {
+  width: 85px;
+  height: 85px;
+  margin-bottom: 12px;
+  background: #FF4B4B;
+  border-radius: 50%;
 }
 
-.topic-name {
+.avatarPurple {
+  background: #CE82FF;
+}
+
+.userName {
   color: #3C3C3C;
+  text-align: center;
   font-size: 17px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  letter-spacing: 0.51px;
 }
 
-.last-mess {
+.message-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: end;
+}
+
+.message {
+  text-align: start;
+  color: #3C3C3C;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.time {
+  margin-top: 10px;
   color: #777;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  letter-spacing: 0.42px;
-}
-
-.answers {
-  margin-left: auto;
-  color: #777;
-  font-size: 17px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: 0.51px;
 }

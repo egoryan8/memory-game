@@ -2,18 +2,40 @@ import React, { Suspense, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Spinner } from './components/Spinner/Spinner'
 import { Layout } from './components/Layout/Layout'
-import useStore from './store'
 import { routes } from '@/config/routerConfig'
 import withAuthCheck from '@/utils/hocs/withAuthCheck'
+import { useAppDispatch } from '@/hooks/useAppDispatch'
+import fetchUser from '@/store/asyncActions/auth/fetchUser'
+import { useAppSelector } from '@/hooks/useAppSelector'
+import { userSelector } from '@/store/features/userSlice'
 
 const routeComponents = routes.map(route => (
   <Route key={route.path} path={route.path} element={route.element} />
 ))
 
+function startServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker
+        .register('/service-worker.js')
+        .then(registration => {
+          console.log('SW registration successful: ', registration.scope)
+        })
+        .catch((error: string) => {
+          console.log('SW registration failed: ', error)
+        })
+    })
+  }
+}
+
 function App() {
-  const [fetchUserAsync] = useStore(s => [s.fetchUserAsync])
+  const user = useAppSelector(userSelector)
+  const dispatch = useAppDispatch()
+
   useEffect(() => {
-    fetchUserAsync()
+    if (!user.data && !user.loading) {
+      dispatch(fetchUser())
+    }
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`
       const response = await fetch(url)
@@ -23,6 +45,7 @@ function App() {
 
     fetchServerData()
   }, [])
+
   return (
     <BrowserRouter>
       <Suspense fallback={<Spinner />}>
@@ -34,4 +57,5 @@ function App() {
   )
 }
 
+startServiceWorker()
 export default App

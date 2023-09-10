@@ -1,10 +1,11 @@
-import useStore from '@/store'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { AppPath } from '@/types/AppPath'
 import { useEffect } from 'react'
+import { useAppSelector } from '@/hooks/useAppSelector'
+import { userSelector } from '@/store/features/userSlice'
 
 export const useAuth = () => {
-  const [user] = useStore(s => [s.user])
+  const user = useAppSelector(userSelector)
   const navigate = useNavigate()
   const location = useLocation()
   const routes = Object.values(AppPath) as string[]

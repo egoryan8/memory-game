@@ -4,9 +4,9 @@ export enum AppPath {
   LOGIN = '/login',
   REGISTER = '/register',
   FORUM = '/forum',
-  THREAD = '/forum/thread',
+  THREAD = '/forum/thread/:id',
   PROFILE = '/profile',
   LEADERBOARD = '/leaderboard',
-  CHANGE_PASS = '/change-password',
   RULES = '/rules',
+  CHANGE_PASS = '/change-password',
 }
