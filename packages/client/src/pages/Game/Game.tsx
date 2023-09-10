@@ -110,7 +110,7 @@ const Game: React.FC = () => {
   const [timer, setTimer] = useState<number>(0)
   const [startTimer, setStartTimer] = useState<boolean>(false)
 
-  function getCanvasContext(canvasRef: RefObject<HTMLCanvasElement>) {
+  const getCanvasContext = (canvasRef: RefObject<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
     const context = canvas?.getContext('2d')
     return { canvas, context }
