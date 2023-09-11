@@ -3,7 +3,7 @@ import s from './Game.module.scss'
 import Button from '@/components/Button/Button'
 import { useNavigate } from 'react-router-dom'
 import { AppPath } from '@/types/AppPath'
-
+import useFullscreen from '@/hooks/useFullscreen'
 
 interface Coordinates {
   x: number
@@ -151,6 +151,7 @@ const drawRestartButton = (ctx: CanvasRenderingContext2D) => {
 
 const Game = () => {
   const navigate = useNavigate()
+  const fullscreen = useFullscreen()
   const onMainClick = () => {
     navigate(AppPath.MAIN)
   }
@@ -160,6 +161,7 @@ const Game = () => {
   const [matchedPairs, setMatchedPairs] = useState(0)
   const [initialDisplay, setInitialDisplay] = useState(true)
   let scale = 0.1
+
 
   // Функция для запуска иницилизации игры
   const initializeGame = () => {
@@ -416,6 +418,15 @@ const Game = () => {
           </Button>
         </div>
       </div>
+      {!fullscreen.isFullscreen ? (
+        <button className={s['resize-button']} onClick={fullscreen.enter}>
+          Open
+        </button>
+      ) : (
+        <button className={s['resize-button']} onClick={fullscreen.exit}>
+          Exit
+        </button>
+      )}
     </main>
   )
 }
