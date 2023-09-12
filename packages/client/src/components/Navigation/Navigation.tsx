@@ -16,20 +16,21 @@ const Navigation = () => {
   return (
     <nav className={s.nav}>
       <img src={LogoIcon} alt="Logo icon" />
-      <ul>
-        {navConfig.map(item => (
-          <li key={item.path}>
-            <NavLink
-              to={item.path}
-              className={({ isActive }) => (isActive ? s.active : '')}>
-              {item.text}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
+      {navConfig.map(item => (
+        <NavLink
+          key={item.path}
+          to={item.path}
+          // className={s.pushable}
+          className={({ isActive }) =>
+            isActive ? `${s.pushable} ${s.activeLink}` : s.pushable
+          }>
+          <span className={s.shadow}></span>
+          <span className={s.edge}></span>
+          <span className={s.front}>{item.text}</span>
+        </NavLink>
+      ))}
       <Button className={s.btnExit} onClick={handleLogout}>
         <img src={ExitIcon} alt="Exit icon" />
-        выйти
       </Button>
     </nav>
   )
