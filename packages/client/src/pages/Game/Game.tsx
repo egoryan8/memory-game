@@ -1,6 +1,6 @@
 import React, { RefObject, useEffect, useRef, useState } from 'react'
 import timerIcon from '@/assets/images/timer.svg'
-import s from './Game.module.scss'
+import style from './Game.module.scss'
 import Button from '@/components/Button/Button'
 import { useNavigate } from 'react-router-dom'
 import { AppPath } from '@/types/AppPath'
@@ -32,7 +32,7 @@ enum Colors {
 const getCardSize = (cols: number) => (cols === 4 ? 120 : 100)
 const getRowsSize = (cols: number) => (cols === 4 ? 4 : 6)
 
-const cols = 4 // 4 | 6 | 10
+const cols = 6 // 4 | 6 | 10
 const rows = getRowsSize(cols)
 
 const gameConfig = {
@@ -444,38 +444,38 @@ const Game: React.FC = () => {
   }, [matchedPairs])
 
   return (
-    <main className={s.wrapper}>
-      <div className={s.field}>
+    <main className={style.wrapper}>
+      <div className={style.field}>
         <canvas ref={canvasRef} onClick={handleCanvasClick} />
       </div>
-      <div className={s.handlers}>
-        <ul className={s.options}>
-          <li className={s.option}>
-            <span className={s.optionName}>Таймер</span>
-            <span className={s.optionValue}>01:00</span>
+      <div className={style.handlers}>
+        <ul className={style.options}>
+          <li className={style.option}>
+            <span className={style.optionName}>Таймер</span>
+            <span className={style.optionValue}>01:00</span>
           </li>
-          <li className={s.option}>
-            <span className={s.optionName}>Отгадано</span>
-            <span className={s.optionValue}>0 из 16</span>
+          <li className={style.option}>
+            <span className={style.optionName}>Отгадано</span>
+            <span className={style.optionValue}>0 из 16</span>
           </li>
-          <li className={s.option}>
-            <span className={s.optionName}>Очки</span>
-            <span className={s.optionValue}>0</span>
+          <li className={style.option}>
+            <span className={style.optionName}>Очки</span>
+            <span className={style.optionValue}>0</span>
           </li>
         </ul>
-        <div className={s.buttons}>
-          <Button className={s.button}>Поехали!</Button>
-          <Button theme="dark" className={s.button} onClick={onMainClick}>
+        <div className={style.buttons}>
+          <Button className={style.button}>Поехали!</Button>
+          <Button theme="dark" className={style.button} onClick={onMainClick}>
             На главную
           </Button>
         </div>
       </div>
       {!fullscreen.isFullscreen ? (
-        <button className={s['resize-button']} onClick={fullscreen.enter}>
+        <button className={style['resize-button']} onClick={fullscreen.enter}>
           Open
         </button>
       ) : (
-        <button className={s['resize-button']} onClick={fullscreen.exit}>
+        <button className={style['resize-button']} onClick={fullscreen.exit}>
           Exit
         </button>
       )}
