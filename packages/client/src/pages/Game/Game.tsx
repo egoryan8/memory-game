@@ -1,5 +1,10 @@
 import React, { RefObject, useEffect, useRef, useState } from 'react'
 import timerIcon from '@/assets/images/timer.svg'
+import s from './Game.module.scss'
+import Button from '@/components/Button/Button'
+import { useNavigate } from 'react-router-dom'
+import { AppPath } from '@/types/AppPath'
+import useFullscreen from '@/hooks/useFullscreen'
 
 interface Coordinates {
   x: number
@@ -101,6 +106,11 @@ const gameIcons = [...getIconsCount, ...getIconsCount].sort(
 )
 
 const Game: React.FC = () => {
+  const navigate = useNavigate()
+  const fullscreen = useFullscreen()
+  const onMainClick = () => {
+    navigate(AppPath.MAIN)
+  }
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [startGame, setStartGame] = useState<boolean>(false)
   const [cards, setCards] = useState<Card[]>([])
@@ -433,7 +443,44 @@ const Game: React.FC = () => {
     }
   }, [matchedPairs])
 
-  return <canvas ref={canvasRef} onClick={handleCanvasClick} />
+  return (
+    <main className={s.wrapper}>
+      <div className={s.field}>
+        <canvas ref={canvasRef} onClick={handleCanvasClick} />
+      </div>
+      <div className={s.handlers}>
+        <ul className={s.options}>
+          <li className={s.option}>
+            <span className={s.optionName}>Таймер</span>
+            <span className={s.optionValue}>01:00</span>
+          </li>
+          <li className={s.option}>
+            <span className={s.optionName}>Отгадано</span>
+            <span className={s.optionValue}>0 из 16</span>
+          </li>
+          <li className={s.option}>
+            <span className={s.optionName}>Очки</span>
+            <span className={s.optionValue}>0</span>
+          </li>
+        </ul>
+        <div className={s.buttons}>
+          <Button className={s.button}>Поехали!</Button>
+          <Button theme="dark" className={s.button} onClick={onMainClick}>
+            На главную
+          </Button>
+        </div>
+      </div>
+      {!fullscreen.isFullscreen ? (
+        <button className={s['resize-button']} onClick={fullscreen.enter}>
+          Open
+        </button>
+      ) : (
+        <button className={s['resize-button']} onClick={fullscreen.exit}>
+          Exit
+        </button>
+      )}
+    </main>
+  )
 }
 
 export default Game
