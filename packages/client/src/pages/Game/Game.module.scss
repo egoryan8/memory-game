@@ -35,9 +35,13 @@
   background: var(--secondary);
   display: flex;
   flex-direction: column;
-  padding: 48px 24px;
+  padding: 30px 24px;
   align-items: center;
   justify-content: space-between;
+  z-index: 1;
+  height: 555px;
+  max-height: 705px;
+  margin-top: 85px;
 }
 
 .options {
@@ -66,7 +70,7 @@
 .optionValue {
   text-align: center;
   font-family: PT Sans, 'sans-serif';
-  font-size: 36px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -81,10 +85,23 @@
 
 .button {
   margin: 0;
+  &:disabled {
+    background: var(--danger);
+    opacity: 1;
+    cursor: not-allowed;
+  }
 }
 
 .resize-button {
   position: absolute;
-  width: 100px;
-  height: 50px;
+  width: 50px;
+  min-height: 50px;
+  bottom: 0;
+  padding: 7.5px;
+  border-radius: 7.5px;
+  display: flex;
+  background: var(--dark);
+  & img {
+    width: 100%;
+  }
 }

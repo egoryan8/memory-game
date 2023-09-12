@@ -1,5 +1,7 @@
 import React, { RefObject, useEffect, useRef, useState } from 'react'
 import timerIcon from '@/assets/images/timer.svg'
+import compressScreen from '@/assets/images/fs-compress-icon.svg'
+import expandScreen from '@/assets/images/fs-expand-icon.svg'
 import style from './Game.module.scss'
 import Button from '@/components/Button/Button'
 import { useNavigate } from 'react-router-dom'
@@ -23,7 +25,7 @@ interface Card {
 
 // Цвета игры
 enum Colors {
-  main = '#23272F',
+  main = '#1F252D',
   closed = '#556075',
   opened = '#35495E',
   green = '#048100',
@@ -101,17 +103,10 @@ const getIconsCount =
     ? allIcons
     : allIcons.slice(0, iconsCount[totalGameCards])
 
-// Слздаем пары иконок и перемешиваем
-const gameIcons = [...getIconsCount, ...getIconsCount].sort(
-  () => Math.random() - 0.5
-)
-
 const Game: React.FC = () => {
   const navigate = useNavigate()
   const fullscreen = useFullscreen()
-  const onMainClick = () => {
-    navigate(AppPath.MAIN)
-  }
+
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [cards, setCards] = useState<Card[]>([])
   const [isClickDisabled, setIsClickDisabled] = useState<boolean>(true)
@@ -120,6 +115,14 @@ const Game: React.FC = () => {
   const [timer, setTimer] = useState<number>(0)
   const [startTimer, setStartTimer] = useState<boolean>(false)
   const [isEndModalOpen, setIsEndModalOpen] = useState<boolean>(false)
+  const [shouldRestartGame, setShouldRestartGame] = useState<boolean>(false)
+  const [count, setCount] = useState<number>(3)
+  const [startCount, setStartCount] = useState<boolean>(false)
+  const [attempts, setAttempts] = useState<number>(0)
+  const [misses, setMisses] = useState<number>(0)
+  const [points, setPoints] = useState<number>(0)
+
+  const onMainClick = () => navigate(AppPath.MAIN)
 
   const getCanvasContext = (canvasRef: RefObject<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
@@ -151,6 +154,11 @@ const Game: React.FC = () => {
     const startX = gameConfig.canvasMargin
     const startY = gameConfig.canvasMargin
 
+    // Создаем пары иконок и перемешиваем
+    const gameIcons = [...getIconsCount, ...getIconsCount].sort(
+      () => Math.random() - 0.5
+    )
+
     return gameIcons.map((icon, index) => {
       const i = Math.floor(index / gameConfig.cols)
       const j = index % gameConfig.cols
@@ -177,6 +185,7 @@ const Game: React.FC = () => {
     const centerY = card.position.y + gameConfig.cardSize / 2
 
     context.fillStyle = card.isOpen ? Colors.opened : Colors.closed
+
     context.beginPath()
     context.roundRect(
       centerX - halfWidth,
@@ -220,31 +229,32 @@ const Game: React.FC = () => {
     context.fillText(`${minutes}:${seconds}`, canvas.width / 2, timerHeight * 2)
   }
 
+  // Вернуть если понадобиться кнопка на канвасе
   // Кнопка перезапуска
-  const drawRestartButton = () => {
-    const { canvas, context } = getCanvasContext(canvasRef)
-    if (!canvas || !context) return
-
-    const width = 200
-    const height = 50
-    const x = canvas.width / 2 - width / 2
-    const y = canvas.height - gameConfig.canvasMargin / 2
-    const xCenter = x + width / 2
-    const yCenter = y + height / 2
-
-    context.fillStyle = Colors.green
-
-    // Рисование кнопки
-    context.beginPath()
-    context.roundRect(x, y, width, height, gameConfig.borderRadius)
-    context.fill()
-
-    context.fillStyle = '#ffffff'
-    context.font = '15px Arial'
-    context.textBaseline = 'middle'
-    context.textAlign = 'center'
-    context.fillText('Начать новую игру 🔄', xCenter, yCenter)
-  }
+  // const drawRestartButton = () => {
+  //   const { canvas, context } = getCanvasContext(canvasRef)
+  //   if (!canvas || !context) return
+  //
+  //   const width = 200
+  //   const height = 50
+  //   const x = canvas.width / 2 - width / 2
+  //   const y = canvas.height - gameConfig.canvasMargin / 2
+  //   const xCenter = x + width / 2
+  //   const yCenter = y + height / 2
+  //
+  //   context.fillStyle = Colors.green
+  //
+  //   // Рисование кнопки
+  //   context.beginPath()
+  //   context.roundRect(x, y, width, height, gameConfig.borderRadius)
+  //   context.fill()
+  //
+  //   context.fillStyle = '#ffffff'
+  //   context.font = '15px Arial'
+  //   context.textBaseline = 'middle'
+  //   context.textAlign = 'center'
+  //   context.fillText('Начать новую игру 🔄', xCenter, yCenter)
+  // }
 
   const initializeGame = (cards: Card[]) => {
     const { canvas, context } = getCanvasContext(canvasRef)
@@ -252,7 +262,7 @@ const Game: React.FC = () => {
 
     context.clearRect(0, 0, canvas.width, canvas.height)
 
-    // Вывод иконки timerIcon
+    // Рисуем иконку timerIcon
     const timerImage = new Image()
     timerImage.src = timerIcon
     timerImage.onload = () => {
@@ -274,11 +284,10 @@ const Game: React.FC = () => {
     )
     context.fill()
 
-    // Рисуем карточки пока закрытые
-    cards.forEach(card => {
-      drawCard(card)
-    })
+    // Рисуем карточки
+    cards.forEach(card => drawCard(card))
 
+    // Рисуем таймер
     drawTimer()
   }
 
@@ -317,6 +326,12 @@ const Game: React.FC = () => {
         card.isOpen = !card.isOpen
         animateSquare(card, true)
       }
+
+      // По завершении анимации включаем обратно возможность клика
+      if (newWidth >= gameConfig.cardSize || newWidth <= 0) {
+        clearInterval(animationInterval)
+        setIsClickDisabled(false)
+      }
     }
     const animationInterval = setInterval(animate, 20)
   }
@@ -340,32 +355,33 @@ const Game: React.FC = () => {
         mouseY <= y + gameConfig.cardSize
       ) {
         if (card.isMatched || card.isOpen) return
-
+        setIsClickDisabled(true)
         setOpenCards(prevOpenCards => [...prevOpenCards, index])
         animateSquare(card)
       }
     })
 
+    // Вернуть если вернем кнопку перезапуска на канвасе
     // Проверка на нажатие кнопки "Restart"
-    const restartWidth = 200
-    const restartHeight = 50
-    const restartX = canvas.width / 2 - restartWidth / 2
-    const restartY = canvas.height - gameConfig.canvasMargin / 2
-
-    if (
-      mouseX >= restartX &&
-      mouseX <= restartX + restartWidth &&
-      mouseY >= restartY &&
-      mouseY <= restartY + restartHeight &&
-      matchedPairs === totalGameCards / 2
-    ) {
-      console.log('RESTART')
-
-      // Сбрасываем все состояния к начальным значениям
-      setCards([])
-      setOpenCards([])
-      setMatchedPairs(0)
-    }
+    // const restartWidth = 200
+    // const restartHeight = 50
+    // const restartX = canvas.width / 2 - restartWidth / 2
+    // const restartY = canvas.height - gameConfig.canvasMargin / 2
+    //
+    // if (
+    //   mouseX >= restartX &&
+    //   mouseX <= restartX + restartWidth &&
+    //   mouseY >= restartY &&
+    //   mouseY <= restartY + restartHeight &&
+    //   matchedPairs === totalGameCards / 2
+    // ) {
+    //   console.log('RESTART')
+    //
+    //   // Сбрасываем все состояния к начальным значениям
+    //   setCards([])
+    //   setOpenCards([])
+    //   setMatchedPairs(0)
+    // }
   }
 
   const flipCards = (cards: Card[]) => {
@@ -374,19 +390,26 @@ const Game: React.FC = () => {
 
   const handleStartGame = () => {
     flipCards(cards)
+    setStartCount(true)
     setTimeout(() => {
       flipCards(cards)
       setIsClickDisabled(false)
       setStartTimer(true)
-    }, 2000)
+    }, 3000)
   }
 
   const handleRestartGame = () => {
-    setTimer(0)
-    flipCards(cards)
+    setStartCount(true)
     setCards(calculateCardPositions())
+    initializeGame(calculateCardPositions())
+    setTimer(0)
+    setMatchedPairs(0)
+    setMisses(0)
+    setAttempts(0)
+    setPoints(0)
+    setIsClickDisabled(true)
     setIsEndModalOpen(false)
-    handleStartGame()
+    setShouldRestartGame(true)
   }
 
   useEffect(() => {
@@ -396,10 +419,41 @@ const Game: React.FC = () => {
     }
   }, [])
 
+  // Отсчет до начала игры
+  useEffect(() => {
+    let timerId: NodeJS.Timeout | null = null // указываем тип явно
+
+    if (startCount && count > 0) {
+      timerId = setTimeout(() => {
+        setCount(prev => prev - 1)
+      }, 1000)
+    }
+
+    if (count === 0) {
+      setStartCount(false)
+      setCount(3)
+    }
+
+    // Функция очистки
+    return () => {
+      if (timerId) {
+        clearTimeout(timerId) // очищаем таймер при размонтировании или при изменении зависимостей
+      }
+    }
+  }, [startCount, count])
+
+  // Перезапуск игры
+  useEffect(() => {
+    if (shouldRestartGame) {
+      handleStartGame() // Вызываем handleStartGame только после того, как cards обновятся
+      setShouldRestartGame(false) // Сбрасываем флаг перезапуска игры
+    }
+  }, [cards])
+
+  // Запускаем таймер
   useEffect(() => {
     if (!startTimer) return
 
-    // Запускаем таймер
     const timerId = setInterval(() => {
       setTimer(prevTimer => prevTimer + 1)
     }, 1000)
@@ -420,6 +474,7 @@ const Game: React.FC = () => {
 
       if (firstCard.icon === secondCard.icon) {
         setMatchedPairs(matchedPairs + 1)
+        setPoints(point => point + 2)
         setCards(prevCards => {
           const newCards = [...prevCards]
           newCards[firstIndex].isMatched = true
@@ -428,21 +483,26 @@ const Game: React.FC = () => {
         })
       } else {
         // Закрываем неправильных карточек
+        if (points !== 0) setPoints(point => point - 1)
+        setMisses(miss => miss + 1)
         setTimeout(() => {
           animateSquare(firstCard)
           animateSquare(secondCard)
         }, 1000)
       }
       setOpenCards([])
+      setAttempts(prev => prev + 1)
     }
   }, [openCards])
 
   // Логика завершения игры победой и отображение кнопки перезапуска
   useEffect(() => {
     if (matchedPairs === totalGameCards / 2) {
+      setCards([])
+      setStartTimer(false)
+      setIsEndModalOpen(true)
       setTimeout(() => {
-        setStartTimer(false)
-        setIsEndModalOpen(true)
+        flipCards(cards)
       }, 1000)
     }
   }, [matchedPairs])
@@ -456,29 +516,44 @@ const Game: React.FC = () => {
         <ul className={style.options}>
           <li className={style.option}>
             <span className={style.optionName}>Отгадано</span>
-            <span className={style.optionValue}>0 из 16</span>
+            <span className={style.optionValue}>
+              {matchedPairs * 2} из {cols * rows}
+            </span>
           </li>
           <li className={style.option}>
             <span className={style.optionName}>Очки</span>
-            <span className={style.optionValue}>0</span>
+            <span className={style.optionValue}>{Math.round(points)}</span>
+          </li>
+          <li className={style.option}>
+            <span className={style.optionName}>Попыток всего</span>
+            <span className={style.optionValue}>{attempts}</span>
+          </li>
+          <li className={style.option}>
+            <span className={style.optionName}>Ошибок</span>
+            <span className={style.optionValue}>{misses}</span>
           </li>
         </ul>
         <div className={style.buttons}>
-          <Button className={style.button} onClick={handleStartGame}>
-            Поехали!
-          </Button>
+          {!startTimer && !isEndModalOpen && (
+            <Button
+              className={style.button}
+              onClick={handleStartGame}
+              disabled={startCount}>
+              {startCount ? count : 'Поехали!'}
+            </Button>
+          )}
           <Button theme="dark" className={style.button} onClick={onMainClick}>
-            На главную
+            Выход
           </Button>
         </div>
       </div>
       {!fullscreen.isFullscreen ? (
         <button className={style['resize-button']} onClick={fullscreen.enter}>
-          Open
+          <img src={expandScreen} alt="expand-icon" />
         </button>
       ) : (
         <button className={style['resize-button']} onClick={fullscreen.exit}>
-          Exit
+          <img src={compressScreen} alt="compress-icon" />
         </button>
       )}
       {isEndModalOpen && (

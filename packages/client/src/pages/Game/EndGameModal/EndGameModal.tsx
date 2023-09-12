@@ -31,7 +31,7 @@ export const EndGameModal = ({ time, handleRestart }: EndGameModalProps) => {
             Начать заново
           </Button>
           <Button className={s.button} onClick={goToMain} theme="dark">
-            На главную
+            Выход
           </Button>
         </div>
       </div>
