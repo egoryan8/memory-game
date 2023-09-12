@@ -32,7 +32,7 @@ enum Colors {
 const getCardSize = (cols: number) => (cols === 4 ? 120 : 100)
 const getRowsSize = (cols: number) => (cols === 4 ? 4 : 6)
 
-const cols = 6 // 4 | 6 | 10
+const cols = 4 // 4 | 6 | 10
 const rows = getRowsSize(cols)
 
 const gameConfig = {
