@@ -5,6 +5,7 @@ import Button from '@/components/Button/Button'
 import { useNavigate } from 'react-router-dom'
 import { AppPath } from '@/types/AppPath'
 import useFullscreen from '@/hooks/useFullscreen'
+import { EndGameModal } from '@/pages/Game/EndGameModal/EndGameModal'
 
 interface Coordinates {
   x: number
@@ -112,13 +113,13 @@ const Game: React.FC = () => {
     navigate(AppPath.MAIN)
   }
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [startGame, setStartGame] = useState<boolean>(false)
   const [cards, setCards] = useState<Card[]>([])
   const [isClickDisabled, setIsClickDisabled] = useState<boolean>(true)
   const [matchedPairs, setMatchedPairs] = useState<number>(0)
   const [openCards, setOpenCards] = useState<number[]>([])
   const [timer, setTimer] = useState<number>(0)
   const [startTimer, setStartTimer] = useState<boolean>(false)
+  const [isEndModalOpen, setIsEndModalOpen] = useState<boolean>(false)
 
   const getCanvasContext = (canvasRef: RefObject<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
@@ -245,7 +246,7 @@ const Game: React.FC = () => {
     context.fillText('Начать новую игру 🔄', xCenter, yCenter)
   }
 
-  const initializeGame = () => {
+  const initializeGame = (cards: Card[]) => {
     const { canvas, context } = getCanvasContext(canvasRef)
     if (!canvas || !context) return
 
@@ -273,12 +274,11 @@ const Game: React.FC = () => {
     )
     context.fill()
 
-    // Рисуем карточки
+    // Рисуем карточки пока закрытые
     cards.forEach(card => {
-      animateSquare(card)
+      drawCard(card)
     })
 
-    setStartGame(true)
     drawTimer()
   }
 
@@ -368,29 +368,33 @@ const Game: React.FC = () => {
     }
   }
 
+  const flipCards = (cards: Card[]) => {
+    cards.forEach(card => animateSquare(card))
+  }
+
+  const handleStartGame = () => {
+    flipCards(cards)
+    setTimeout(() => {
+      flipCards(cards)
+      setIsClickDisabled(false)
+      setStartTimer(true)
+    }, 2000)
+  }
+
+  const handleRestartGame = () => {
+    setTimer(0)
+    flipCards(cards)
+    setCards(calculateCardPositions())
+    setIsEndModalOpen(false)
+    handleStartGame()
+  }
+
   useEffect(() => {
     if (canvasRef.current) {
       setCards(calculateCardPositions())
+      initializeGame(calculateCardPositions())
     }
   }, [])
-
-  // Запускаем игру и закрываем все карточи через 3 секунды после начала
-  useEffect(() => {
-    initializeGame()
-
-    setTimeout(() => {
-      const newCards = cards.map(card => {
-        animateSquare(card)
-        return {
-          ...card,
-          isOpen: false,
-        }
-      })
-      setCards(newCards)
-      setIsClickDisabled(false)
-      setStartTimer(true)
-    }, 3000)
-  }, [startGame])
 
   useEffect(() => {
     if (!startTimer) return
@@ -436,10 +440,10 @@ const Game: React.FC = () => {
   // Логика завершения игры победой и отображение кнопки перезапуска
   useEffect(() => {
     if (matchedPairs === totalGameCards / 2) {
-      setStartTimer(false)
-      alert(`🎉🎉🎉 ПОБЕДА 🎉🎉🎉 Время игры: ${minutes}:${seconds}`)
-      setTimer(0)
-      drawRestartButton()
+      setTimeout(() => {
+        setStartTimer(false)
+        setIsEndModalOpen(true)
+      }, 1000)
     }
   }, [matchedPairs])
 
@@ -451,10 +455,6 @@ const Game: React.FC = () => {
       <div className={style.handlers}>
         <ul className={style.options}>
           <li className={style.option}>
-            <span className={style.optionName}>Таймер</span>
-            <span className={style.optionValue}>01:00</span>
-          </li>
-          <li className={style.option}>
             <span className={style.optionName}>Отгадано</span>
             <span className={style.optionValue}>0 из 16</span>
           </li>
@@ -464,7 +464,9 @@ const Game: React.FC = () => {
           </li>
         </ul>
         <div className={style.buttons}>
-          <Button className={style.button}>Поехали!</Button>
+          <Button className={style.button} onClick={handleStartGame}>
+            Поехали!
+          </Button>
           <Button theme="dark" className={style.button} onClick={onMainClick}>
             На главную
           </Button>
@@ -478,6 +480,12 @@ const Game: React.FC = () => {
         <button className={style['resize-button']} onClick={fullscreen.exit}>
           Exit
         </button>
+      )}
+      {isEndModalOpen && (
+        <EndGameModal
+          handleRestart={handleRestartGame}
+          time={`${minutes}:${seconds}`}
+        />
       )}
     </main>
   )
