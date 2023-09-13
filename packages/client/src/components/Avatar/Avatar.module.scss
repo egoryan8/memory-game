@@ -1,0 +1,31 @@
+.avatar {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #3C3C3C center/cover;
+  object-fit: cover;
+}
+
+.customFileInput {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: inline-block;
+  width: 44px;
+  height: 44px;
+  background: url("@/assets/images/image-icon.svg") center/50% var(--color-background-secondary) no-repeat;
+  border-radius: 50%;
+  cursor: pointer;
+  margin: 0 auto;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #3a3f56;
+  }
+}

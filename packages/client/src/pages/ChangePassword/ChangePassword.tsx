@@ -10,6 +10,7 @@ const ChangePassword: React.FC = () => {
   const dispatch = useAppDispatch()
   const onSubmit: SubmitHandler<IPassword> = data =>
     dispatch(editPassword(data))
+
   const inputNames = ['oldPassword', 'newPassword']
 
   return (
