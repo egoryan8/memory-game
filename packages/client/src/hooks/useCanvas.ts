@@ -27,12 +27,13 @@ export const useCanvas = (
   canvasRef: RefObject<HTMLCanvasElement>,
   minutes: string,
   seconds: string,
-  setIsClickDisabled: (val: boolean) => void
+  setIsClickDisabled: (val: boolean) => void,
+  gameCols: number
 ) => {
   const getCardSize = (cols: number) => (cols === 4 ? 120 : 100)
   const getRowsSize = (cols: number) => (cols === 4 ? 4 : 6)
 
-  const cols = 4 // 4 | 6 | 10
+  const cols = gameCols // 4 | 6 | 10 - Берем значение из Redux
   const rows = getRowsSize(cols)
 
   const gameConfig = {

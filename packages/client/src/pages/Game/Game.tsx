@@ -1,5 +1,4 @@
-import React, { RefObject, useEffect, useRef, useState } from 'react'
-import timerIcon from '@/assets/images/timer.svg'
+import React, { useEffect, useRef, useState } from 'react'
 import compressScreen from '@/assets/images/fs-compress-icon.svg'
 import expandScreen from '@/assets/images/fs-expand-icon.svg'
 import Button from '@/components/Button/Button'
@@ -8,10 +7,14 @@ import { AppPath } from '@/types/AppPath'
 import useFullscreen from '@/hooks/useFullscreen'
 import style from './Game.module.scss'
 import { Card, useCanvas } from '@/hooks/useCanvas'
+import { RootState } from '@/store'
+import { useSelector } from 'react-redux'
 
 const Game: React.FC = () => {
   const navigate = useNavigate()
   const fullscreen = useFullscreen()
+
+  const gameCols = useSelector((state: RootState) => state.gameStore.gameCols)
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [cards, setCards] = useState<Card[]>([])
@@ -39,7 +42,7 @@ const Game: React.FC = () => {
     cols,
     getCanvasContext,
     gameConfig,
-  } = useCanvas(canvasRef, minutes, seconds, setIsClickDisabled)
+  } = useCanvas(canvasRef, minutes, seconds, setIsClickDisabled, gameCols)
 
   const onMainClick = () => navigate(AppPath.MAIN)
 
