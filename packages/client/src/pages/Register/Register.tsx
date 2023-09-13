@@ -1,5 +1,5 @@
+import FormContainer from '@/components/FormContainer/FormContainer'
 import React from 'react'
-import { Link } from 'react-router-dom'
 import Form from '@/components/Form/Form'
 import { INPUTS_DATA } from '@/components/Form/constants'
 import { SubmitHandler } from 'react-hook-form'
@@ -14,16 +14,16 @@ const Register: React.FC = () => {
   )
 
   return (
-    <div className="page-container">
-      <h1 className="text-align-center">РЕГИСТРАЦИЯ</h1>
-      <Form
-        inputTypes={INPUTS_DATA}
-        onSubmit={onSubmit}
-        inputNames={inputNames}
-        type="register"
-      />
-      <Link to="/login">Войти</Link>
-    </div>
+    <>
+      <FormContainer contentType={'register'}>
+        <Form
+          inputTypes={INPUTS_DATA}
+          onSubmit={onSubmit}
+          inputNames={inputNames}
+          type="register"
+        />
+      </FormContainer>
+    </>
   )
 }
 

@@ -9,16 +9,21 @@
   align-self: center;
   flex-grow: 1;
   width: 100%;
-  max-width: 620px;
-  padding: 55px 10px;
-  background: #FFFFFF;
+  max-width: 630px;
+  padding: 55px 15px;
   text-align: center;
 }
 
 .title {
   padding-bottom: 20px;
-  border-bottom: 1px solid #E5E5E5;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--color-border);
 }
+
+
+
+
+
 
 .newTheme {
   display: flex;
@@ -27,23 +32,7 @@
   gap: 15px;
   margin-bottom: 20px;
 
-  input {
-    min-height: auto;
-    max-width: 270px;
-    padding: 12px 25px;
-    border-radius: 12px;
-    border: 2px solid #E5E5E5;
-    background: #F7F7F7;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    outline: none;
 
-    &::placeholder {
-      color: #777
-    }
-  }
 
   button {
     min-height: auto;

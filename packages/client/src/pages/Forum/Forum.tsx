@@ -1,6 +1,7 @@
 import Button from '@/components/Button/Button'
+import Input from '@/components/Input/Input'
 import Navigation from '@/components/Navigation/Navigation'
-import Title from '@/components/Title/Title'
+import { forumThemesConfig } from '@/config/forumThemesConfig'
 import { declensionWords } from '@/utils/declensionWords'
 import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
@@ -9,36 +10,9 @@ import { Link } from 'react-router-dom'
 import s from './Forum.module.scss'
 import { ReactComponent as NoteIcon } from './note.svg'
 
-const themesList = [
-  {
-    id: '1',
-    theme: 'Requests',
-    numberOfResponses: 1600,
-    lastMessage: 'Read before you ask (again...)',
-  },
-  {
-    id: '2',
-    theme: 'Нашествие белок',
-    numberOfResponses: 1324,
-    lastMessage: 'Free Download Message Square',
-  },
-  {
-    id: '3',
-    theme: 'Поиск Жилья',
-    numberOfResponses: 1,
-    lastMessage: 'Promokod ererer4gbf',
-  },
-  {
-    id: '4',
-    theme: 'Нашествие белок',
-    numberOfResponses: 1324,
-    lastMessage: 'Free Download Message Square',
-  },
-]
-
 const Forum = () => {
   const [value, setValue] = useState('')
-  const [themes, setThemes] = useState(themesList)
+  const [themes, setThemes] = useState(forumThemesConfig)
 
   const handleClick = (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -47,6 +21,8 @@ const Forum = () => {
       ...themes,
       { id: uuidv4(), theme: value, numberOfResponses: 0, lastMessage: ' ' },
     ])
+
+    setValue('')
   }
 
   return (
@@ -54,17 +30,18 @@ const Forum = () => {
       <Navigation />
 
       <div className={s.forum}>
-        <Title tag={'h1'} className={s.title}>
-          Темы
-        </Title>
+        <h1 className={s.title}>Темы</h1>
+
         <form className={s.newTheme}>
-          <input
-            type="text"
-            placeholder={'Новая тема'}
-            value={value}
+          <Input
+            id={'new-theme'}
+            name={'new-theme'}
+            type={'text'}
             onChange={e => setValue(e.target.value)}
+            value={value}
+            placeholder={'Новая тема'}
           />
-          <Button className={s.btn} theme="blue" onClick={handleClick}>
+          <Button className={s.btn} onClick={handleClick}>
             Создать
           </Button>
         </form>

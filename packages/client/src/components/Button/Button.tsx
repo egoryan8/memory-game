@@ -7,19 +7,21 @@ interface ButtonProps
     ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   > {
-  theme?: 'blue' | 'dark'
+  theme?: 'orange' | 'dark'
   className?: string
   children: ReactNode
 }
 
 const Button = ({
-  theme = 'blue',
+  theme = undefined,
   className,
   children,
   ...props
 }: ButtonProps) => {
   return (
-    <button className={cn(s.button, {}, [className, s[theme]])} {...props}>
+    <button
+      className={cn(s.btn, { [s.btnOrange]: theme === 'orange' }, [className])}
+      {...props}>
       {children}
     </button>
   )
