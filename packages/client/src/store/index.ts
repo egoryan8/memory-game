@@ -6,7 +6,7 @@ import gameSliceReducer from '@/store/features/gameSlice' // Импортиру�
 const store = configureStore({
   reducer: {
     userStore: userSliceReducer,
-    gameStore: gameSliceReducer, // Добавьте редюсер для игры
+    gameStore: gameSliceReducer,
   },
   devTools: process.env.NODE_ENV === 'development',
 })
