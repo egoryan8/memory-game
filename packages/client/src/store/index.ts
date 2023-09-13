@@ -1,11 +1,12 @@
 import { ThunkAction } from 'redux-thunk'
 import { Action, configureStore } from '@reduxjs/toolkit'
-
 import userSliceReducer from '@/store/features/userSlice'
+import gameSliceReducer from '@/store/features/gameSlice' // Импортируйте ваш редюсер для игры
 
 const store = configureStore({
   reducer: {
     userStore: userSliceReducer,
+    gameStore: gameSliceReducer, // Добавьте редюсер для игры
   },
   devTools: process.env.NODE_ENV === 'development',
 })

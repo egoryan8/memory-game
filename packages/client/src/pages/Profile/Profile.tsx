@@ -27,7 +27,15 @@ const Profile: React.FC = () => {
   const handleLogout = () => dispatch(logout())
 
   const handleFormOnSubmit: SubmitHandler<IProfile> = data => {
-    dispatch(updateProfile(data))
+    const { login, email, ...rest } = data
+
+    const updatedData: IUser = {
+      ...rest,
+      ...(data.login !== user.data?.login && { login: data.login }),
+      ...(data.email !== user.data?.email && { email: data.email }),
+    }
+
+    dispatch(updateProfile(updatedData))
   }
 
   const inputNames = Object.keys(INPUTS_DATA).filter(

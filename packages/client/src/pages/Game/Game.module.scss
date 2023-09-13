@@ -19,7 +19,7 @@
   left: 0;
   right: 0;
   bottom: 85px;
-  background-color: var(--field-bg);
+  background-color: #1f252dbd;
   color: var(--light);
   display: flex;
   align-items: center;
@@ -27,6 +27,14 @@
   font-size: 64px;
   font-weight: 700;
   border-radius: 12px;
+  margin: 15% 25%;
+  flex-direction: column;
+  backdrop-filter: blur(3px);
+  border: 1px solid #1f252d;
+  box-shadow: 0 0 5px 0 #1f252d;
+  & p {
+    padding-top: 100px;
+  }
 }
 
 .handlers {
@@ -108,4 +116,11 @@
   & img {
     width: 100%;
   }
+}
+
+.hoorayIcon {
+  position: absolute;
+  top: -20%;
+  left: 35%;
+  width: 250px;
 }

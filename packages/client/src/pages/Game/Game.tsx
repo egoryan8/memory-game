@@ -7,10 +7,15 @@ import { AppPath } from '@/types/AppPath'
 import useFullscreen from '@/hooks/useFullscreen'
 import style from './Game.module.scss'
 import { Card, useCanvas } from '@/hooks/useCanvas'
+import { RootState } from '@/store'
+import { useSelector } from 'react-redux'
+import hooray from '@/assets/images/hooray.gif'
 
 const Game: React.FC = () => {
   const navigate = useNavigate()
   const fullscreen = useFullscreen()
+
+  const gameCols = useSelector((state: RootState) => state.gameStore.gameCols)
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [cards, setCards] = useState<Card[]>([])
@@ -38,7 +43,7 @@ const Game: React.FC = () => {
     cols,
     getCanvasContext,
     gameConfig,
-  } = useCanvas(canvasRef, minutes, seconds, setIsClickDisabled)
+  } = useCanvas(canvasRef, minutes, seconds, setIsClickDisabled, gameCols)
 
   const onMainClick = () => navigate(AppPath.MAIN)
 
@@ -196,7 +201,8 @@ const Game: React.FC = () => {
       <div className={style.field}>
         {isGameEnded && (
           <div className={style.endGame}>
-            <div>Победа 🎊</div>
+            <img className={style.hoorayIcon} alt="hooray" src={hooray} />
+            <p>ПОБЕДА</p>
           </div>
         )}
         <canvas ref={canvasRef} onClick={handleCanvasClick} />

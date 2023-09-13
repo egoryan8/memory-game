@@ -20,21 +20,24 @@
 
 .mainTitle {
   font-family: Roboto Slab, 'sans-serif';
-  font-size: 96px;
+  font-size: 46px;
   font-style: normal;
   font-weight: 900;
-  line-height: 110px; /* 114.583% */
-  letter-spacing: 7.68px;
+  //line-height: 45px; /* 114.583% */
   text-transform: uppercase;
 }
 
+.description {
+  font-size: 20px;
+}
+
 .subtitle {
-  max-width: 480px;
+  //max-width: 480px;
   font-family: PT Sans, 'sans-serif';
-  font-size: 32px;
+  font-size: 30px;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
+  margin-bottom: 30px;
 }
 
 .levelWrapper {

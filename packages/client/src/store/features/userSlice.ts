@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
 export interface IUserState {
   loading?: boolean
   data?: IUser | null
   error?: string
 }
+
 const initialState: IUserState = {
   loading: false,
   data: null,

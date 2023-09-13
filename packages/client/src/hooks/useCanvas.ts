@@ -35,7 +35,8 @@ export const useCanvas = (
   canvasRef: RefObject<HTMLCanvasElement>,
   minutes: string,
   seconds: string,
-  setIsClickDisabled: (val: boolean) => void
+  setIsClickDisabled: (val: boolean) => void,
+  gameCols: number
 ) => {
   const getCanvasContext = (canvasRef: RefObject<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
