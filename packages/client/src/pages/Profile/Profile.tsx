@@ -11,6 +11,7 @@ import updateProfile from '@/store/asyncActions/users/updateProfile'
 import { useAppSelector } from '@/hooks/useAppSelector'
 import { userSelector } from '@/store/features/userSlice'
 import s from './Profile.module.scss'
+import { Link } from 'react-router-dom'
 
 interface IProfile {
   first_name: string
@@ -57,9 +58,9 @@ const Profile: React.FC = () => {
           type="edit_profile"
           isLabel={true}
         />
-        {/*<Link className={s.changePassword} to='/change-password'>*/}
-        {/*  <Button type='button'>Сменить пароль</Button>*/}
-        {/*</Link>*/}
+        <Link className={s.changePassword} to="/change-password">
+          <Button type="button">Сменить пароль</Button>
+        </Link>
         <Button theme="orange" type="button" onClick={handleLogout}>
           выйти
         </Button>

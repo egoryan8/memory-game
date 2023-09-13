@@ -7,6 +7,7 @@
   --font: 'Nunito', sans-serif;
   --font-size-base: 16px;
   --font-size-medium: 24px;
+  --font-size-big: 40px;
 
   /* Sets of colors */
   --color-text: #3c3c3c;
@@ -27,6 +28,8 @@
   --button-color-background: #2D3142;
   --button-color-background-secondary: #F77F00;
   --button-color-background-disabled: #e5e5e5;
+
+  --game-widget: #556075;
 }
 
 * {
@@ -67,7 +70,7 @@ a {
   }
 }
 
-img, audio, canvas, iframe, svg, video {
+img, audio, iframe, svg, video {
   max-width: 100%;
   height: auto;
   vertical-align: top;
@@ -91,9 +94,17 @@ button {
 }
 
 h1 {
-  font-size: var(--font-size-medium);
+  font-size: var(--font-size-big);
   font-weight: 900;
   letter-spacing: 0.7px;
+  margin: 15px 0;
+  line-height: var(--font-size-big);
+}
+
+h2 {
+  font-size: var(--font-size-medium);
+  font-weight: 900;
+  margin: 15px 0;
 }
 
 .layout {

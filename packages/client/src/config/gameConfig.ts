@@ -31,21 +31,11 @@ const allIcons = [
   '🍩',
 ]
 
-const getCardSize = (cols: number) => (cols === 4 ? 120 : 100)
+const getCardSize = (cols: number) => (cols === 4 ? 120 : 85)
 const getRowsSize = (cols: number) => (cols === 4 ? 4 : 6)
 
 export const cols = 4 // 4 | 6 | 10
 export const rows = getRowsSize(cols)
-
-export const gameConfig = {
-  cols, // Количество колонок
-  rows, // Количество рядов
-  cardSize: getCardSize(cols), // Размер карточек
-  canvasMargin: 100,
-  cardMargin: 15, // Отступы между карточками
-  borderRadius: 10, // Скругление углов
-  timerSize: 50,
-}
 
 enum CardsCount {
   S = 16,
@@ -64,11 +54,34 @@ export const iconSize = {
   6: 50,
 }
 
-// Сумма всех карточек в игре
-export const totalGameCards: CardsCount = gameConfig.rows * gameConfig.cols
+export const getGameConfig = (gameCols: number) => {
+  const rows = getRowsSize(gameCols)
 
-// Получаем нужное колличество иконок в зависимости от gameConfig.cols * gameConfig.rows
-export const getIconsCount =
-  totalGameCards === 60
-    ? allIcons
-    : allIcons.slice(0, iconsCount[totalGameCards])
+  const computedGameConfig = {
+    cols: gameCols,
+    rows,
+    cardSize: getCardSize(gameCols),
+    canvasMargin: 100,
+    cardMargin: 15,
+    borderRadius: 10,
+    timerSize: 50,
+  }
+
+  // Сумма всех карточек в игре
+  const computedTotalGameCards = rows * gameCols
+
+  // Получаем нужное колличество иконок в зависимости от gameConfig.cols * gameConfig.rows
+  const computedIconsCount =
+    computedTotalGameCards === 60
+      ? allIcons
+      : allIcons.slice(0, iconsCount[computedTotalGameCards as CardsCount])
+
+  return {
+    cols: gameCols,
+    gameConfig: computedGameConfig,
+    getIconsCount: computedIconsCount,
+    iconSize,
+    rows,
+    totalGameCards: computedTotalGameCards,
+  }
+}

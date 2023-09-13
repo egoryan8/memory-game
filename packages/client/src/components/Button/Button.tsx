@@ -7,7 +7,7 @@ interface ButtonProps
     ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   > {
-  theme?: 'orange'
+  theme?: 'orange' | 'dark'
   className?: string
   children: ReactNode
 }
