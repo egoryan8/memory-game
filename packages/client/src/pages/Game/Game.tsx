@@ -1,5 +1,4 @@
-import React, { RefObject, useEffect, useRef, useState } from 'react'
-import timerIcon from '@/assets/images/timer.svg'
+import React, { useEffect, useRef, useState } from 'react'
 import compressScreen from '@/assets/images/fs-compress-icon.svg'
 import expandScreen from '@/assets/images/fs-expand-icon.svg'
 import Button from '@/components/Button/Button'
@@ -62,7 +61,7 @@ const Game: React.FC = () => {
         mouseY <= y + gameConfig.cardSize
       ) {
         if (card.isMatched || card.isOpen) return
-        setIsClickDisabled(true)
+        // setIsClickDisabled(true)
         setOpenCards(prevOpenCards => [...prevOpenCards, index])
         animateSquare(card)
       }

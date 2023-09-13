@@ -185,43 +185,37 @@ export const useCanvas = (
       const step = expand ? 10 : -10 // Увеличиваем или уменьшаем ширину карточки на каждом кадре
       const newWidth = card.width + step
 
-      requestAnimationFrame(() => {
-        context.clearRect(
-          card.position.x,
-          card.position.y,
-          gameConfig.cardSize,
-          gameConfig.cardSize
-        )
-        context.fillStyle = Colors.main
-        context.fillRect(
-          card.position.x,
-          card.position.y,
-          gameConfig.cardSize,
-          gameConfig.cardSize
-        )
+      context.clearRect(
+        card.position.x,
+        card.position.y,
+        gameConfig.cardSize,
+        gameConfig.cardSize
+      )
+      context.fillStyle = Colors.main
+      context.fillRect(
+        card.position.x,
+        card.position.y,
+        gameConfig.cardSize,
+        gameConfig.cardSize
+      )
 
-        card.width = newWidth
+      card.width = newWidth
+      drawCard(card)
 
-        drawCard(card)
-
-        if (newWidth >= gameConfig.cardSize) {
-          clearInterval(animationInterval)
-        }
-
+      if (newWidth >= gameConfig.cardSize || newWidth <= 0) {
         if (newWidth <= 0) {
-          clearInterval(animationInterval)
           card.isOpen = !card.isOpen
           animateSquare(card, true)
         }
+        // setIsClickDisabled(false)
+        return // Завершаем анимацию
+      }
 
-        // По завершении анимации включаем обратно возможность клика
-        if (newWidth >= gameConfig.cardSize || newWidth <= 0) {
-          clearInterval(animationInterval)
-          setIsClickDisabled(false)
-        }
-      })
+      requestAnimationFrame(animate)
     }
-    const animationInterval = setInterval(animate, 20)
+
+    // setIsClickDisabled(true) // Запрещаем клик в начале анимации
+    requestAnimationFrame(animate)
   }
 
   return {
