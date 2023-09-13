@@ -54,9 +54,11 @@ const Profile: React.FC = () => {
         <div className="avatar">
           <img
             className="avatar__profile mb-1"
-            src={`${BASE_URI}/resources${
-              user.data?.avatar ? user.data.avatar : DefaultAvatar
-            }`}
+            src={
+              user.data?.avatar
+                ? `${BASE_URI}/resources${user.data.avatar}`
+                : DefaultAvatar
+            }
             alt="User Avatar"
           />
           <input
