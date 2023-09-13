@@ -1,5 +1,13 @@
 import { RefObject } from 'react'
 import timerIcon from '../assets/images/timer.svg'
+import {
+  cols,
+  gameConfig,
+  getIconsCount,
+  iconSize,
+  rows,
+  totalGameCards,
+} from '@/config/gameConfig'
 
 interface Coordinates {
   x: number
@@ -29,77 +37,6 @@ export const useCanvas = (
   seconds: string,
   setIsClickDisabled: (val: boolean) => void
 ) => {
-  const getCardSize = (cols: number) => (cols === 4 ? 120 : 100)
-  const getRowsSize = (cols: number) => (cols === 4 ? 4 : 6)
-
-  const cols = 4 // 4 | 6 | 10
-  const rows = getRowsSize(cols)
-
-  const gameConfig = {
-    cols, // Количество колонок
-    rows, // Количество рядов
-    cardSize: getCardSize(cols), // Размер карточек
-    canvasMargin: 100,
-    cardMargin: 15, // Отступы между карточками
-    borderRadius: 10, // Скругление углов
-    timerSize: 50,
-  }
-
-  // Ключ - колличекство карточек
-  // Значение - колличество иконок
-  const iconsCount: { [key: number]: number } = {
-    16: 8,
-    36: 18,
-    60: 30,
-  }
-
-  const iconSize = {
-    4: 70,
-    6: 50,
-  }
-
-  // Сумма всех карточек в игре
-  const totalGameCards = gameConfig.rows * gameConfig.cols
-
-  const allIcons = [
-    '🍎',
-    '🍌',
-    '🍒',
-    '🍇',
-    '🍉',
-    '🍍',
-    '🍑',
-    '🍓',
-    '🥕',
-    '🥦',
-    '🥔',
-    '🍅',
-    '🌽',
-    '🥑',
-    '🍆',
-    '🍔',
-    '🍟',
-    '🍕',
-    '🌭',
-    '🍝',
-    '🍜',
-    '🍲',
-    '🍛',
-    '🍣',
-    '🍤',
-    '🍥',
-    '🍦',
-    '🍧',
-    '🍨',
-    '🍩',
-  ]
-
-  // Получаем нужное колличество иконок в зависимости от gameConfig.cols * gameConfig.rows
-  const getIconsCount =
-    totalGameCards === 60
-      ? allIcons
-      : allIcons.slice(0, iconsCount[totalGameCards])
-
   const getCanvasContext = (canvasRef: RefObject<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
     const context = canvas?.getContext('2d')
@@ -133,13 +70,16 @@ export const useCanvas = (
     )
 
     return gameIcons.map((icon, index) => {
-      const i = Math.floor(index / gameConfig.cols)
-      const j = index % gameConfig.cols
+      const leftBorder = Math.floor(index / gameConfig.cols)
+      const rightBorder = index % gameConfig.cols
 
       return {
         position: {
-          x: startX + j * (gameConfig.cardSize + gameConfig.cardMargin),
-          y: startY + i * (gameConfig.cardSize + gameConfig.cardMargin),
+          x:
+            startX +
+            rightBorder * (gameConfig.cardSize + gameConfig.cardMargin),
+          y:
+            startY + leftBorder * (gameConfig.cardSize + gameConfig.cardMargin),
         },
         width: gameConfig.cardSize,
         icon,
@@ -202,33 +142,6 @@ export const useCanvas = (
     context.fillText(`${minutes}:${seconds}`, canvas.width / 2, timerHeight * 2)
   }
 
-  // Вернуть если понадобиться кнопка на канвасе
-  // Кнопка перезапуска
-  // const drawRestartButton = () => {
-  //   const { canvas, context } = getCanvasContext(canvasRef)
-  //   if (!canvas || !context) return
-  //
-  //   const width = 200
-  //   const height = 50
-  //   const x = canvas.width / 2 - width / 2
-  //   const y = canvas.height - gameConfig.canvasMargin / 2
-  //   const xCenter = x + width / 2
-  //   const yCenter = y + height / 2
-  //
-  //   context.fillStyle = Colors.green
-  //
-  //   // Рисование кнопки
-  //   context.beginPath()
-  //   context.roundRect(x, y, width, height, gameConfig.borderRadius)
-  //   context.fill()
-  //
-  //   context.fillStyle = '#ffffff'
-  //   context.font = '15px Arial'
-  //   context.textBaseline = 'middle'
-  //   context.textAlign = 'center'
-  //   context.fillText('Начать новую игру 🔄', xCenter, yCenter)
-  // }
-
   const initializeGame = (cards: Card[]) => {
     const { canvas, context } = getCanvasContext(canvasRef)
     if (!canvas || !context) return
@@ -272,64 +185,44 @@ export const useCanvas = (
       const step = expand ? 10 : -10 // Увеличиваем или уменьшаем ширину карточки на каждом кадре
       const newWidth = card.width + step
 
-      context.clearRect(
-        card.position.x,
-        card.position.y,
-        gameConfig.cardSize,
-        gameConfig.cardSize
-      )
-      context.fillStyle = Colors.main
-      context.fillRect(
-        card.position.x,
-        card.position.y,
-        gameConfig.cardSize,
-        gameConfig.cardSize
-      )
+      requestAnimationFrame(() => {
+        context.clearRect(
+          card.position.x,
+          card.position.y,
+          gameConfig.cardSize,
+          gameConfig.cardSize
+        )
+        context.fillStyle = Colors.main
+        context.fillRect(
+          card.position.x,
+          card.position.y,
+          gameConfig.cardSize,
+          gameConfig.cardSize
+        )
 
-      card.width = newWidth
+        card.width = newWidth
 
-      drawCard(card)
+        drawCard(card)
 
-      if (newWidth >= gameConfig.cardSize) {
-        clearInterval(animationInterval)
-      }
+        if (newWidth >= gameConfig.cardSize) {
+          clearInterval(animationInterval)
+        }
 
-      if (newWidth <= 0) {
-        clearInterval(animationInterval)
-        card.isOpen = !card.isOpen
-        animateSquare(card, true)
-      }
+        if (newWidth <= 0) {
+          clearInterval(animationInterval)
+          card.isOpen = !card.isOpen
+          animateSquare(card, true)
+        }
 
-      // По завершении анимации включаем обратно возможность клика
-      if (newWidth >= gameConfig.cardSize || newWidth <= 0) {
-        clearInterval(animationInterval)
-        setIsClickDisabled(false)
-      }
+        // По завершении анимации включаем обратно возможность клика
+        if (newWidth >= gameConfig.cardSize || newWidth <= 0) {
+          clearInterval(animationInterval)
+          setIsClickDisabled(false)
+        }
+      })
     }
     const animationInterval = setInterval(animate, 20)
   }
-
-  // Вернуть если вернем кнопку перезапуска на канвасе
-  // Проверка на нажатие кнопки "Restart"
-  // const restartWidth = 200
-  // const restartHeight = 50
-  // const restartX = canvas.width / 2 - restartWidth / 2
-  // const restartY = canvas.height - gameConfig.canvasMargin / 2
-  //
-  // if (
-  //   mouseX >= restartX &&
-  //   mouseX <= restartX + restartWidth &&
-  //   mouseY >= restartY &&
-  //   mouseY <= restartY + restartHeight &&
-  //   matchedPairs === totalGameCards / 2
-  // ) {
-  //   console.log('RESTART')
-  //
-  //   // Сбрасываем все состояния к начальным значениям
-  //   setCards([])
-  //   setOpenCards([])
-  //   setMatchedPairs(0)
-  // }
 
   return {
     animateSquare,
