@@ -29,7 +29,15 @@ const Profile: React.FC = () => {
   const handleEditProfile = () => setEditProfile(!editProfile)
 
   const handleFormOnSubmit: SubmitHandler<IProfile> = data => {
-    dispatch(updateProfile(data))
+    const { login, email, ...rest } = data
+
+    const updatedData: IUser = {
+      ...rest,
+      ...(data.login !== user.data?.login && { login: data.login }),
+      ...(data.email !== user.data?.email && { email: data.email }),
+    }
+
+    dispatch(updateProfile(updatedData))
     handleEditProfile()
   }
 

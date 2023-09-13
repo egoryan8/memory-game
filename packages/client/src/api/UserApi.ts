@@ -3,9 +3,8 @@ import HTTPClient from '@/utils/HTTPClient'
 function UserApi() {
   const client = HTTPClient('/user')
 
-  const editProfile = async (data: IUser) => {
-    const { id, password, avatar, ...newData } = data
-    const response = await client.put('/profile', { body: newData as never })
+  const editProfile = async (data: Partial<IUser>) => {
+    const response = await client.put('/profile', { body: data as never })
     return response
   }
 
