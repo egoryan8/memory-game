@@ -61,7 +61,7 @@ const Game: React.FC = () => {
         mouseY <= y + gameConfig.cardSize
       ) {
         if (card.isMatched || card.isOpen) return
-        // setIsClickDisabled(true)
+        setIsClickDisabled(true)
         setOpenCards(prevOpenCards => [...prevOpenCards, index])
         animateSquare(card)
       }

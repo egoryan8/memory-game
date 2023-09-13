@@ -207,14 +207,13 @@ export const useCanvas = (
           card.isOpen = !card.isOpen
           animateSquare(card, true)
         }
-        // setIsClickDisabled(false)
+        setIsClickDisabled(false)
         return // Завершаем анимацию
       }
 
       requestAnimationFrame(animate)
     }
 
-    // setIsClickDisabled(true) // Запрещаем клик в начале анимации
     requestAnimationFrame(animate)
   }
 
