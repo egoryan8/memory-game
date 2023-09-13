@@ -1,294 +1,51 @@
 import React, { useEffect, useRef, useState } from 'react'
-import s from './Game.module.scss'
+import compressScreen from '@/assets/images/fs-compress-icon.svg'
+import expandScreen from '@/assets/images/fs-expand-icon.svg'
 import Button from '@/components/Button/Button'
 import { useNavigate } from 'react-router-dom'
 import { AppPath } from '@/types/AppPath'
 import useFullscreen from '@/hooks/useFullscreen'
+import style from './Game.module.scss'
+import { Card, useCanvas } from '@/hooks/useCanvas'
 
-interface Coordinates {
-  x: number
-  y: number
-}
-
-interface Card {
-  position: Coordinates
-  color: Colors
-  emoji: string
-  isOpen: boolean
-  isMatched: boolean
-}
-
-enum Colors {
-  bg = '#23272F',
-  closed = '#556075',
-  opened = '#35495E',
-  green = '#048100',
-  red = '#930000',
-}
-
-const config = {
-  gameSize: 4, // Колличество рядов и колонок
-  boxSize: 120, // Размер карточек
-  spacing: 15, // Отступы между карточками
-  borderRadius: 10, // Скругление углов
-}
-
-// Получаем нужное колличество эмодзи в зависимости от config.gameSize
-const emojiCounts: { [key: number]: number } = {
-  4: 8,
-  6: 18,
-}
-const allEmojis = [
-  '🍎',
-  '🍌',
-  '🍒',
-  '🍇',
-  '🍉',
-  '🍍',
-  '🍑',
-  '🍓',
-  '🥕',
-  '🥦',
-  '🥔',
-  '🍅',
-  '🌽',
-  '🥑',
-  '🍆',
-  '🍔',
-  '🍟',
-  '🍕',
-  '🌭',
-  '🍝',
-  '🍜',
-  '🍲',
-  '🍛',
-  '🍣',
-  '🍤',
-  '🍥',
-  '🍦',
-  '🍧',
-  '🍨',
-  '🍩',
-  '🍪',
-  '🍰',
-]
-const emojis =
-  config.gameSize === 8
-    ? allEmojis
-    : allEmojis.slice(0, emojiCounts[config.gameSize])
-
-// Отрисовка карточки с анимацией масштабирования
-const drawCard = (
-  ctx: CanvasRenderingContext2D,
-  { x, y }: Coordinates,
-  color: Colors,
-  scale = 1,
-  width = config.boxSize,
-  height = config.boxSize
-) => {
-  ctx.save()
-  ctx.translate(x + width / 2, y + height / 2)
-  ctx.scale(scale, 1) // Устанавливаем масштаб только по X
-
-  ctx.fillStyle = color
-  ctx.beginPath()
-  ctx.roundRect(-width / 2, -height / 2, width, height, config.borderRadius)
-  ctx.fill()
-
-  ctx.restore()
-}
-
-// Отображение эмодзи
-const drawEmoji = (
-  ctx: CanvasRenderingContext2D,
-  { x, y }: Coordinates,
-  emoji: string,
-  scaleX: number,
-  scaleY = 1
-) => {
-  const xCenter = 0
-  const yCenter = 0
-
-  ctx.save()
-  ctx.translate(x + config.boxSize / 2, y + config.boxSize / 2)
-  ctx.scale(scaleX, scaleY)
-
-  ctx.font = `70px Arial`
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'middle'
-  ctx.fillText(emoji, xCenter, yCenter)
-
-  ctx.restore()
-}
-
-// Кнопка перезапуска
-const drawRestartButton = (ctx: CanvasRenderingContext2D) => {
-  // Координаты временные. Кнопка потом переедет в сайдбар.
-  const x = 177.5
-  const y = 250
-  const width = 200
-  const height = 50
-  const xCenter = x + width / 2
-  const yCenter = y + height / 2
-
-  ctx.fillStyle = Colors.green
-
-  // Рисование кнопки и скругление углов
-  ctx.beginPath()
-  ctx.roundRect(x, y, width, height, config.borderRadius)
-  ctx.fill()
-
-  // Рисование текста
-  ctx.fillStyle = '#ffffff'
-  ctx.font = '15px Arial'
-
-  // Установка параметров для центрирования текста
-  ctx.textBaseline = 'middle'
-  ctx.textAlign = 'center'
-
-  ctx.fillText('Начать новую игру', xCenter, yCenter)
-}
-
-const Game = () => {
+const Game: React.FC = () => {
   const navigate = useNavigate()
   const fullscreen = useFullscreen()
-  const onMainClick = () => {
-    navigate(AppPath.MAIN)
-  }
+
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [cards, setCards] = useState<Card[]>([])
+  const [isClickDisabled, setIsClickDisabled] = useState<boolean>(true)
+  const [matchedPairs, setMatchedPairs] = useState<number>(0)
   const [openCards, setOpenCards] = useState<number[]>([])
-  const [matchedPairs, setMatchedPairs] = useState(0)
-  const [initialDisplay, setInitialDisplay] = useState(true)
-  let scale = 0.1
+  const [timer, setTimer] = useState<number>(0)
+  const [startTimer, setStartTimer] = useState<boolean>(false)
+  const [isGameEnded, setIsGameEnded] = useState<boolean>(false)
+  const [shouldRestartGame, setShouldRestartGame] = useState<boolean>(false)
+  const [count, setCount] = useState<number>(3)
+  const [startCount, setStartCount] = useState<boolean>(false)
+  const [attempts, setAttempts] = useState<number>(0)
+  const [misses, setMisses] = useState<number>(0)
+  const [points, setPoints] = useState<number>(0)
+  const minutes = `${Math.floor(timer / 60)}`.padStart(2, '0')
+  const seconds = `${timer % 60}`.padStart(2, '0')
+  const {
+    animateSquare,
+    calculateCardPositions,
+    totalGameCards,
+    initializeGame,
+    drawTimer,
+    rows,
+    cols,
+    getCanvasContext,
+    gameConfig,
+  } = useCanvas(canvasRef, minutes, seconds, setIsClickDisabled)
 
-
-  // Функция для запуска иницилизации игры
-  const initializeGame = () => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    // Получение и установка размеров canvas
-    const boardWidth =
-      (config.boxSize + config.spacing) * config.gameSize + config.spacing
-    const boardHeight =
-      (config.boxSize + config.spacing) * config.gameSize + config.spacing
-
-    canvas.width = boardWidth
-    canvas.height = boardHeight
-
-    canvas.style.background = Colors.bg
-
-    const allEmojis = [...emojis, ...emojis].sort(() => Math.random() - 0.5)
-    const cards: Card[] = []
-
-    allEmojis.forEach((emoji, index) => {
-      const row = Math.floor(index / config.gameSize)
-      const col = index % config.gameSize
-
-      const x = col * (config.boxSize + config.spacing) + config.spacing
-      const y = row * (config.boxSize + config.spacing) + config.spacing
-
-      const card = {
-        position: { x, y },
-        color: Colors.opened,
-        emoji: emoji,
-        isOpen: true,
-        isMatched: false,
-      }
-
-      drawCard(ctx, card.position, card.color)
-      drawEmoji(ctx, card.position, emoji, 1)
-
-      cards.push(card)
-    })
-
-    setCards(cards)
-  }
-
-  // Иницилизация игры
-  useEffect(() => {
-    initializeGame()
-  }, [])
-
-  // Логика закрытия всех карточек до начала игры
-  useEffect(() => {
-    if (initialDisplay) {
-      setTimeout(() => {
-        const canvas = canvasRef.current
-        const ctx = canvas?.getContext('2d')
-
-        if (ctx) {
-          cards.forEach(card => {
-            drawCard(ctx, card.position, Colors.closed)
-          })
-        }
-
-        setCards(prevCards => {
-          return prevCards.map(card => ({
-            ...card,
-            isOpen: false,
-          }))
-        })
-
-        setInitialDisplay(false) // Завершение начального отображения
-      }, 2000)
-    }
-  }, [initialDisplay, cards])
-
-  // Логика поиска пар
-  useEffect(() => {
-    if (openCards.length === 2) {
-      const [firstIndex, secondIndex] = openCards
-      const firstCard = cards[firstIndex]
-      const secondCard = cards[secondIndex]
-
-      if (firstCard.emoji === secondCard.emoji) {
-        setMatchedPairs(matchedPairs + 1)
-        setCards(prevCards => {
-          const newCards = [...prevCards]
-          newCards[firstIndex].isMatched = true
-          newCards[secondIndex].isMatched = true
-          return newCards
-        })
-      } else {
-        const canvas = canvasRef.current
-        const ctx = canvas?.getContext('2d')
-        if (ctx) {
-          drawCard(ctx, firstCard.position, Colors.closed)
-          drawCard(ctx, secondCard.position, Colors.closed)
-        }
-        setCards(prevCards => {
-          const newCards = [...prevCards]
-          newCards[firstIndex].isOpen = false
-          newCards[secondIndex].isOpen = false
-          return newCards
-        })
-      }
-      setOpenCards([])
-    }
-  }, [openCards])
-
-  // Логика завершения игры победой и отображение кнопки перезапуска
-  useEffect(() => {
-    if (matchedPairs === emojis.length) {
-      alert('ПОБЕДА!')
-      const canvas = canvasRef.current
-      const ctx = canvas?.getContext('2d')
-      if (ctx) {
-        drawRestartButton(ctx)
-      }
-    }
-  }, [matchedPairs])
+  const onMainClick = () => navigate(AppPath.MAIN)
 
   // Обработка клика по canvas
-  const handleMouseDown = (event: React.MouseEvent<HTMLCanvasElement>) => {
-    const canvas = canvasRef.current
-    const ctx = canvas?.getContext('2d')
-    if (!canvas || !ctx) return
+  const handleCanvasClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    const { canvas } = getCanvasContext(canvasRef)
+    if (!canvas || isClickDisabled) return
 
     const rect = canvas.getBoundingClientRect()
     const mouseX = event.clientX - rect.left
@@ -299,132 +56,198 @@ const Game = () => {
 
       if (
         mouseX >= x &&
-        mouseX <= x + config.boxSize &&
+        mouseX <= x + gameConfig.cardSize &&
         mouseY >= y &&
-        mouseY <= y + config.boxSize
+        mouseY <= y + gameConfig.cardSize
       ) {
         if (card.isMatched || card.isOpen) return
-
-        const animationFrame = () => {
-          drawCard(ctx, card.position, Colors.opened, scale)
-          drawEmoji(ctx, card.position, card.emoji, scale)
-
-          scale += 0.075
-
-          if (scale <= 1) {
-            requestAnimationFrame(animationFrame)
-          } else {
-            setOpenCards(prevOpenCards => [...prevOpenCards, index])
-            setCards(prevCards => {
-              const newCards = [...prevCards]
-              newCards[index].isOpen = true
-              return newCards
-            })
-          }
-        }
-        animationFrame()
+        setIsClickDisabled(true)
+        setOpenCards(prevOpenCards => [...prevOpenCards, index])
+        animateSquare(card)
       }
     })
+  }
 
-    // Проверка на нажатие кнопки "Restart"
-    // Координаты временные. Кнопка потом переедет в сайдбар.
-    const restartX = 177.5
-    const restartY = 250
-    const restartWidth = 200
-    const restartHeight = 50
+  const flipCards = (cards: Card[]) => {
+    cards.forEach(card => animateSquare(card))
+  }
 
-    if (
-      mouseX >= restartX &&
-      mouseX <= restartX + restartWidth &&
-      mouseY >= restartY &&
-      mouseY <= restartY + restartHeight &&
-      matchedPairs === emojis.length
-    ) {
-      // Сбрасываем все состояния к начальным значениям
-      setCards([])
+  const handleStartGame = () => {
+    flipCards(cards)
+    setStartCount(true)
+    setTimeout(() => {
+      flipCards(cards)
+      setIsClickDisabled(false)
+      setStartTimer(true)
+    }, 3000)
+  }
+
+  const handleRestartGame = () => {
+    setStartCount(true)
+    setCards(calculateCardPositions())
+    initializeGame(calculateCardPositions())
+    setTimer(0)
+    setMatchedPairs(0)
+    setMisses(0)
+    setAttempts(0)
+    setPoints(0)
+    setIsClickDisabled(true)
+    setIsGameEnded(false)
+    setShouldRestartGame(true)
+  }
+
+  useEffect(() => {
+    if (canvasRef.current) {
+      setCards(calculateCardPositions())
+      initializeGame(calculateCardPositions())
+    }
+  }, [])
+
+  // Отсчет до начала игры
+  useEffect(() => {
+    let timerId: NodeJS.Timeout | null = null // указываем тип явно
+
+    if (startCount && count > 0) {
+      timerId = setTimeout(() => {
+        setCount(prev => prev - 1)
+      }, 1000)
+    }
+
+    if (count === 0) {
+      setStartCount(false)
+      setCount(3)
+    }
+
+    // Функция очистки
+    return () => {
+      if (timerId) {
+        clearTimeout(timerId) // очищаем таймер при размонтировании или при изменении зависимостей
+      }
+    }
+  }, [startCount, count])
+
+  // Перезапуск игры
+  useEffect(() => {
+    if (shouldRestartGame) {
+      handleStartGame() // Вызываем handleStartGame только после того, как cards обновятся
+      setShouldRestartGame(false) // Сбрасываем флаг перезапуска игры
+    }
+  }, [cards])
+
+  // Запускаем таймер
+  useEffect(() => {
+    if (!startTimer) return
+
+    const timerId = setInterval(() => {
+      setTimer(prevTimer => prevTimer + 1)
+    }, 1000)
+
+    return () => clearInterval(timerId) // Очистка таймера при размонтировании компонента
+  }, [startTimer])
+
+  useEffect(() => {
+    drawTimer()
+  }, [timer])
+
+  // Логика поиска пар
+  useEffect(() => {
+    if (openCards.length === 2) {
+      const [firstIndex, secondIndex] = openCards
+      const firstCard = cards[firstIndex]
+      const secondCard = cards[secondIndex]
+
+      if (firstCard.icon === secondCard.icon) {
+        setMatchedPairs(matchedPairs + 1)
+        setPoints(point => point + 2)
+        setCards(prevCards => {
+          const newCards = [...prevCards]
+          newCards[firstIndex].isMatched = true
+          newCards[secondIndex].isMatched = true
+          return newCards
+        })
+      } else {
+        // Закрываем неправильных карточек
+        if (points !== 0) setPoints(point => point - 1)
+        setMisses(miss => miss + 1)
+        setTimeout(() => {
+          animateSquare(firstCard)
+          animateSquare(secondCard)
+        }, 1000)
+      }
       setOpenCards([])
-      setMatchedPairs(0)
-      setInitialDisplay(true)
-
-      // Заново инициализируем игру
-      initializeGame()
+      setAttempts(prev => prev + 1)
     }
-  }
+  }, [openCards])
 
-  // Отображение курсора над canvas
-  const handleMouseMove = (event: React.MouseEvent<HTMLCanvasElement>) => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-
-    const rect = canvas.getBoundingClientRect()
-    const mouseX = event.clientX - rect.left
-    const mouseY = event.clientY - rect.top
-
-    const isOverBox = cards.some(card => {
-      const { x, y } = card.position
-      return (
-        mouseX >= x &&
-        mouseX <= x + config.boxSize &&
-        mouseY >= y &&
-        mouseY <= y + config.boxSize &&
-        matchedPairs !== emojis.length &&
-        !initialDisplay
-      )
-    })
-
-    // Координаты временные. Кнопка потом переедет в сайдбар.
-    const restartButtonX = 177.5
-    const restartButtonY = 250
-    const restartButtonWidth = 200
-    const restartButtonHeight = 50
-
-    const isOverRestartButton =
-      mouseX >= restartButtonX &&
-      mouseX <= restartButtonX + restartButtonWidth &&
-      mouseY >= restartButtonY &&
-      mouseY <= restartButtonY + restartButtonHeight
-
-    if (isOverBox || (isOverRestartButton && matchedPairs === emojis.length)) {
-      canvas.style.cursor = 'pointer'
-    } else {
-      canvas.style.cursor = 'default'
+  // Логика завершения игры победой и отображение кнопки перезапуска
+  useEffect(() => {
+    if (matchedPairs === totalGameCards / 2) {
+      setCards([])
+      setStartTimer(false)
+      setIsGameEnded(true)
+      setTimeout(() => {
+        flipCards(cards)
+      }, 1000)
     }
-  }
+  }, [matchedPairs])
 
   return (
-    <main className={s.wrapper}>
-      <div className={s.field}>
-        <canvas ref={canvasRef} />
+    <main className={style.wrapper}>
+      <div className={style.field}>
+        {isGameEnded && (
+          <div className={style.endGame}>
+            <div>Победа 🎊</div>
+          </div>
+        )}
+        <canvas ref={canvasRef} onClick={handleCanvasClick} />
       </div>
-      <div className={s.handlers}>
-        <ul className={s.options}>
-          <li className={s.option}>
-            <span className={s.optionName}>Таймер</span>
-            <span className={s.optionValue}>01:00</span>
+      <div className={style.handlers}>
+        <ul className={style.options}>
+          <li className={style.option}>
+            <span className={style.optionName}>Отгадано</span>
+            <span className={style.optionValue}>
+              {matchedPairs * 2} из {cols * rows}
+            </span>
           </li>
-          <li className={s.option}>
-            <span className={s.optionName}>Отгадано</span>
-            <span className={s.optionValue}>0 из 16</span>
+          <li className={style.option}>
+            <span className={style.optionName}>Очки</span>
+            <span className={style.optionValue}>{Math.round(points)}</span>
           </li>
-          <li className={s.option}>
-            <span className={s.optionName}>Очки</span>
-            <span className={s.optionValue}>0</span>
+          <li className={style.option}>
+            <span className={style.optionName}>Попыток всего</span>
+            <span className={style.optionValue}>{attempts}</span>
+          </li>
+          <li className={style.option}>
+            <span className={style.optionName}>Ошибок</span>
+            <span className={style.optionValue}>{misses}</span>
           </li>
         </ul>
-        <div className={s.buttons}>
-          <Button className={s.button}>Поехали!</Button>
-          <Button theme="dark" className={s.button} onClick={onMainClick}>
-            На главную
+        <div className={style.buttons}>
+          {!startTimer && !isGameEnded && (
+            <Button
+              className={style.button}
+              onClick={handleStartGame}
+              disabled={startCount}>
+              {startCount ? count : 'Поехали!'}
+            </Button>
+          )}
+          {isGameEnded && (
+            <Button className={style.restartButton} onClick={handleRestartGame}>
+              Начать заново
+            </Button>
+          )}
+          <Button theme="dark" className={style.button} onClick={onMainClick}>
+            Выход
           </Button>
         </div>
       </div>
       {!fullscreen.isFullscreen ? (
-        <button className={s['resize-button']} onClick={fullscreen.enter}>
-          Open
+        <button className={style['resize-button']} onClick={fullscreen.enter}>
+          <img src={expandScreen} alt="expand-icon" />
         </button>
       ) : (
-        <button className={s['resize-button']} onClick={fullscreen.exit}>
-          Exit
+        <button className={style['resize-button']} onClick={fullscreen.exit}>
+          <img src={compressScreen} alt="compress-icon" />
         </button>
       )}
     </main>
