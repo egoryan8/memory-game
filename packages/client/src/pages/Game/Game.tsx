@@ -9,6 +9,7 @@ import style from './Game.module.scss'
 import { Card, useCanvas } from '@/hooks/useCanvas'
 import { RootState } from '@/store'
 import { useSelector } from 'react-redux'
+import hooray from '@/assets/images/hooray.gif'
 
 const Game: React.FC = () => {
   const navigate = useNavigate()
@@ -200,7 +201,8 @@ const Game: React.FC = () => {
       <div className={style.field}>
         {isGameEnded && (
           <div className={style.endGame}>
-            <div>Победа 🎊</div>
+            <img className={style.hoorayIcon} alt="hooray" src={hooray} />
+            <p>ПОБЕДА</p>
           </div>
         )}
         <canvas ref={canvasRef} onClick={handleCanvasClick} />
