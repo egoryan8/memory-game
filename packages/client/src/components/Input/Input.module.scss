@@ -39,6 +39,9 @@
 }
 
 .errorMessage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
   width: 24px;
   height: 24px;

@@ -51,7 +51,7 @@ const Forum = () => {
             const { id, theme, numberOfResponses, lastMessage } = item
 
             return (
-              <li key={id}>
+              <li className={s.card} key={id}>
                 <Link to={`/forum/thread/${id}`}>
                   <div className={s['topic-ico']}>
                     <NoteIcon />
