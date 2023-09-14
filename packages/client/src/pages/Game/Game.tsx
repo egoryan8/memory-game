@@ -7,10 +7,15 @@ import { AppPath } from '@/types/AppPath'
 import useFullscreen from '@/hooks/useFullscreen'
 import style from './Game.module.scss'
 import { Card, useCanvas } from '@/hooks/useCanvas'
+import { RootState } from '@/store'
+import { useSelector } from 'react-redux'
+import hooray from '@/assets/images/hooray.gif'
 
 const Game: React.FC = () => {
   const navigate = useNavigate()
   const fullscreen = useFullscreen()
+
+  const gameCols = useSelector((state: RootState) => state.gameStore.gameCols)
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [cards, setCards] = useState<Card[]>([])
@@ -40,9 +45,12 @@ const Game: React.FC = () => {
     gameConfig,
     secondAnimationId,
     firstAnimationId,
-  } = useCanvas(canvasRef, minutes, seconds, setIsClickDisabled)
+  } = useCanvas(canvasRef, minutes, seconds, setIsClickDisabled, gameCols)
 
-  const onMainClick = () => navigate(AppPath.MAIN)
+  const onMainClick = () => {
+    navigate(AppPath.MAIN)
+    fullscreen.isFullscreen && fullscreen.exit()
+  }
 
   // Обработка клика по canvas
   const handleCanvasClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
@@ -198,65 +206,74 @@ const Game: React.FC = () => {
   }, [matchedPairs])
 
   return (
-    <main className={style.wrapper}>
-      <div className={style.field}>
-        {isGameEnded && (
-          <div className={style.endGame}>
-            <div>Победа 🎊</div>
-          </div>
-        )}
-        <canvas ref={canvasRef} onClick={handleCanvasClick} />
-      </div>
-      <div className={style.handlers}>
-        <ul className={style.options}>
-          <li className={style.option}>
-            <span className={style.optionName}>Отгадано</span>
-            <span className={style.optionValue}>
-              {matchedPairs * 2} из {cols * rows}
-            </span>
-          </li>
-          <li className={style.option}>
-            <span className={style.optionName}>Очки</span>
-            <span className={style.optionValue}>{Math.round(points)}</span>
-          </li>
-          <li className={style.option}>
-            <span className={style.optionName}>Попыток всего</span>
-            <span className={style.optionValue}>{attempts}</span>
-          </li>
-          <li className={style.option}>
-            <span className={style.optionName}>Ошибок</span>
-            <span className={style.optionValue}>{misses}</span>
-          </li>
-        </ul>
-        <div className={style.buttons}>
-          {!startTimer && !isGameEnded && (
-            <Button
-              className={style.button}
-              onClick={handleStartGame}
-              disabled={startCount}>
-              {startCount ? count : 'Поехали!'}
-            </Button>
-          )}
-          {isGameEnded && (
-            <Button className={style.restartButton} onClick={handleRestartGame}>
-              Начать заново
-            </Button>
-          )}
-          <Button theme="dark" className={style.button} onClick={onMainClick}>
-            Выход
-          </Button>
+    <>
+      <main className={style.wrapper}>
+        <div className={style.field}>
+          <canvas ref={canvasRef} onClick={handleCanvasClick} />
         </div>
-      </div>
-      {!fullscreen.isFullscreen ? (
-        <button className={style['resize-button']} onClick={fullscreen.enter}>
-          <img src={expandScreen} alt="expand-icon" />
-        </button>
-      ) : (
-        <button className={style['resize-button']} onClick={fullscreen.exit}>
-          <img src={compressScreen} alt="compress-icon" />
-        </button>
+        <div className={style.handlers}>
+          {!fullscreen.isFullscreen ? (
+            <button
+              className={style['resize-button']}
+              onClick={fullscreen.enter}>
+              <img src={expandScreen} alt="expand-icon" />
+            </button>
+          ) : (
+            <button
+              className={style['resize-button']}
+              onClick={fullscreen.exit}>
+              <img src={compressScreen} alt="compress-icon" />
+            </button>
+          )}
+          <ul className={style.options}>
+            <li className={style.option}>
+              <span className={style.optionName}>Отгадано</span>
+              <span className={style.optionValue}>
+                {matchedPairs * 2} из {cols * rows}
+              </span>
+            </li>
+            <li className={style.option}>
+              <span className={style.optionName}>Очки</span>
+              <span className={style.optionValue}>{Math.round(points)}</span>
+            </li>
+            <li className={style.option}>
+              <span className={style.optionName}>Попыток</span>
+              <span className={style.optionValue}>{attempts}</span>
+            </li>
+            <li className={style.option}>
+              <span className={style.optionName}>Ошибок</span>
+              <span className={style.optionValue}>{misses}</span>
+            </li>
+          </ul>
+          <div className={style.buttons}>
+            {!startTimer && !isGameEnded && (
+              <Button
+                className={style.launchButton}
+                onClick={handleStartGame}
+                disabled={startCount}>
+                {startCount ? count : 'Поехали!'}
+              </Button>
+            )}
+            {isGameEnded && (
+              <Button
+                className={style.launchButton}
+                onClick={handleRestartGame}>
+                Повторить
+              </Button>
+            )}
+            <Button theme="dark" className={style.button} onClick={onMainClick}>
+              Выход
+            </Button>
+          </div>
+        </div>
+      </main>
+      {isGameEnded && (
+        <div className={style.endGame}>
+          <img className={style.hoorayIcon} alt="hooray" src={hooray} />
+          <p>ПОБЕДА</p>
+        </div>
       )}
-    </main>
+    </>
   )
 }
 

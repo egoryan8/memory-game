@@ -1,14 +1,7 @@
 import { RefObject } from 'react'
 import timerIcon from '../assets/images/timer.svg'
-import {
-  cols,
-  FPS,
-  gameConfig,
-  getIconsCount,
-  iconSize,
-  rows,
-  totalGameCards,
-} from '@/config/gameConfig'
+import { getGameConfig } from '@/config/gameConfig'
+
 
 interface Coordinates {
   x: number
@@ -25,10 +18,9 @@ export interface Card {
 
 // Цвета игры
 enum Colors {
-  main = '#1F252D',
+  main = '#2D3142',
   closed = '#556075',
   opened = '#35495E',
-  green = '#048100',
   red = '#930000',
 }
 
@@ -36,8 +28,12 @@ export const useCanvas = (
   canvasRef: RefObject<HTMLCanvasElement>,
   minutes: string,
   seconds: string,
-  setIsClickDisabled: (val: boolean) => void
+  setIsClickDisabled: (val: boolean) => void,
+  gameCols: number
 ) => {
+  const { cols, gameConfig, getIconsCount, iconSize, rows, totalGameCards, FPS } =
+    getGameConfig(gameCols)
+
   const getCanvasContext = (canvasRef: RefObject<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
     const context = canvas?.getContext('2d')
@@ -120,7 +116,7 @@ export const useCanvas = (
       context.translate(centerX, centerY)
       context.scale(scale, 1)
 
-      context.font = `${iconSize[rows]}px Arial`
+      context.font = `${iconSize[rows as keyof typeof iconSize]}px Arial`
       context.textAlign = 'center'
       context.textBaseline = 'middle'
       context.fillStyle = Colors.main
@@ -217,7 +213,6 @@ export const useCanvas = (
 
       setTimeout(() => {
         firstAnimationId = requestAnimationFrame(animate)
-        // requestAnimationFrame(animate)
       }, 1000 / FPS)
     }
 

@@ -1,0 +1,94 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.inputShell {
+  display: flex;
+  border: 2px solid var(--forms-color-border);
+  border-radius: 12px;
+  background: #F7F7F7;
+
+  input {
+    flex: 1;
+  }
+}
+
+.inputError {
+  border-color: var(--forms-color-border-error);
+}
+
+.input {
+  padding: 12px 12px 12px 15px;
+  border: none;
+  border-radius: 12px 0 0 12px;
+  background: inherit;
+  outline: none;
+
+  &::placeholder {
+    color: var(--color-text-gray)
+  }
+}
+
+.hint {
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.errorMessage {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--forms-color-border-error);
+  border-radius: 50%;
+  color: var(--forms-color-border-error);
+  cursor: pointer;
+  user-select: none;
+  transition: opacity .1s ease-out;
+
+  &:before {
+    font-size: 15px;
+    content: attr(data-clue);
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--color-text);
+    padding: 10px;
+    background-color: var(--color-background);
+    min-width: 180px;
+    border: 2px solid var(--forms-color-border);
+    border-radius: 12px;
+    visibility: hidden;
+    z-index: -1;
+    opacity: 0;
+    transition: inherit;
+  }
+
+  &:after {
+    position: absolute;
+    content: "";
+    background: #FFFFFF;
+    top: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    padding: 3px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #e5e5e5 transparent transparent #e5e5e5;
+    visibility: hidden;
+    z-index: -1;
+    opacity: 0;
+  }
+
+  &:hover {
+    &:before, &:after {
+      opacity: 1;
+      visibility: visible;
+      z-index: 10;
+    }
+  }
+}

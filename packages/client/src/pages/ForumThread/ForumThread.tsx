@@ -10,14 +10,10 @@ const ForumThread = () => {
       <Navigation />
 
       <div className={s['forum-thread']}>
-        <Title tag={'h1'} className={s.title}>
-          Requests
-        </Title>
+        <h1 className={s.title}> Requests </h1>
         <form className={s['send-message']}>
           <input type="text" placeholder={'Новая тема'} />
-          <Button className={s.btn} theme="blue">
-            отправить
-          </Button>
+          <Button className={s.btn}>отправить</Button>
         </form>
 
         <ul className={s.cards}>

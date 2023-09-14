@@ -1,0 +1,41 @@
+.player {
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.position {
+  margin-right: 5px;
+  width: 40px;
+}
+
+.avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  margin-right: 20px;
+  border-radius: 50%;
+  background-color: #CE82FF;
+  font-size: 22px;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--color-text-white);
+}
+
+.score {
+  color: var(--color-text-gray);
+  font-weight: 400;
+}
+
+.user {
+  border: 1px solid var(--color-border);
+}

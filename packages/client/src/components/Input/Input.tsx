@@ -1,19 +1,27 @@
-import React, { ChangeEvent } from 'react'
+import React, {
+  ChangeEvent,
+  DetailedHTMLProps,
+  InputHTMLAttributes,
+} from 'react'
+import s from './Input.module.scss'
 
-interface InputProps {
+interface InputProps
+  extends DetailedHTMLProps<
+    InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  > {
   id: string
   name: string
-  label: string
+  label?: string
   type: string
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
   onBlur?: () => void
   error?: any
   required?: boolean
   value?: string
-  disabled?: boolean
 }
 
-const Input: React.FC<InputProps> = ({
+const Input = ({
   id,
   name,
   label,
@@ -23,24 +31,31 @@ const Input: React.FC<InputProps> = ({
   error,
   required,
   value,
-  disabled,
-}) => {
+  ...props
+}: InputProps) => {
   return (
-    <div className={`form-group ${error && 'validation-error'}`}>
-      <label htmlFor={id}>
-        {label}
-        {required && '*'}
-      </label>
-      <input
-        type={type}
-        id={id}
-        name={name}
-        onChange={onChange}
-        value={value || ''}
-        onBlur={onBlur}
-        disabled={disabled}
-      />
-      {error && <span className="error-message">{error}</span>}
+    <div className={label && s.wrapper}>
+      {label && <label htmlFor={id}>{label}</label>}
+
+      <div className={`${s.inputShell} ${error && s.inputError}`}>
+        <input
+          className={s.input}
+          type={type}
+          id={id}
+          name={name}
+          onChange={onChange}
+          value={value || ''}
+          onBlur={onBlur}
+          {...props}
+        />
+        <div className={s.hint}>
+          {error && (
+            <span className={s.errorMessage} data-clue={error}>
+              i
+            </span>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

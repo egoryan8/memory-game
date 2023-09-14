@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import Avatar from '@/components/Avatar/Avatar'
+import Button from '@/components/Button/Button'
+import Navigation from '@/components/Navigation/Navigation'
+import logout from '@/store/asyncActions/auth/logout'
+import React from 'react'
 import Form from '@/components/Form/Form'
 import { INPUTS_DATA } from '@/components/Form/constants'
 import { SubmitHandler } from 'react-hook-form'
-import DefaultAvatar from '@/assets/images/default-avatar-icon.svg'
-import { BASE_URI } from '@/utils/HTTPClient'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
 import updateProfile from '@/store/asyncActions/users/updateProfile'
-import editAvatar from '@/store/asyncActions/users/editAvatar'
 import { useAppSelector } from '@/hooks/useAppSelector'
 import { userSelector } from '@/store/features/userSlice'
+import s from './Profile.module.scss'
+import { Link } from 'react-router-dom'
 
 interface IProfile {
   first_name: string
@@ -23,24 +25,18 @@ const Profile: React.FC = () => {
   const dispatch = useAppDispatch()
   const user = useAppSelector(userSelector)
 
-  const [editProfile, setEditProfile] = useState<boolean>(true)
-  const [avatar, setAvatar] = useState<File | undefined>()
-
-  const handleEditProfile = () => setEditProfile(!editProfile)
+  const handleLogout = () => dispatch(logout())
 
   const handleFormOnSubmit: SubmitHandler<IProfile> = data => {
-    dispatch(updateProfile(data))
-    handleEditProfile()
-  }
+    const { login, email, ...rest } = data
 
-  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAvatar(event.target.files?.[0])
-  }
+    const updatedData: IUser = {
+      ...rest,
+      ...(data.login !== user.data?.login && { login: data.login }),
+      ...(data.email !== user.data?.email && { email: data.email }),
+    }
 
-  const handleAvatarUpload = async () => {
-    if (!avatar) return
-    dispatch(editAvatar(avatar))
-    setAvatar(undefined)
+    dispatch(updateProfile(updatedData))
   }
 
   const inputNames = Object.keys(INPUTS_DATA).filter(
@@ -48,72 +44,27 @@ const Profile: React.FC = () => {
   )
 
   return (
-    <div className="page-container">
-      <div className="profile-header">
-        <h1 className="text-align-center">МОЙ ПРОФИЛЬ</h1>
-        <div className="avatar">
-          <img
-            className="avatar__profile mb-1"
-            src={`${BASE_URI}/resources${
-              user.data?.avatar ? user.data.avatar : DefaultAvatar
-            }`}
-            alt="User Avatar"
-          />
-          <input
-            id="file"
-            type="file"
-            name="file"
-            hidden
-            onChange={handleAvatarChange}
-          />
-          <label className="custom-file-input" htmlFor="file" />
-          {avatar && (
-            <>
-              <button
-                type="submit"
-                className="avatar__submit-button mb-0"
-                onClick={handleAvatarUpload}>
-                Сохранить
-              </button>
-              <div className="avatar__file-name text-align-center mb-2">
-                <span className="ellipsis-content">
-                  <b>Файл: </b>
-                  {avatar?.name}
-                </span>
-              </div>
-            </>
-          )}
+    <div className={s.page}>
+      <Navigation />
+      <div className={s.profile}>
+        <div className={s.avatar}>
+          <Avatar />
         </div>
+        <Form
+          inputTypes={INPUTS_DATA}
+          data={user.data}
+          onSubmit={handleFormOnSubmit}
+          inputNames={inputNames}
+          type="edit_profile"
+          isLabel={true}
+        />
+        <Link className={s.changePassword} to="/change-password">
+          <Button type="button">Сменить пароль</Button>
+        </Link>
+        <Button theme="orange" type="button" onClick={handleLogout}>
+          выйти
+        </Button>
       </div>
-      <Form
-        inputTypes={INPUTS_DATA}
-        data={user.data}
-        onSubmit={handleFormOnSubmit}
-        inputNames={inputNames}
-        type="edit_profile"
-        disabled={editProfile}
-      />
-      <div className="button-group">
-        {editProfile && (
-          <>
-            <button
-              className="button-group__edit-button"
-              onClick={handleEditProfile}>
-              Редактировать
-            </button>
-            <Link className="custom-link" to="/change-password">
-              Сменить пароль
-            </Link>
-          </>
-        )}
-      </div>
-      {editProfile ? (
-        <Link to="../">Назад</Link>
-      ) : (
-        <button className="link-button mb-0" onClick={handleEditProfile}>
-          Отменить
-        </button>
-      )}
     </div>
   )
 }

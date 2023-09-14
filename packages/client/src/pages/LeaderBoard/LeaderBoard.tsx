@@ -1,59 +1,29 @@
 import Navigation from '@/components/Navigation/Navigation'
-import * as React from 'react'
-import styles from './LeaderBoard.module.scss'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHeaderCell,
-  TableRow,
-} from '@/components/Table/Table'
-
-interface Leader {
-  position: number
-  player: string
-  score: number
-}
-
-const leaders: Leader[] = [
-  {
-    position: 1,
-    player: 'Игрок 1',
-    score: 1990,
-  },
-  {
-    position: 2,
-    player: 'Игрок 2',
-    score: 1990,
-  },
-  {
-    position: 3,
-    player: 'Игрок 3',
-    score: 1990,
-  },
-]
+import RatingCard from '@/components/RatingCard/RatingCard'
+import leadersConfig from '@/config/leadersConfig'
+import s from './LeaderBoard.module.scss'
 
 const LeaderBoard = () => {
-  const rows = leaders.map(leader => (
-    <TableRow>
-      <TableCell>{leader.position}</TableCell>
-      <TableCell>{leader.player}</TableCell>
-      <TableCell>{leader.score}</TableCell>
-    </TableRow>
-  ))
+  const bestPlayers = leadersConfig.map(leader => {
+    const { id, isUser, player, position, score } = leader
+
+    return (
+      <RatingCard
+        key={id}
+        isUser={isUser}
+        player={player}
+        position={position}
+        score={score}
+      />
+    )
+  })
 
   return (
-    <div className={styles.leaderboard}>
+    <div className={s.page}>
       <Navigation />
-      <div className={styles.leaderboard__table}>
-        <Table>
-          <TableRow>
-            <TableHeaderCell>Позиция</TableHeaderCell>
-            <TableHeaderCell>Игрок</TableHeaderCell>
-            <TableHeaderCell>Очки</TableHeaderCell>
-          </TableRow>
-          <TableBody>{rows}</TableBody>
-        </Table>
+      <div className={s.leaderboard}>
+        <h1 className={s.title}>Лучшие игроки</h1>
+        <ul>{bestPlayers}</ul>
       </div>
     </div>
   )
