@@ -43,6 +43,8 @@ const Game: React.FC = () => {
     cols,
     getCanvasContext,
     gameConfig,
+    secondAnimationId,
+    firstAnimationId,
   } = useCanvas(canvasRef, minutes, seconds, setIsClickDisabled, gameCols)
 
   const onMainClick = () => {
@@ -108,6 +110,10 @@ const Game: React.FC = () => {
     if (canvasRef.current) {
       setCards(calculateCardPositions())
       initializeGame(calculateCardPositions())
+    }
+    return () => {
+      if (firstAnimationId) cancelAnimationFrame(firstAnimationId)
+      if (secondAnimationId) cancelAnimationFrame(secondAnimationId)
     }
   }, [])
 

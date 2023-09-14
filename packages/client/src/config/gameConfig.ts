@@ -67,6 +67,8 @@ export const getGameConfig = (gameCols: number) => {
     timerSize: 50,
   }
 
+  const FPS = 60
+
   // Сумма всех карточек в игре
   const computedTotalGameCards = rows * gameCols
 
@@ -83,5 +85,6 @@ export const getGameConfig = (gameCols: number) => {
     iconSize,
     rows,
     totalGameCards: computedTotalGameCards,
+    FPS,
   }
 }

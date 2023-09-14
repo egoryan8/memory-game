@@ -2,6 +2,7 @@ import { RefObject } from 'react'
 import timerIcon from '../assets/images/timer.svg'
 import { getGameConfig } from '@/config/gameConfig'
 
+
 interface Coordinates {
   x: number
   y: number
@@ -30,7 +31,7 @@ export const useCanvas = (
   setIsClickDisabled: (val: boolean) => void,
   gameCols: number
 ) => {
-  const { cols, gameConfig, getIconsCount, iconSize, rows, totalGameCards } =
+  const { cols, gameConfig, getIconsCount, iconSize, rows, totalGameCards, FPS } =
     getGameConfig(gameCols)
 
   const getCanvasContext = (canvasRef: RefObject<HTMLCanvasElement>) => {
@@ -38,6 +39,9 @@ export const useCanvas = (
     const context = canvas?.getContext('2d')
     return { canvas, context }
   }
+
+  let firstAnimationId: number | null = null
+  let secondAnimationId: number | null = null
 
   const calculateCardPositions = (): Card[] => {
     const { canvas } = getCanvasContext(canvasRef)
@@ -207,10 +211,14 @@ export const useCanvas = (
         return // Завершаем анимацию
       }
 
-      requestAnimationFrame(animate)
+      setTimeout(() => {
+        firstAnimationId = requestAnimationFrame(animate)
+      }, 1000 / FPS)
     }
 
-    requestAnimationFrame(animate)
+    setTimeout(() => {
+      secondAnimationId = requestAnimationFrame(animate)
+    }, 1000 / FPS)
   }
 
   return {
@@ -223,5 +231,7 @@ export const useCanvas = (
     cols,
     gameConfig,
     getCanvasContext,
+    firstAnimationId,
+    secondAnimationId,
   }
 }
