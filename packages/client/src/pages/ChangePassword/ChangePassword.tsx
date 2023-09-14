@@ -1,3 +1,4 @@
+import Button from '@/components/Button/Button'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Form from '@/components/Form/Form'
@@ -5,6 +6,7 @@ import { INPUTS_DATA } from '@/components/Form/constants'
 import { SubmitHandler } from 'react-hook-form'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
 import editPassword from '@/store/asyncActions/users/editPassword'
+import s from './ChangePassword.module.scss'
 
 const ChangePassword: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -22,7 +24,9 @@ const ChangePassword: React.FC = () => {
         inputNames={inputNames}
         type="edit_profile"
       />
-      <Link to="/profile">Назад</Link>
+      <Link className={s.link} to="/profile">
+        <Button theme={'orange'}>Назад</Button>
+      </Link>
     </div>
   )
 }
