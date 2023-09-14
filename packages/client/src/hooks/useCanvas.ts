@@ -2,6 +2,7 @@ import { RefObject } from 'react'
 import timerIcon from '../assets/images/timer.svg'
 import {
   cols,
+  FPS,
   gameConfig,
   getIconsCount,
   iconSize,
@@ -42,6 +43,9 @@ export const useCanvas = (
     const context = canvas?.getContext('2d')
     return { canvas, context }
   }
+
+  let firstAnimationId: number | null = null
+  let secondAnimationId: number | null = null
 
   const calculateCardPositions = (): Card[] => {
     const { canvas } = getCanvasContext(canvasRef)
@@ -211,10 +215,15 @@ export const useCanvas = (
         return // Завершаем анимацию
       }
 
-      requestAnimationFrame(animate)
+      setTimeout(() => {
+        firstAnimationId = requestAnimationFrame(animate)
+        // requestAnimationFrame(animate)
+      }, 1000 / FPS)
     }
 
-    requestAnimationFrame(animate)
+    setTimeout(() => {
+      secondAnimationId = requestAnimationFrame(animate)
+    }, 1000 / FPS)
   }
 
   return {
@@ -227,5 +236,7 @@ export const useCanvas = (
     cols,
     gameConfig,
     getCanvasContext,
+    firstAnimationId,
+    secondAnimationId,
   }
 }

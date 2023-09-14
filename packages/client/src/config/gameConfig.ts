@@ -72,3 +72,5 @@ export const getIconsCount =
   totalGameCards === 60
     ? allIcons
     : allIcons.slice(0, iconsCount[totalGameCards])
+
+export const FPS = 60
