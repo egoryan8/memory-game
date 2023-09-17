@@ -2,7 +2,6 @@ import { RefObject } from 'react'
 import timerIcon from '../assets/images/timer.svg'
 import { getGameConfig } from '@/config/gameConfig'
 
-
 interface Coordinates {
   x: number
   y: number
@@ -11,16 +10,17 @@ interface Coordinates {
 export interface Card {
   position: Coordinates
   width: number
-  icon: string
+  value: string
+  icon: HTMLImageElement
   isOpen: boolean
   isMatched: boolean
 }
 
 // Цвета игры
 enum Colors {
-  main = '#2D3142',
+  main = '#23272F',
   closed = '#556075',
-  opened = '#35495E',
+  opened = '#16181B',
   red = '#930000',
 }
 
@@ -31,7 +31,7 @@ export const useCanvas = (
   setIsClickDisabled: (val: boolean) => void,
   gameCols: number
 ) => {
-  const { cols, gameConfig, getIconsCount, iconSize, rows, totalGameCards, FPS } =
+  const { cols, gameConfig, getIconsCount, rows, totalGameCards, FPS } =
     getGameConfig(gameCols)
 
   const getCanvasContext = (canvasRef: RefObject<HTMLCanvasElement>) => {
@@ -73,6 +73,12 @@ export const useCanvas = (
       const leftBorder = Math.floor(index / gameConfig.cols)
       const rightBorder = index % gameConfig.cols
 
+      const logo = new Image()
+      logo.src = `/logos/${icon}.svg`
+
+      //:TODO Попробовать прикрутить sprite. Нужно разобраться с размерами.
+      // logo.src = `/logos/sprite.svg#${icon}`
+
       return {
         position: {
           x:
@@ -82,7 +88,8 @@ export const useCanvas = (
             startY + leftBorder * (gameConfig.cardSize + gameConfig.cardMargin),
         },
         width: gameConfig.cardSize,
-        icon,
+        value: icon,
+        icon: logo,
         isOpen: false,
         isMatched: false,
       }
@@ -109,19 +116,34 @@ export const useCanvas = (
     )
     context.fill()
 
-    // Рисуем иконку если карточка открыта
+    // Рисуем иконку, если карточка открыта
     if (card.isOpen) {
       const scale = card.width / gameConfig.cardSize
       context.save()
       context.translate(centerX, centerY)
       context.scale(scale, 1)
 
-      context.font = `${iconSize[rows as keyof typeof iconSize]}px Arial`
-      context.textAlign = 'center'
-      context.textBaseline = 'middle'
-      context.fillStyle = Colors.main
-      context.fillText(card.icon, 0, 0)
+      let iconWidth = card.icon.width
+      let iconHeight = card.icon.height
 
+      // Если cols > 4, изменяем размер изображения
+      if (cols > 4) {
+        iconWidth = card.icon.width - 30
+        iconHeight = card.icon.height - 30
+      }
+
+      // Вычисляем смещение для центрирования иконки
+      const iconOffsetX = -iconWidth / 2
+      const iconOffsetY = -iconHeight / 2
+
+      // Риуем иконку
+      context.drawImage(
+        card.icon,
+        iconOffsetX,
+        iconOffsetY,
+        iconWidth,
+        iconHeight
+      )
       context.restore()
     }
   }

@@ -170,7 +170,7 @@ const Game: React.FC = () => {
       const firstCard = cards[firstIndex]
       const secondCard = cards[secondIndex]
 
-      if (firstCard.icon === secondCard.icon) {
+      if (firstCard.value === secondCard.value) {
         setMatchedPairs(matchedPairs + 1)
         setPoints(point => point + 2)
         setCards(prevCards => {

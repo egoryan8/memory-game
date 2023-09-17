@@ -1,34 +1,12 @@
 const allIcons = [
-  '🍎',
-  '🍌',
-  '🍒',
-  '🍇',
-  '🍉',
-  '🍍',
-  '🍑',
-  '🍓',
-  '🥕',
-  '🥦',
-  '🥔',
-  '🍅',
-  '🌽',
-  '🥑',
-  '🍆',
-  '🍔',
-  '🍟',
-  '🍕',
-  '🌭',
-  '🍝',
-  '🍜',
-  '🍲',
-  '🍛',
-  '🍣',
-  '🍤',
-  '🍥',
-  '🍦',
-  '🍧',
-  '🍨',
-  '🍩',
+  'angular',
+  'github',
+  'gitlab',
+  'js',
+  'kraken',
+  'lighthouse',
+  'react',
+  'sass',
 ]
 
 const getCardSize = (cols: number) => (cols === 4 ? 120 : 85)
@@ -49,11 +27,6 @@ const iconsCount: Record<CardsCount, number> = {
   [CardsCount.L]: 30,
 }
 
-export const iconSize = {
-  4: 70,
-  6: 50,
-}
-
 export const getGameConfig = (gameCols: number) => {
   const rows = getRowsSize(gameCols)
 
@@ -62,7 +35,7 @@ export const getGameConfig = (gameCols: number) => {
     rows,
     cardSize: getCardSize(gameCols),
     canvasMargin: 100,
-    cardMargin: 15,
+    cardMargin: 10,
     borderRadius: 10,
     timerSize: 50,
   }
@@ -82,7 +55,6 @@ export const getGameConfig = (gameCols: number) => {
     cols: gameCols,
     gameConfig: computedGameConfig,
     getIconsCount: computedIconsCount,
-    iconSize,
     rows,
     totalGameCards: computedTotalGameCards,
     FPS,
