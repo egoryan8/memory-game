@@ -36,7 +36,7 @@ const LogoFlipper: FC = () => {
       shakeTimer = setInterval(() => {
         setShake(true)
         setTimeout(() => setShake(false), 2500)
-      }, 10000)
+      }, 15000)
     }
 
     return () => clearInterval(shakeTimer)
