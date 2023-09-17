@@ -1,12 +1,23 @@
-const allIcons = [
-  'angular',
-  'github',
-  'gitlab',
-  'js',
-  'kraken',
-  'lighthouse',
-  'react',
-  'sass',
+import {
+  angular,
+  github,
+  gitlab,
+  js,
+  kraken,
+  lighthouse,
+  react,
+  sass,
+} from '@/assets/images/logos/index'
+
+export const allIcons = [
+  angular,
+  github,
+  gitlab,
+  js,
+  kraken,
+  lighthouse,
+  react,
+  sass,
 ]
 
 const getCardSize = (cols: number) => (cols === 4 ? 120 : 85)

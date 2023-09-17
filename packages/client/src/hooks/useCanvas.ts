@@ -10,7 +10,7 @@ interface Coordinates {
 export interface Card {
   position: Coordinates
   width: number
-  value: string
+  fileName: string
   icon: HTMLImageElement
   isOpen: boolean
   isMatched: boolean
@@ -72,9 +72,9 @@ export const useCanvas = (
     return gameIcons.map((icon, index) => {
       const leftBorder = Math.floor(index / gameConfig.cols)
       const rightBorder = index % gameConfig.cols
-
+      const fileName = icon.substring(icon.lastIndexOf('/') + 1)
       const logo = new Image()
-      logo.src = `/logos/${icon}.svg`
+      logo.src = icon
 
       //:TODO Попробовать прикрутить sprite. Нужно разобраться с размерами.
       // logo.src = `/logos/sprite.svg#${icon}`
@@ -88,7 +88,7 @@ export const useCanvas = (
             startY + leftBorder * (gameConfig.cardSize + gameConfig.cardMargin),
         },
         width: gameConfig.cardSize,
-        value: icon,
+        fileName: fileName,
         icon: logo,
         isOpen: false,
         isMatched: false,
