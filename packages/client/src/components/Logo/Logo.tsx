@@ -32,8 +32,8 @@ const LogoFlipper: FC = () => {
     if (!isHovered && !isFlipped) {
       shakeTimer = setInterval(() => {
         setShake(true)
-        setTimeout(() => setShake(false), 1000)
-      }, 3000)
+        setTimeout(() => setShake(false), 2500)
+      }, 10000)
     }
 
     return () => clearInterval(shakeTimer)
