@@ -44,12 +44,12 @@ const Main = () => {
       <main className={s.content}>
         <div className={s.textWrapper}>
           <h1 className={s.mainTitle}>
-            Игра Memory: <br /> Запомни свой стек 🧠
+            Игра Memory: <br /> Запомни свой стек
           </h1>
           <p className={s.subtitle}>
             Узнай, насколько хорошо ты можешь запоминать и сочетать пары!
           </p>
-          <h2>Правила игры:</h2>
+          <h2>Правила:</h2>
           <ol>
             <li className={s.li}>
               <strong>Цель игры:</strong> <br />

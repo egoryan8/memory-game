@@ -14,7 +14,10 @@ const LogoFlipper: FC = () => {
     setBackLogo(allIcons[randomIndex])
     setIsFlipped(true)
   }
-  const handleMouseEnter = () => setIsHovered(true)
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+    setShake(false)
+  }
   const handleMouseLeave = () => setIsHovered(false)
 
   useEffect(() => {
