@@ -1,34 +1,67 @@
-const allIcons = [
-  '🍎',
-  '🍌',
-  '🍒',
-  '🍇',
-  '🍉',
-  '🍍',
-  '🍑',
-  '🍓',
-  '🥕',
-  '🥦',
-  '🥔',
-  '🍅',
-  '🌽',
-  '🥑',
-  '🍆',
-  '🍔',
-  '🍟',
-  '🍕',
-  '🌭',
-  '🍝',
-  '🍜',
-  '🍲',
-  '🍛',
-  '🍣',
-  '🍤',
-  '🍥',
-  '🍦',
-  '🍧',
-  '🍨',
-  '🍩',
+import {
+  angular,
+  bootstrap,
+  css,
+  docker,
+  eslint,
+  figma,
+  git,
+  github,
+  gitlab,
+  go,
+  graphql,
+  html,
+  jest,
+  js,
+  laravel,
+  mui,
+  node,
+  npm,
+  nuxt,
+  python,
+  prettier,
+  pug,
+  react,
+  redux,
+  sass,
+  ts,
+  vite,
+  vue,
+  webpack,
+  yarn,
+} from '@/assets/images'
+
+export const allIcons = [
+  angular,
+  bootstrap,
+  css,
+  docker,
+  eslint,
+  figma,
+  git,
+  github,
+  gitlab,
+  go,
+  graphql,
+  html,
+  jest,
+  js,
+  laravel,
+  mui,
+  node,
+  npm,
+  nuxt,
+  python,
+  prettier,
+  pug,
+  react,
+  redux,
+  sass,
+  ts,
+  vite,
+  vue,
+  webpack,
+  yarn,
 ]
 
 const getCardSize = (cols: number) => (cols === 4 ? 120 : 85)
@@ -49,10 +82,7 @@ const iconsCount: Record<CardsCount, number> = {
   [CardsCount.L]: 30,
 }
 
-export const iconSize = {
-  4: 70,
-  6: 50,
-}
+export const randomSortedIcons = allIcons.sort(() => Math.random() - 0.5)
 
 export const getGameConfig = (gameCols: number) => {
   const rows = getRowsSize(gameCols)
@@ -62,7 +92,7 @@ export const getGameConfig = (gameCols: number) => {
     rows,
     cardSize: getCardSize(gameCols),
     canvasMargin: 100,
-    cardMargin: 15,
+    cardMargin: 10,
     borderRadius: 10,
     timerSize: 50,
   }
@@ -75,14 +105,16 @@ export const getGameConfig = (gameCols: number) => {
   // Получаем нужное колличество иконок в зависимости от gameConfig.cols * gameConfig.rows
   const computedIconsCount =
     computedTotalGameCards === 60
-      ? allIcons
-      : allIcons.slice(0, iconsCount[computedTotalGameCards as CardsCount])
+      ? randomSortedIcons
+      : randomSortedIcons.slice(
+          0,
+          iconsCount[computedTotalGameCards as CardsCount]
+        )
 
   return {
     cols: gameCols,
     gameConfig: computedGameConfig,
-    getIconsCount: computedIconsCount,
-    iconSize,
+    icons: computedIconsCount,
     rows,
     totalGameCards: computedTotalGameCards,
     FPS,

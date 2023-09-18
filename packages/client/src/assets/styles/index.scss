@@ -1,6 +1,7 @@
 @import 'mixins';
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&family=Overpass:wght@400;500;600;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,700;6..12,900&family=Nunito:wght@400;500;600;700;800;900&display=swap');
+@import '@/components/Logo/Logo';
 
 :root {
   /* Font */
@@ -15,7 +16,7 @@
   --color-text-white: #ffffff;
 
   --color-background: #ffffff;
-  --color-background-secondary: #2D3142;
+  --color-background-secondary: #23272F;
 
   --color-border: #e5e5e5;
 
@@ -25,7 +26,7 @@
   --forms-color-border-error: #F36C6C;
 
   /* Button */
-  --button-color-background: #2D3142;
+  --button-color-background: #23272F;
   --button-color-background-secondary: #F77F00;
   --button-color-background-disabled: #e5e5e5;
 
@@ -125,4 +126,9 @@ h2 {
 
 .spinner {
   font-size: 4rem;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
