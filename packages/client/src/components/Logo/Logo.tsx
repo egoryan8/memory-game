@@ -1,23 +1,22 @@
 import React, { useState, useEffect, FC } from 'react'
-import { allIcons } from '@/config/gameConfig'
-import defaultLogo from '@/assets/images/default-logo-white.svg'
+import { randomSortedIcons } from '@/config/gameConfig'
+import defaultLogo from '@/assets/images/other/default-logo-white.svg'
 
 const LogoFlipper: FC = () => {
   const [isFlipped, setIsFlipped] = useState<boolean>(false)
   const [backLogo, setBackLogo] = useState<string | null>(null)
   const [isHovered, setIsHovered] = useState<boolean>(false)
-  const [shake, setShake] = useState<boolean>(false)
 
   const handleClick = () => {
     if (isFlipped) return
-    const randomIndex: number = Math.floor(Math.random() * allIcons.length)
-    setBackLogo(allIcons[randomIndex])
+
+    const randomIndex: number = Math.floor(
+      Math.random() * randomSortedIcons.length
+    )
+    setBackLogo(randomSortedIcons[randomIndex])
     setIsFlipped(true)
   }
-  const handleMouseEnter = () => {
-    setIsHovered(true)
-    setShake(false)
-  }
+  const handleMouseEnter = () => setIsHovered(true)
   const handleMouseLeave = () => setIsHovered(false)
 
   useEffect(() => {
@@ -30,16 +29,13 @@ const LogoFlipper: FC = () => {
   }, [isFlipped])
 
   useEffect(() => {
-    let shakeTimer: NodeJS.Timeout
+    let showTimer: NodeJS.Timeout
 
     if (!isHovered && !isFlipped) {
-      shakeTimer = setInterval(() => {
-        setShake(true)
-        setTimeout(() => setShake(false), 2500)
-      }, 15000)
+      showTimer = setInterval(() => handleClick(), 15000)
     }
 
-    return () => clearInterval(shakeTimer)
+    return () => clearInterval(showTimer)
   }, [isHovered, isFlipped])
 
   return (
@@ -48,7 +44,7 @@ const LogoFlipper: FC = () => {
         className={`logo-flipper ${isFlipped && 'flipped'}`}
         onClick={handleClick}>
         <div
-          className={`logo-front ${shake && 'shake'}`}
+          className="logo-front"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}>
           <img src={defaultLogo} alt="Front logo" />

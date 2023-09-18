@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import compressScreen from '@/assets/images/fs-compress-icon.svg'
-import expandScreen from '@/assets/images/fs-expand-icon.svg'
+import compressScreen from '@/assets/images/other/fs-compress-icon.svg'
+import expandScreen from '@/assets/images/other/fs-expand-icon.svg'
 import Button from '@/components/Button/Button'
 import { useNavigate } from 'react-router-dom'
 import { AppPath } from '@/types/AppPath'
@@ -9,7 +9,7 @@ import style from './Game.module.scss'
 import { Card, useCanvas } from '@/hooks/useCanvas'
 import { RootState } from '@/store'
 import { useSelector } from 'react-redux'
-import hooray from '@/assets/images/hooray.gif'
+import hooray from '@/assets/images/other/hooray.gif'
 
 const Game: React.FC = () => {
   const navigate = useNavigate()

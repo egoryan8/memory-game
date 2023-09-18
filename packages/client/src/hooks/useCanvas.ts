@@ -1,5 +1,5 @@
 import { RefObject } from 'react'
-import timerIcon from '../assets/images/timer.svg'
+import timerIcon from '@/assets/images/other/timer.svg'
 import { getGameConfig } from '@/config/gameConfig'
 
 interface Coordinates {
@@ -31,7 +31,7 @@ export const useCanvas = (
   setIsClickDisabled: (val: boolean) => void,
   gameCols: number
 ) => {
-  const { cols, gameConfig, getIconsCount, rows, totalGameCards, FPS } =
+  const { cols, gameConfig, icons, rows, totalGameCards, FPS } =
     getGameConfig(gameCols)
 
   const getCanvasContext = (canvasRef: RefObject<HTMLCanvasElement>) => {
@@ -64,10 +64,10 @@ export const useCanvas = (
     const startX = gameConfig.canvasMargin
     const startY = gameConfig.canvasMargin
 
+    const iconSort = () => icons.sort(() => Math.random() - 0.5)
+
     // Создаем пары иконок и перемешиваем
-    const gameIcons = [...getIconsCount, ...getIconsCount].sort(
-      () => Math.random() - 0.5
-    )
+    const gameIcons = [...iconSort(), ...iconSort()]
 
     return gameIcons.map((icon, index) => {
       const leftBorder = Math.floor(index / gameConfig.cols)
@@ -75,9 +75,6 @@ export const useCanvas = (
       const fileName = icon.substring(icon.lastIndexOf('/') + 1)
       const logo = new Image()
       logo.src = icon
-
-      //:TODO Попробовать прикрутить sprite. Нужно разобраться с размерами.
-      // logo.src = `/logos/sprite.svg#${icon}`
 
       return {
         position: {
@@ -128,8 +125,11 @@ export const useCanvas = (
 
       // Если cols > 4, изменяем размер изображения
       if (cols > 4) {
-        iconWidth = card.icon.width - 30
-        iconHeight = card.icon.height - 30
+        iconWidth = iconWidth / 2
+        iconHeight = iconHeight / 2
+      } else {
+        iconWidth = iconWidth / 1.5
+        iconHeight = iconHeight / 1.5
       }
 
       // Вычисляем смещение для центрирования иконки
