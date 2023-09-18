@@ -12,6 +12,10 @@
 
 ❌ В противном случае они закрываются.
 
+## Интерфейс
+
+![screenshot](memory-game-interface.png)
+
 ### Видео-презентация игры: https://youtu.be/PV0hkJsjuDU
 
 ### Как запускать?
