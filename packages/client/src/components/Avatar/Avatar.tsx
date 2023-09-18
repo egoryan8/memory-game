@@ -3,7 +3,7 @@ import { useAppSelector } from '@/hooks/useAppSelector'
 import editAvatar from '@/store/asyncActions/users/editAvatar'
 import { userSelector } from '@/store/features/userSlice'
 import { BASE_URI } from '@/utils/HTTPClient'
-import DefaultAvatar from '@assets/images/other/default-avatar-icon.svg'
+import DefaultAvatar from '@/assets/images/other/default-avatar-icon.svg'
 import React from 'react'
 import s from './Avatar.module.scss'
 
