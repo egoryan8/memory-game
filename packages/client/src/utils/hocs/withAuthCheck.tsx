@@ -27,7 +27,7 @@ function withAuthCheck(user: IUserState) {
             key={path}
             path={path}
             element={
-              user && !loading ? element : <Navigate to={AppPath.LOGIN} />
+              data && !loading ? element : <Navigate to={AppPath.LOGIN} />
             }
           />
         )
