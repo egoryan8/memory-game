@@ -11,6 +11,7 @@ type HTTPMethod = (
   options?: Partial<RequestInit>
 ) => Promise<Response>
 
+export type HTTPClientT = ReturnType<typeof HTTPClient>
 function HTTPClient(baseUri = '') {
   const get: HTTPMethod = (url, options = {}) => {
     return fetchWithRetry(url, { ...options, method: METHOD.GET })

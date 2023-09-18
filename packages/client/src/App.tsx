@@ -40,7 +40,6 @@ function App() {
       const url = `http://localhost:${__SERVER_PORT__}`
       const response = await fetch(url)
       const data = await response.json()
-      console.log(data)
     }
 
     fetchServerData()
@@ -50,7 +49,9 @@ function App() {
     <BrowserRouter>
       <Suspense fallback={<Spinner />}>
         <Routes>
-          <Route element={withAuthCheck(Layout)}>{routeComponents}</Route>
+          <Route element={user.loading ? <Spinner /> : <Layout />}>
+            {withAuthCheck(user)}
+          </Route>
         </Routes>
       </Suspense>
     </BrowserRouter>
