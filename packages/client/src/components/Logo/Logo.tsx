@@ -11,9 +11,9 @@ const LogoFlipper: FC = () => {
     if (isFlipped) return
 
     const randomIndex: number = Math.floor(
-      Math.random() * randomSortedIcons.length
+      Math.random() * randomSortedIcons().length
     )
-    setBackLogo(randomSortedIcons[randomIndex])
+    setBackLogo(randomSortedIcons()[randomIndex])
     setIsFlipped(true)
   }
   const handleMouseEnter = () => setIsHovered(true)

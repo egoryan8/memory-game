@@ -82,7 +82,7 @@ const iconsCount: Record<CardsCount, number> = {
   [CardsCount.L]: 30,
 }
 
-export const randomSortedIcons = allIcons.sort(() => Math.random() - 0.5)
+export const randomSortedIcons = () => allIcons.sort(() => Math.random() - 0.5)
 
 export const getGameConfig = (gameCols: number) => {
   const rows = getRowsSize(gameCols)
@@ -105,8 +105,8 @@ export const getGameConfig = (gameCols: number) => {
   // Получаем нужное колличество иконок в зависимости от gameConfig.cols * gameConfig.rows
   const computedIconsCount =
     computedTotalGameCards === 60
-      ? randomSortedIcons
-      : randomSortedIcons.slice(
+      ? randomSortedIcons()
+      : randomSortedIcons().slice(
           0,
           iconsCount[computedTotalGameCards as CardsCount]
         )
