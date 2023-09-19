@@ -6,12 +6,12 @@
 :root {
   /* Font */
   --font: 'Nunito', sans-serif;
-  --font-size-base: 16px;
+  --font-size-base: 17px;
   --font-size-medium: 24px;
   --font-size-big: 40px;
 
   /* Sets of colors */
-  --color-text: #3c3c3c;
+  --color-text: #23272F;
   --color-text-gray: #777777;
   --color-text-white: #ffffff;
 
@@ -112,9 +112,12 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--light);
+  background: var(--light);
   width: 100vw;
   height: 100vh;
+  background-image: repeating-conic-gradient(#ffffff 0% 25%, rgb(222 222 222 / 15%) 0% 50%);
+  background-position: 0 0, 25px 25px;
+  background-size: 50px 50px;
 }
 
 .ellipsis-content {

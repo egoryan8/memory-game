@@ -42,74 +42,75 @@ const Main = () => {
     <div className={s.wrapper}>
       <Navigation />
       <main className={s.content}>
-        <div className={s.textWrapper}>
-          <h1 className={s.mainTitle}>
-            Игра Memory: <br /> Запомни свой стек
-          </h1>
-          <p className={s.subtitle}>
-            Узнай, насколько хорошо ты можешь запоминать и сочетать пары!
-          </p>
-          <h2>Правила:</h2>
-          <ol>
-            <li className={s.li}>
-              <strong>Цель игры:</strong> <br />
-              🔎 Найти все одинаковые пары карточек на игровом поле.
-            </li>
-            <li className={s.li}>
-              <strong>Ход игры:</strong> <br />
-              🟦 Игрок открывает две карточки за один ход.
-              <br />✅ Если карточки имеют одинаковое изображение, они остаются
-              открытыми.
-              <br />❌ В противном случае они закрываются.
-            </li>
-          </ol>
-        </div>
-        <div className={s.levelWrapper}>
-          <h2 className={s.pickLevelTitle}>Выбрать сложность:</h2>
-          <ul className={s.levels}>
-            <li className={s.level}>
-              <input
-                id="easy"
-                name="levels"
-                type="radio"
-                className={s.radio}
-                onChange={handleRadioChange}
-              />
-              <label htmlFor="easy" className={s.levelText}>
-                4X4
-              </label>
-            </li>
-            <li className={s.level}>
-              <input
-                id="hard"
-                name="levels"
-                type="radio"
-                className={s.radio}
-                onChange={handleRadioChange}
-              />
-              <label htmlFor="hard" className={s.levelText}>
-                6X6
-              </label>
-            </li>
-            <li className={s.level}>
-              <input
-                id="veryHard"
-                name="levels"
-                type="radio"
-                className={s.radio}
-                onChange={handleRadioChange}
-              />
-              <label htmlFor="veryHard" className={s.levelText}>
-                6X10
-              </label>
-            </li>
-          </ul>
-          <Button
-            onClick={handlePlayClick}
-            className={s.button}
-            disabled={!selectedValue}>
-            Играть
-          </Button>
+        <div className={s.contentWrapper}>
+          <div className={s.textWrapper}>
+            <h1 className={s.mainTitle}>
+              ИГРА MEMORY: <br /> Запомни свой стек
+            </h1>
+            <p className={s.subtitle}>
+              Узнай, насколько хорошо ты можешь запоминать и сочетать пары!
+            </p>
+            <ol>
+              <li className={s.li}>
+                <h2>Цель игры:</h2>
+                🔎 Найти все одинаковые пары карточек на игровом поле.
+              </li>
+              <li className={s.li}>
+                <h2>Ход игры:</h2>
+                🟦 Игрок открывает две карточки за один ход.
+                <br />✅ Если карточки имеют одинаковое изображение, они
+                остаются открытыми.
+                <br />❌ В противном случае они закрываются.
+              </li>
+            </ol>
+          </div>
+          <div className={s.levelWrapper}>
+            <h2 className={s.pickLevelTitle}>Выбрать сложность:</h2>
+            <ul className={s.levels}>
+              <li className={s.level}>
+                <input
+                  id="easy"
+                  name="levels"
+                  type="radio"
+                  className={s.radio}
+                  onChange={handleRadioChange}
+                />
+                <label htmlFor="easy" className={s.levelText}>
+                  4X4
+                </label>
+              </li>
+              <li className={s.level}>
+                <input
+                  id="hard"
+                  name="levels"
+                  type="radio"
+                  className={s.radio}
+                  onChange={handleRadioChange}
+                />
+                <label htmlFor="hard" className={s.levelText}>
+                  6X6
+                </label>
+              </li>
+              <li className={s.level}>
+                <input
+                  id="veryHard"
+                  name="levels"
+                  type="radio"
+                  className={s.radio}
+                  onChange={handleRadioChange}
+                />
+                <label htmlFor="veryHard" className={s.levelText}>
+                  6X10
+                </label>
+              </li>
+            </ul>
+            <Button
+              onClick={handlePlayClick}
+              className={s.button}
+              disabled={!selectedValue}>
+              Играть
+            </Button>
+          </div>
         </div>
       </main>
     </div>

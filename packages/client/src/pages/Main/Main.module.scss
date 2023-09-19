@@ -8,13 +8,21 @@
 .content {
   flex-grow: 1;
   display: flex;
-  gap: 145px;
   justify-content: center;
   align-items: center;
 }
 
+.contentWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1024px;
+  gap: 125px;
+  padding: 22px 15px;
+}
+
 .textWrapper {
-  max-width: 50%;
+  max-width: 65%;
 }
 
 .li {
@@ -25,7 +33,8 @@
   margin: 24px 0;
   list-style: none;
   display: flex;
-  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
 }
 
 .level {
@@ -38,6 +47,17 @@
 }
 
 .radio {
-  width: 20px;
-  height: 20px;
+  display: none;
+}
+
+.levelText {
+  background: var(--button-color-background);
+  color: var(--color-text-white);
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.radio:checked + .levelText {
+  background: var(--button-color-background-secondary);
 }

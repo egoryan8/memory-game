@@ -11,7 +11,8 @@ import updateProfile from '@/store/asyncActions/users/updateProfile'
 import { useAppSelector } from '@/hooks/useAppSelector'
 import { userSelector } from '@/store/features/userSlice'
 import s from './Profile.module.scss'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { AppPath } from '@/types/AppPath'
 
 interface IProfile {
   first_name: string
@@ -24,8 +25,10 @@ interface IProfile {
 const Profile: React.FC = () => {
   const dispatch = useAppDispatch()
   const user = useAppSelector(userSelector)
+  const navigate = useNavigate()
 
   const handleLogout = () => dispatch(logout())
+  const handleChangePassword = () => navigate(AppPath.CHANGE_PASS)
 
   const handleFormOnSubmit: SubmitHandler<IProfile> = data => {
     const { login, email, ...rest } = data
@@ -58,12 +61,14 @@ const Profile: React.FC = () => {
           type="edit_profile"
           isLabel={true}
         />
-        <Link className={s.changePassword} to="/change-password">
-          <Button type="button">Сменить пароль</Button>
-        </Link>
-        <Button theme="orange" type="button" onClick={handleLogout}>
-          выйти
-        </Button>
+        <div className={s.buttons}>
+          <Button type="button" onClick={handleChangePassword}>
+            Сменить пароль
+          </Button>
+          <Button className={s.exitButton} type="button" onClick={handleLogout}>
+            Выйти
+          </Button>
+        </div>
       </div>
     </div>
   )

@@ -67,7 +67,9 @@ export const useCanvas = (
     const iconSort = () => icons.sort(() => Math.random() - 0.5)
 
     // Создаем пары иконок и перемешиваем
-    const gameIcons = [...iconSort(), ...iconSort()]
+    const gameIcons = [...iconSort(), ...iconSort()].sort(
+      () => Math.random() - 0.5
+    )
 
     return gameIcons.map((icon, index) => {
       const leftBorder = Math.floor(index / gameConfig.cols)

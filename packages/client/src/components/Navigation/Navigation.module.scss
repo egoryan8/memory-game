@@ -31,7 +31,7 @@
       text-transform: uppercase;
 
       &.active {
-        color: #CE82FF;
+        color: var(--button-color-background-secondary);
       }
     }
   }
