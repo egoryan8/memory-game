@@ -1,20 +1,38 @@
-import React, { FC } from 'react'
-import { useAuth } from '@/hooks/useAuth'
-import { Spinner } from '@/components/Spinner/Spinner'
-interface RequiredAuthProps {
-  children: JSX.Element
-}
-function withAuthCheck(Component: React.ComponentType) {
-  const RequiredAuth: FC<RequiredAuthProps> = ({ children }) => {
-    const { loading } = useAuth()
-    return loading ? <Spinner /> : children
-  }
+import React from 'react'
 
-  return (
-    <RequiredAuth>
-      <Component />
-    </RequiredAuth>
-  )
+import { Navigate, Route } from 'react-router-dom'
+import { routes } from '@/config/routerConfig'
+import { AppPath } from '@/types/AppPath'
+import { IUserState } from '@/store/features/userSlice'
+
+function withAuthCheck(user: IUserState) {
+  const { data, loading } = user
+  return routes.map(({ path, element }) => {
+    switch (path) {
+      case AppPath.LOGIN:
+      case AppPath.REGISTER: {
+        return (
+          <Route
+            key={path}
+            path={path}
+            element={
+              !data && !loading ? element : <Navigate to={AppPath.MAIN} />
+            }
+          />
+        )
+      }
+      default:
+        return (
+          <Route
+            key={path}
+            path={path}
+            element={
+              data && !loading ? element : <Navigate to={AppPath.LOGIN} />
+            }
+          />
+        )
+    }
+  })
 }
 
 export default withAuthCheck

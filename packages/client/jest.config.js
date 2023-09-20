@@ -10,9 +10,9 @@ export default {
   testEnvironment: 'jsdom',
   testMatch: ['<rootDir>/src/**/*.test.{ts,tsx}'],
   transform: {
-   '\\.(svg)$': '<rootDir>/src/test/__mocks__/svgTransform.cjs',
+   '\\.(svg|gif)$': '<rootDir>/src/test/__mocks__/svgTransform.cjs',
   },
   globals: {
-    __SERVER_PORT__: process.env.SERVER_PORT,
+    __SERVER_PORT__: process.env.SERVER_PORT ?? 35345,
   },
 }
