@@ -1,3 +1,4 @@
+import useNotification from '@/hooks/useNotification'
 import s from './Main.module.scss'
 import Navigation from '@/components/Navigation/Navigation'
 import Button from '@/components/Button/Button'
@@ -5,10 +6,11 @@ import { useNavigate } from 'react-router-dom'
 import { AppPath } from '@/types/AppPath'
 import { setGameCols } from '@/store/features/gameSlice'
 import { useDispatch } from 'react-redux'
-import { ChangeEventHandler, useState } from 'react'
+import { ChangeEventHandler, useEffect, useState } from 'react'
 
 const Main = () => {
   const navigate = useNavigate()
+  const notification = useNotification()
   const dispatch = useDispatch()
 
   const [selectedValue, setSelectedValue] = useState<null | string>(null)
@@ -63,6 +65,14 @@ const Main = () => {
                 <br />❌ В противном случае они закрываются.
               </li>
             </ol>
+            {!notification.isGranted && (
+              <div className={s.notification}>
+                <p>Для получения уведомлений, нажмите на колокольчик </p>
+                <button onClick={() => notification.notifyUser('', '')}>
+                  🔔
+                </button>
+              </div>
+            )}
           </div>
           <div className={s.levelWrapper}>
             <h2 className={s.pickLevelTitle}>Выбрать сложность:</h2>

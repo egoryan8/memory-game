@@ -61,3 +61,12 @@
 .radio:checked + .levelText {
   background: var(--button-color-background-secondary);
 }
+
+.notification {
+  display: flex;
+
+  button {
+    margin-left: 5px;
+    background-color: transparent;
+  }
+}
