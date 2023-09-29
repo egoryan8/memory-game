@@ -17,7 +17,7 @@
   &:disabled {
     cursor: auto;
     background-color: var(--button-color-background-disabled);
-    color: #afafaf;
+    color: var(--disabled);
   }
 }
 

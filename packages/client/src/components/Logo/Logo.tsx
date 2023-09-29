@@ -1,6 +1,7 @@
 import React, { useState, useEffect, FC } from 'react'
 import { randomSortedIcons } from '@/config/gameConfig'
 import defaultLogo from '@/assets/images/other/default-logo-white.svg'
+import style from './Logo.module.scss'
 
 const LogoFlipper: FC = () => {
   const [isFlipped, setIsFlipped] = useState<boolean>(false)
@@ -39,17 +40,17 @@ const LogoFlipper: FC = () => {
   }, [isHovered, isFlipped])
 
   return (
-    <div className="logo-container">
+    <div className={style.logoContainer}>
       <div
-        className={`logo-flipper ${isFlipped && 'flipped'}`}
+        className={`${style.logoFlipper} ${isFlipped && style.flipped}`}
         onClick={handleClick}>
         <div
-          className="logo-front"
+          className={style.logoFront}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}>
           <img src={defaultLogo} alt="Front logo" />
         </div>
-        <div className="logo-back">
+        <div className={style.logoBack}>
           {backLogo && <img src={backLogo} alt="Back logo" />}
         </div>
       </div>

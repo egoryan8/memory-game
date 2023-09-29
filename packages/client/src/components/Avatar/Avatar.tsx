@@ -22,9 +22,11 @@ const Avatar = () => {
     <div className={s.avatar}>
       <img
         className={s.img}
-        src={`${BASE_URI}/resources${
-          user.data?.avatar ? user.data.avatar : DefaultAvatar
-        }`}
+        src={
+          user.data?.avatar
+            ? `${BASE_URI}/resources${user.data.avatar}`
+            : DefaultAvatar
+        }
         alt="User Avatar"
       />
       <input
