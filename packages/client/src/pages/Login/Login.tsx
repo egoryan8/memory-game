@@ -1,5 +1,5 @@
-import FormContainer from '@/components/FormContainer/FormContainer'
 import React, { useEffect } from 'react'
+import FormContainer from '@/components/FormContainer/FormContainer'
 import Form from '@/components/Form/Form'
 import { INPUTS_DATA } from '@/components/Form/constants'
 import { SubmitHandler } from 'react-hook-form'
@@ -9,6 +9,7 @@ import Button from '@/components/Button/Button'
 import { BASE_URI } from '@/utils/HTTPClient'
 import YandexIcon from '@/assets/images/other/ya.svg'
 import style from './Login.module.scss'
+import { AppPath } from '@/types/AppPath'
 
 const Login: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -16,6 +17,7 @@ const Login: React.FC = () => {
   const redirectUri = 'http://localhost:3000'
   const urlParams = new URLSearchParams(location.search)
   const authCode = urlParams.get('code')
+  const navigateTo = (path: string) => (window.location.href = path)
 
   const onSubmit: SubmitHandler<ILogin> = data => dispatch(login(data))
 
@@ -52,12 +54,12 @@ const Login: React.FC = () => {
   const handleYandexLogin = async () => {
     const serviceId = await fetchServiceId()
     const yandexUrl = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${serviceId}&redirect_uri=${redirectUri}`
-    return (window.location.href = yandexUrl)
+    return navigateTo(yandexUrl)
   }
 
   useEffect(() => {
     if (!authCode) return
-    sendAuthCode(authCode, redirectUri)
+    sendAuthCode(authCode, redirectUri).then(() => navigateTo(AppPath.MAIN))
   }, [authCode])
 
   return (
