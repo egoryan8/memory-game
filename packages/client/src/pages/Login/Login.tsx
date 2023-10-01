@@ -14,10 +14,13 @@ import { AppPath } from '@/types/AppPath'
 const Login: React.FC = () => {
   const dispatch = useAppDispatch()
   const inputNames = ['login', 'password']
-  const redirectUri = 'http://localhost:3000'
   const urlParams = new URLSearchParams(location.search)
   const authCode = urlParams.get('code')
   const navigateTo = (path: string) => (window.location.href = path)
+  const isClient = typeof window !== 'undefined'
+  const redirectUri = isClient
+    ? window.location.origin
+    : 'https://наш-будущий-домен'
 
   const onSubmit: SubmitHandler<ILogin> = data => dispatch(login(data))
 
