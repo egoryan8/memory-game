@@ -1,4 +1,3 @@
-import { mockUseNotification } from '@/test/__mocks__/mockUseNotification'
 import { act, render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import store from '@/store'
@@ -10,13 +9,11 @@ import { mockUseCanvas } from '@/test/__mocks__/mockUseCanvas'
 import { mockFetch } from '@/test/__mocks__/mockFetch'
 
 jest.mock('@/hooks/useCanvas')
-jest.mock('@/hooks/useNotification')
 
 describe('Main test', () => {
   beforeEach(() => {
     mockUseCanvas()
     mockFetch()
-    mockUseNotification()
   })
 
   afterEach(() => (global.fetch = fetch))

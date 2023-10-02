@@ -4,11 +4,19 @@ import App from './App'
 import '@/assets/styles/index.scss'
 import store from '@/store'
 import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+const root = document.getElementById('root') as HTMLElement
+const renderFunction =
+  root && root.hasChildNodes() ? ReactDOM.hydrateRoot : ReactDOM.createRoot
+
+renderFunction(
+  root,
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <BrowserRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </BrowserRouter>
   </React.StrictMode>
 )

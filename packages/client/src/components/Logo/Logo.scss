@@ -1,6 +1,6 @@
 @import '../../assets/styles/mixins';
 
-.logoContainer {
+.logo-container {
   @include flex-position-center;
   width: 175px;
   height: 45px;
@@ -12,7 +12,7 @@
   line-height: var(--font-size-medium);
 }
 
-.logoFlipper {
+.logo-flipper {
   width: 100%;
   height: 100%;
   position: relative;
@@ -21,8 +21,8 @@
   transform-origin: 50% 50%;
 }
 
-.logoFront,
-.logoBack {
+.logo-front,
+.logo-back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -32,12 +32,12 @@
   }
 }
 
-.logoFront {
+.logo-front {
   @include flex-position-center;
   cursor: pointer;
 }
 
-.logoBack {
+.logo-back {
   @include flex-position-center;
   transform: rotateY(180deg);
 }
