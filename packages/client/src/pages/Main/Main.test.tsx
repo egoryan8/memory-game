@@ -7,6 +7,7 @@ import { mockUser } from '@/test/__mocks__/mockUser'
 import React from 'react'
 import { mockUseCanvas } from '@/test/__mocks__/mockUseCanvas'
 import { mockFetch } from '@/test/__mocks__/mockFetch'
+import { BrowserRouter } from 'react-router-dom'
 
 jest.mock('@/hooks/useCanvas')
 
@@ -26,7 +27,9 @@ describe('Main test', () => {
     act(() => {
       render(
         <Provider store={store}>
-          <App />
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
         </Provider>
       )
       store.dispatch(setUserData(mockUser as IUser))

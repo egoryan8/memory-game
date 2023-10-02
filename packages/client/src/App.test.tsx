@@ -7,6 +7,7 @@ import { setUserData } from '@/store/features/userSlice'
 import { mockUser } from '@/test/__mocks__/mockUser'
 import { act } from 'react-dom/test-utils'
 import { mockFetch } from '@/test/__mocks__/mockFetch'
+import { BrowserRouter } from 'react-router-dom'
 
 describe('App test', () => {
   beforeEach(() => mockFetch())
@@ -15,7 +16,9 @@ describe('App test', () => {
   it('Initial test', async () => {
     render(
       <Provider store={store}>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </Provider>
     )
     expect(screen.findByText('ВОЙТИ')).toBeDefined()
@@ -25,7 +28,9 @@ describe('App test', () => {
     act(() => {
       render(
         <Provider store={store}>
-          <App />
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
         </Provider>
       )
       store.dispatch(setUserData(mockUser as IUser))
