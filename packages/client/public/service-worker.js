@@ -49,6 +49,8 @@ this.addEventListener('fetch', (event) => {
 
 const updateCache = (req, res) => {
   caches.open(CACHE_NAME).then((cache) => {
-    cache.put(req, res)
+    if(req.url.startsWith('http')){
+      cache.put(req, res)
+    }
   })
 }

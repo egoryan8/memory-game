@@ -43,7 +43,7 @@ const Main = () => {
   return (
     <div className={s.wrapper}>
       <Navigation />
-      <main className={s.content}>
+      <div className={s.content}>
         <div className={s.contentWrapper}>
           <div className={s.textWrapper}>
             <h1 className={s.mainTitle}>
@@ -122,7 +122,7 @@ const Main = () => {
             </Button>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   )
 }
