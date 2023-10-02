@@ -87,10 +87,12 @@ export const randomSortedIcons = () => allIcons.sort(() => Math.random() - 0.5)
 export const getGameConfig = (gameCols: number) => {
   const rows = getRowsSize(gameCols)
 
+  const cardSize = getCardSize(gameCols)
+
   const computedGameConfig = {
     cols: gameCols,
     rows,
-    cardSize: getCardSize(gameCols),
+    cardSize: cardSize,
     canvasMargin: 100,
     cardMargin: 10,
     borderRadius: 10,

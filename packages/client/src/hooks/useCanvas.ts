@@ -1,4 +1,4 @@
-import { RefObject } from 'react'
+import { RefObject, useState } from 'react'
 import timerIcon from '@/assets/images/other/timer.svg'
 import { getGameConfig } from '@/config/gameConfig'
 
@@ -28,11 +28,12 @@ export const useCanvas = (
   canvasRef: RefObject<HTMLCanvasElement>,
   minutes: string,
   seconds: string,
-  setIsClickDisabled: (val: boolean) => void,
   gameCols: number
 ) => {
   const { cols, gameConfig, icons, rows, totalGameCards, FPS } =
     getGameConfig(gameCols)
+
+  const [isAnimating, setIsAnimating] = useState(false) // Проверка на начало и конец анимации
 
   const getCanvasContext = (canvasRef: RefObject<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
@@ -205,6 +206,8 @@ export const useCanvas = (
     const { context } = getCanvasContext(canvasRef)
     if (!context) return
 
+    setIsAnimating(true) // Начало анимации
+
     const animate = () => {
       const step = expand ? 10 : -10 // Увеличиваем или уменьшаем ширину карточки на каждом кадре
       const newWidth = card.width + step
@@ -231,8 +234,10 @@ export const useCanvas = (
           card.isOpen = !card.isOpen
           animateSquare(card, true)
         }
-        setIsClickDisabled(false)
-        return // Завершаем анимацию
+
+        if (newWidth >= gameConfig.cardSize) setIsAnimating(false) // Конец анимации
+
+        return
       }
 
       setTimeout(() => {
@@ -257,5 +262,6 @@ export const useCanvas = (
     getCanvasContext,
     firstAnimationId,
     secondAnimationId,
+    isAnimating,
   }
 }
