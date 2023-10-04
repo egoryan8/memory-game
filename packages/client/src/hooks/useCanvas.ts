@@ -239,6 +239,7 @@ export const useCanvas = (
 
         if (newWidth === gameConfig.cardSize && card.isClicked)
           card.isClicked = false
+
         return // Завершаем анимацию
       }
 
