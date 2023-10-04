@@ -14,6 +14,7 @@ export interface Card {
   icon: HTMLImageElement
   isOpen: boolean
   isMatched: boolean
+  isClicked: boolean
 }
 
 // Цвета игры
@@ -28,10 +29,9 @@ export const useCanvas = (
   canvasRef: RefObject<HTMLCanvasElement>,
   minutes: string,
   seconds: string,
-  setIsClickDisabled: (val: boolean) => void,
   gameCols: number
 ) => {
-  const { cols, gameConfig, icons, rows, totalGameCards, FPS } =
+  const { cols, gameConfig, icons, rows, totalGameCards, FPS, cardSize } =
     getGameConfig(gameCols)
 
   const getCanvasContext = (canvasRef: RefObject<HTMLCanvasElement>) => {
@@ -91,6 +91,7 @@ export const useCanvas = (
         icon: logo,
         isOpen: false,
         isMatched: false,
+        isClicked: false,
       }
     })
   }
@@ -201,12 +202,16 @@ export const useCanvas = (
     drawTimer()
   }
 
+  const animationStep = cardSize === 120 ? 20 : 10
+
   const animateSquare = (card: Card, expand = false) => {
     const { context } = getCanvasContext(canvasRef)
     if (!context) return
 
+    card.isClicked = true
+
     const animate = () => {
-      const step = expand ? 10 : -10 // Увеличиваем или уменьшаем ширину карточки на каждом кадре
+      const step = expand ? animationStep : -animationStep // Увеличиваем или уменьшаем ширину карточки на каждом кадре
       const newWidth = card.width + step
 
       context.clearRect(
@@ -231,7 +236,9 @@ export const useCanvas = (
           card.isOpen = !card.isOpen
           animateSquare(card, true)
         }
-        setIsClickDisabled(false)
+
+        if (newWidth === gameConfig.cardSize && card.isClicked)
+          card.isClicked = false
         return // Завершаем анимацию
       }
 
