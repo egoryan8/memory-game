@@ -202,7 +202,7 @@ export const useCanvas = (
     drawTimer()
   }
 
-  const animationStep = cardSize === 120 ? 20 : 10
+  const animationStep = cardSize === 120 ? 15 : 10
 
   const animateSquare = (card: Card, expand = false) => {
     const { context } = getCanvasContext(canvasRef)
