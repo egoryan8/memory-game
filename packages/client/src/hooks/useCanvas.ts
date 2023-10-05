@@ -31,7 +31,7 @@ export const useCanvas = (
   seconds: string,
   gameCols: number
 ) => {
-  const { cols, gameConfig, icons, rows, totalGameCards, FPS, cardSize } =
+  const { cols, gameConfig, icons, rows, totalGameCards, FPS } =
     getGameConfig(gameCols)
 
   const getCanvasContext = (canvasRef: RefObject<HTMLCanvasElement>) => {
@@ -107,7 +107,7 @@ export const useCanvas = (
     context.beginPath()
     context.roundRect(
       centerX - halfWidth,
-      centerY - gameConfig.cardSize / 2 + 5,
+      centerY - gameConfig.cardSize / 2 + gameConfig.cardMargin / 2.5,
       card.width,
       gameConfig.cardSize,
       gameConfig.borderRadius
@@ -136,14 +136,18 @@ export const useCanvas = (
       let iconWidth = card.icon.width
       let iconHeight = card.icon.height
 
-      // Если cols > 4, изменяем размер изображения
-      if (cols > 4) {
-        iconWidth = iconWidth / 2
-        iconHeight = iconHeight / 2
-      } else {
-        iconWidth = iconWidth / 1.5
-        iconHeight = iconHeight / 1.5
-      }
+      // Масштабируем иконку
+      const iconsScale = gameConfig.cardSize - 0.2 * gameConfig.cardSize * 2
+
+      // Вычисляем масштаб для иконки, чтобы она сохранила пропорции
+      const scaleSize = Math.min(
+        iconsScale / iconWidth,
+        iconsScale / iconHeight
+      )
+
+      // Масштабируем иконку с сохранением пропорций
+      iconWidth *= scaleSize
+      iconHeight *= scaleSize
 
       // Вычисляем смещение для центрирования иконки
       const iconOffsetX = -iconWidth / 2
@@ -180,12 +184,9 @@ export const useCanvas = (
 
     // Рисуем карточки
     cards.forEach(card => drawCard(card))
-
-    // Рисуем таймер
-    // drawTimer()
   }
 
-  const animationStep = cardSize === 120 ? 15 : 10
+  const animationStep = gameConfig.cardSize / 10
 
   const animateSquare = (card: Card, expand = false) => {
     const { context } = getCanvasContext(canvasRef)
@@ -208,7 +209,7 @@ export const useCanvas = (
         card.position.x,
         card.position.y,
         gameConfig.cardSize,
-        gameConfig.cardSize + 5
+        gameConfig.cardSize + gameConfig.cardMargin / 2.5
       )
 
       card.width = newWidth

@@ -64,7 +64,32 @@ export const allIcons = [
   yarn,
 ]
 
-const getCardSize = (cols: number) => (cols === 4 ? 120 : 85)
+const screenHeight = window.innerHeight
+
+const cardSize = {
+  small: 85,
+  big: 120,
+}
+
+if (screenHeight < 690) {
+  cardSize.small = 65
+  cardSize.big = 90
+} else if (screenHeight <= 800) {
+  cardSize.small = 75
+  cardSize.big = 110
+} else if (screenHeight <= 1000) {
+  cardSize.small = 95
+  cardSize.big = 140
+} else if (screenHeight <= 1300) {
+  cardSize.small = 125
+  cardSize.big = 180
+} else {
+  cardSize.small = 165
+  cardSize.big = 230
+}
+
+const getCardSize = (cols: number) =>
+  cols === 4 ? cardSize.big : cardSize.small
 const getRowsSize = (cols: number) => (cols === 4 ? 4 : 6)
 
 export const cols = 4 // 4 | 6 | 10
@@ -87,16 +112,14 @@ export const randomSortedIcons = () => allIcons.sort(() => Math.random() - 0.5)
 export const getGameConfig = (gameCols: number) => {
   const rows = getRowsSize(gameCols)
 
-  const cardSize = getCardSize(gameCols)
+  const actualCardSize = getCardSize(gameCols)
 
   const computedGameConfig = {
     cols: gameCols,
     rows,
-    cardSize,
-    canvasMargin: 100,
-    cardMargin: 10,
-    borderRadius: 10,
-    timerSize: 50,
+    cardSize: actualCardSize,
+    cardMargin: cardSize.big / 10,
+    borderRadius: cardSize.big / 10,
   }
 
   const FPS = 60
