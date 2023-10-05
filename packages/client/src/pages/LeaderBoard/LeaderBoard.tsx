@@ -12,15 +12,13 @@ const LeaderBoard: React.FC = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    ;(async () => {
-      await dispatch(
-        getLeaderBoardResults({
-          ratingFieldName: 'codeHuntersMemoryGameScore',
-          cursor: 0,
-          limit: 1000,
-        })
-      )
-    })()
+    const params = {
+      ratingFieldName: 'codeHuntersMemoryGameScore',
+      cursor: 0,
+      limit: 1000,
+    }
+
+    ;(async () => await dispatch(getLeaderBoardResults(params)))()
   }, [])
 
   const bestPlayers = (leaderList || []).map(leader => {
