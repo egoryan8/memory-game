@@ -25,15 +25,14 @@ const Game: React.FC = () => {
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [cards, setCards] = useState<Card[]>([])
-  const [isClickDisabled, setIsClickDisabled] = useState<boolean>(true)
   const [matchedPairs, setMatchedPairs] = useState<number>(0)
   const [openCards, setOpenCards] = useState<number[]>([])
   const [timer, setTimer] = useState<number>(0)
+  const [startCount, setStartCount] = useState<boolean>(false)
   const [startTimer, setStartTimer] = useState<boolean>(false)
   const [isGameEnded, setIsGameEnded] = useState<boolean>(false)
   const [shouldRestartGame, setShouldRestartGame] = useState<boolean>(false)
   const [count, setCount] = useState<number>(3)
-  const [startCount, setStartCount] = useState<boolean>(false)
   const [attempts, setAttempts] = useState<number>(0)
   const [misses, setMisses] = useState<number>(0)
   const [points, setPoints] = useState<number>(0)
@@ -51,7 +50,7 @@ const Game: React.FC = () => {
     gameConfig,
     secondAnimationId,
     firstAnimationId,
-  } = useCanvas(canvasRef, minutes, seconds, setIsClickDisabled, gameCols)
+  } = useCanvas(canvasRef, minutes, seconds, gameCols)
 
   const onMainClick = () => {
     navigate(AppPath.MAIN)
@@ -61,7 +60,7 @@ const Game: React.FC = () => {
   // Обработка клика по canvas
   const handleCanvasClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
     const { canvas } = getCanvasContext(canvasRef)
-    if (!canvas || isClickDisabled) return
+    if (!canvas || !startTimer) return
 
     const rect = canvas.getBoundingClientRect()
     const mouseX = event.clientX - rect.left
@@ -76,8 +75,7 @@ const Game: React.FC = () => {
         mouseY >= y &&
         mouseY <= y + gameConfig.cardSize
       ) {
-        if (card.isMatched || card.isOpen) return
-        setIsClickDisabled(true)
+        if (card.isMatched || card.isOpen || card.isClicked) return
         setOpenCards(prevOpenCards => [...prevOpenCards, index])
         animateSquare(card)
       }
@@ -93,7 +91,6 @@ const Game: React.FC = () => {
     setStartCount(true)
     setTimeout(() => {
       flipCards(cards)
-      setIsClickDisabled(false)
       setStartTimer(true)
     }, 3000)
   }
@@ -107,7 +104,6 @@ const Game: React.FC = () => {
     setMisses(0)
     setAttempts(0)
     setPoints(0)
-    setIsClickDisabled(true)
     setIsGameEnded(false)
     setShouldRestartGame(true)
   }
