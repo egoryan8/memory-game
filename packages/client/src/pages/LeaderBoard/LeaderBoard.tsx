@@ -11,8 +11,6 @@ const LeaderBoard: React.FC = () => {
   const leaderList = useAppSelector(state => state.leaderBoardStore.leaders)
   const dispatch = useAppDispatch()
 
-  console.log(leaderList)
-
   useEffect(() => {
     const params = {
       ratingFieldName: 'codeHuntersMemoryGameScore',
