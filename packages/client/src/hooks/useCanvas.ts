@@ -21,7 +21,8 @@ export interface Card {
 enum Colors {
   main = '#23272F',
   closed = '#556075',
-  opened = '#16181B',
+  opened = '#323844',
+  shadow = 'rgba(0,0,0,0.35)',
   red = '#930000',
 }
 
@@ -103,6 +104,18 @@ export const useCanvas = (
     const halfWidth = card.width / 2
     const centerX = card.position.x + gameConfig.cardSize / 2
     const centerY = card.position.y + gameConfig.cardSize / 2
+
+    context.fillStyle = Colors.shadow
+
+    context.beginPath()
+    context.roundRect(
+      centerX - halfWidth,
+      centerY - gameConfig.cardSize / 2 + 5,
+      card.width,
+      gameConfig.cardSize,
+      gameConfig.borderRadius
+    )
+    context.fill()
 
     context.fillStyle = card.isOpen ? Colors.opened : Colors.closed
 
@@ -225,7 +238,7 @@ export const useCanvas = (
         card.position.x,
         card.position.y,
         gameConfig.cardSize,
-        gameConfig.cardSize
+        gameConfig.cardSize + 5
       )
 
       card.width = newWidth

@@ -9,7 +9,6 @@ import style from './Game.module.scss'
 import { Card, useCanvas } from '@/hooks/useCanvas'
 import { RootState } from '@/store'
 import { useSelector } from 'react-redux'
-import hooray from '@/assets/images/other/hooray.gif'
 
 const Game: React.FC = () => {
   const navigate = useNavigate()
@@ -168,7 +167,7 @@ const Game: React.FC = () => {
 
       if (firstCard.fileName === secondCard.fileName) {
         setMatchedPairs(matchedPairs + 1)
-        setPoints(point => point + 2)
+        setPoints(point => point + 50)
         setCards(prevCards => {
           const newCards = [...prevCards]
           newCards[firstIndex].isMatched = true
@@ -177,7 +176,7 @@ const Game: React.FC = () => {
         })
       } else {
         // Закрываем неправильных карточек
-        if (points !== 0) setPoints(point => point - 1)
+        if (points !== 0) setPoints(point => point - gameCols)
         setMisses(miss => miss + 1)
         setTimeout(() => {
           animateSquare(firstCard)
@@ -192,6 +191,8 @@ const Game: React.FC = () => {
   // Логика завершения игры победой и отображение кнопки перезапуска
   useEffect(() => {
     if (matchedPairs === totalGameCards / 2) {
+      if (attempts === matchedPairs) setPoints(point => point - timer + 100)
+      else setPoints(point => point - timer)
       setCards([])
       setStartTimer(false)
       setIsGameEnded(true)
@@ -223,21 +224,21 @@ const Game: React.FC = () => {
           )}
           <ul className={style.options}>
             <li className={style.option}>
-              <span className={style.optionName}>Отгадано</span>
+              <span className={style.optionName}>Отгадано:</span>
               <span className={style.optionValue}>
                 {matchedPairs * 2} из {cols * rows}
               </span>
             </li>
+            {/*<li className={style.option}>*/}
+            {/*  <span className={style.optionName}>Очки</span>*/}
+            {/*  <span className={style.optionValue}>{Math.round(points)}</span>*/}
+            {/*</li>*/}
             <li className={style.option}>
-              <span className={style.optionName}>Очки</span>
-              <span className={style.optionValue}>{Math.round(points)}</span>
-            </li>
-            <li className={style.option}>
-              <span className={style.optionName}>Попыток</span>
+              <span className={style.optionName}>Попыток:</span>
               <span className={style.optionValue}>{attempts}</span>
             </li>
             <li className={style.option}>
-              <span className={style.optionName}>Ошибок</span>
+              <span className={style.optionName}>Ошибок:</span>
               <span className={style.optionValue}>{misses}</span>
             </li>
           </ul>
@@ -265,8 +266,8 @@ const Game: React.FC = () => {
       </main>
       {isGameEnded && (
         <div className={style.endGame}>
-          <img className={style.hoorayIcon} alt="hooray" src={hooray} />
-          <p>ПОБЕДА</p>
+          <p>ОЧКИ: {Math.round(points)}</p>
+          {attempts === matchedPairs && <span>Чистая победа!</span>}
         </div>
       )}
     </>
