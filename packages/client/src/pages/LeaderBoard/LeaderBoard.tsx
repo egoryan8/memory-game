@@ -18,7 +18,9 @@ const LeaderBoard: React.FC = () => {
       limit: 1000,
     }
 
-    ;(async () => await dispatch(getLeaderBoardResults(params)))()
+    ;(async () => {
+      await dispatch(getLeaderBoardResults(params))
+    })()
   }, [])
 
   const bestPlayers = (leaderList || []).map(leader => {
