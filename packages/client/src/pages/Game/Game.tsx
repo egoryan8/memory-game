@@ -272,6 +272,7 @@ const Game: React.FC = () => {
                 </Button>
               )}
               <Button className={style.iconButton} onClick={onMainClick}>
+                <span style={{ display: 'none' }}>Выход</span>
                 <img src={logOut} alt="logout-icon" />
               </Button>
             </div>
