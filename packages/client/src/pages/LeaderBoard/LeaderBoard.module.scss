@@ -18,6 +18,11 @@
   li {
     margin-top: 8px;
   }
+
+  li:hover {
+    background: var(--opacity);
+    cursor: default;
+  }
 }
 
 .title {

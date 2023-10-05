@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import compressScreen from '@/assets/images/other/fs-compress-icon.svg'
 import expandScreen from '@/assets/images/other/fs-expand-icon.svg'
+import logOut from '@/assets/images/other/logout.svg'
 import Button from '@/components/Button/Button'
 import { useNavigate } from 'react-router-dom'
 import { AppPath } from '@/types/AppPath'
@@ -42,7 +43,6 @@ const Game: React.FC = () => {
     calculateCardPositions,
     totalGameCards,
     initializeGame,
-    drawTimer,
     rows,
     cols,
     getCanvasContext,
@@ -160,10 +160,6 @@ const Game: React.FC = () => {
     return () => clearInterval(timerId) // Очистка таймера при размонтировании компонента
   }, [startTimer])
 
-  useEffect(() => {
-    drawTimer()
-  }, [timer])
-
   // Логика поиска пар
   useEffect(() => {
     if (openCards.length === 2) {
@@ -197,17 +193,22 @@ const Game: React.FC = () => {
   // Логика завершения игры победой и отображение кнопки перезапуска
   useEffect(() => {
     if (matchedPairs === totalGameCards / 2) {
-      if (attempts === matchedPairs) setPoints(point => point - timer + 100)
-      else setPoints(point => point - timer)
       setCards([])
       setStartTimer(false)
       setIsGameEnded(true)
+
+      let gameResult = points
+
+      if (attempts === matchedPairs) gameResult = gameResult - timer + 100
+      else gameResult = gameResult - timer
+
+      setPoints(gameResult)
 
       if (user.data) {
         dispatch(
           setLeaderBoardResult({
             userData: user.data,
-            codeHuntersMemoryGameScore: Math.round(points),
+            codeHuntersMemoryGameScore: Math.round(gameResult),
           })
         )
       }
@@ -223,67 +224,65 @@ const Game: React.FC = () => {
       <main className={style.wrapper}>
         <div className={style.field}>
           <canvas ref={canvasRef} onClick={handleCanvasClick} />
-        </div>
-        <div className={style.handlers}>
-          {!fullscreen.isFullscreen ? (
-            <button
-              className={style['resize-button']}
-              onClick={fullscreen.enter}>
-              <img src={expandScreen} alt="expand-icon" />
-            </button>
-          ) : (
-            <button
-              className={style['resize-button']}
-              onClick={fullscreen.exit}>
-              <img src={compressScreen} alt="compress-icon" />
-            </button>
-          )}
-          <ul className={style.options}>
-            <li className={style.option}>
-              <span className={style.optionName}>Отгадано:</span>
-              <span className={style.optionValue}>
-                {matchedPairs * 2} из {cols * rows}
-              </span>
-            </li>
-            {/*<li className={style.option}>*/}
-            {/*  <span className={style.optionName}>Очки</span>*/}
-            {/*  <span className={style.optionValue}>{Math.round(points)}</span>*/}
-            {/*</li>*/}
-            <li className={style.option}>
-              <span className={style.optionName}>Попыток:</span>
-              <span className={style.optionValue}>{attempts}</span>
-            </li>
-            <li className={style.option}>
-              <span className={style.optionName}>Ошибок:</span>
-              <span className={style.optionValue}>{misses}</span>
-            </li>
-          </ul>
-          <div className={style.buttons}>
-            {!startTimer && !isGameEnded && (
-              <Button
-                className={style.launchButton}
-                onClick={handleStartGame}
-                disabled={startCount}>
-                {startCount ? count : 'Поехали!'}
+          <div className={style.points}>
+            <ul className={style.options}>
+              <li className={style.option}>
+                <span className={style.optionName}>Отгадано</span>
+                <span className={style.optionValue}>
+                  {matchedPairs * 2} из {cols * rows}
+                </span>
+              </li>
+              <li className={style.option}>
+                <span className={style.optionName}>Попыток</span>
+                <span className={style.optionValue}>{attempts}</span>
+              </li>
+              <li className={style.option}>
+                <span className={style.optionName}>Ошибок</span>
+                <span className={style.optionValue}>{misses}</span>
+              </li>
+            </ul>
+          </div>
+          <div className={style.footer}>
+            <div className={style.buttons}>
+              {!fullscreen.isFullscreen ? (
+                <Button className={style.iconButton} onClick={fullscreen.enter}>
+                  <img src={expandScreen} alt="expand-icon" />
+                </Button>
+              ) : (
+                <Button className={style.iconButton} onClick={fullscreen.exit}>
+                  <img src={compressScreen} alt="compress-icon" />
+                </Button>
+              )}
+              {!startTimer && !isGameEnded && (
+                <Button
+                  className={style.launchButton}
+                  onClick={handleStartGame}
+                  disabled={startCount}>
+                  {startCount ? count : 'Начать'}
+                </Button>
+              )}
+              {startTimer && !isGameEnded && (
+                <span className={style.timer}>{minutes + ':' + seconds}</span>
+              )}
+              {isGameEnded && (
+                <Button
+                  className={style.launchButton}
+                  onClick={handleRestartGame}>
+                  Повторить
+                </Button>
+              )}
+              <Button className={style.iconButton} onClick={onMainClick}>
+                <img src={logOut} alt="logout-icon" />
               </Button>
-            )}
-            {isGameEnded && (
-              <Button
-                className={style.launchButton}
-                onClick={handleRestartGame}>
-                Повторить
-              </Button>
-            )}
-            <Button theme="dark" className={style.button} onClick={onMainClick}>
-              Выход
-            </Button>
+            </div>
           </div>
         </div>
       </main>
       {isGameEnded && (
         <div className={style.endGame}>
           <p>ОЧКИ: {Math.round(points)}</p>
-          {attempts === matchedPairs && <span>Чистая победа!</span>}
+          <p>ВРЕМЯ: {minutes + ':' + seconds}</p>
+          {attempts === matchedPairs && <span>Идеально!</span>}
         </div>
       )}
     </>
