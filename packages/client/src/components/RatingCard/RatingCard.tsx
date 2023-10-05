@@ -2,18 +2,21 @@ import { declensionWords } from '@/utils/declensionWords'
 import s from './RatingCard.module.scss'
 
 interface RatingCardProps {
-  isUser: boolean
-  position: string
   player: string
   score: number
+  avatar?: string | null
 }
 
-const RatingCard = ({ isUser, position, player, score }: RatingCardProps) => {
+const RatingCard = ({ avatar, player, score }: RatingCardProps) => {
   return (
-    <li className={`${s.player} ${isUser && s.user}`}>
+    <li className={`${s.player} ${s.user}`}>
       <div className={s.left}>
-        <div className={s.position}>{position}</div>
-        <div className={s.avatar}>{player[0]}</div>
+        <div className={s.position}>✫</div>
+        {avatar ? (
+          <img src={avatar} className={s.avatar} alt={player} />
+        ) : (
+          <div className={s.avatar}>{player[0]}</div>
+        )}
         <div>{player}</div>
       </div>
       <div className={s.score}>

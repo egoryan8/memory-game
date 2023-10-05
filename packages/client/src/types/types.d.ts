@@ -20,6 +20,22 @@ interface IPassword {
   newPassword: string
 }
 
+interface ILeaderBoardData {
+  userData: IUser
+  codeHuntersMemoryGameScore: number
+}
+
+interface ILeaderBoardResult {
+  data: ILeaderBoardData
+  ratingFieldName: string
+}
+
+interface ILeaderBoardParams {
+  ratingFieldName: string
+  cursor: number
+  limit: number
+}
+
 //
 // Context
 //
