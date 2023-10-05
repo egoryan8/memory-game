@@ -72,20 +72,20 @@ const cardSize = {
 }
 
 if (screenHeight < 690) {
-  cardSize.small = 65
-  cardSize.big = 90
+  cardSize.small = 55
+  cardSize.big = 80
 } else if (screenHeight <= 800) {
-  cardSize.small = 75
-  cardSize.big = 110
+  cardSize.small = 65
+  cardSize.big = 100
 } else if (screenHeight <= 1000) {
-  cardSize.small = 95
-  cardSize.big = 140
+  cardSize.small = 85
+  cardSize.big = 130
 } else if (screenHeight <= 1300) {
-  cardSize.small = 125
-  cardSize.big = 180
+  cardSize.small = 115
+  cardSize.big = 170
 } else {
-  cardSize.small = 165
-  cardSize.big = 230
+  cardSize.small = 155
+  cardSize.big = 220
 }
 
 const getCardSize = (cols: number) =>
