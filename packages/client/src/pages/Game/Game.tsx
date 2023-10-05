@@ -9,12 +9,18 @@ import style from './Game.module.scss'
 import { Card, useCanvas } from '@/hooks/useCanvas'
 import { RootState } from '@/store'
 import { useSelector } from 'react-redux'
+import { useAppDispatch } from '@/hooks/useAppDispatch'
+import setLeaderBoardResult from '@/store/asyncActions/leaderboard/setLeaderBoardResult'
+import { useAppSelector } from '@/hooks/useAppSelector'
+import { userSelector } from '@/store/features/userSlice'
 
 const Game: React.FC = () => {
   const navigate = useNavigate()
   const fullscreen = useFullscreen()
+  const user = useAppSelector(userSelector)
 
   const gameCols = useSelector((state: RootState) => state.gameStore.gameCols)
+  const dispatch = useAppDispatch()
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [cards, setCards] = useState<Card[]>([])
@@ -196,6 +202,16 @@ const Game: React.FC = () => {
       setCards([])
       setStartTimer(false)
       setIsGameEnded(true)
+
+      if (user.data) {
+        dispatch(
+          setLeaderBoardResult({
+            userData: user.data,
+            codeHuntersMemoryGameScore: Math.round(points),
+          })
+        )
+      }
+
       setTimeout(() => {
         flipCards(cards)
       }, 1000)
