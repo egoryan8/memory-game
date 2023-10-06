@@ -11,14 +11,14 @@
   width: 100%;
   max-width: 1024px;
   padding: 55px 50px;
-  background: #ffffff;
+  background: #FFFFFF;
   text-align: center;
 }
 
 .title {
   padding-bottom: 20px;
   margin-bottom: 20px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #E5E5E5;
 }
 
 .send-message {
@@ -32,16 +32,15 @@
     width: 100%;
     padding: 12px 25px;
     border-radius: 12px;
-    border: 2px solid #e5e5e5;
-    background: #f7f7f7;
-    font-size: 16px;
+    border: 2px solid #E5E5E5;
+    background: #F7F7F7;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
     outline: none;
 
     &::placeholder {
-      color: #777;
+      color: #777
     }
   }
 
@@ -58,7 +57,7 @@
     font-weight: 700;
     line-height: normal;
     text-transform: uppercase;
-    background: #2d3142;
+    background: #2D3142;
   }
 }
 
@@ -71,7 +70,7 @@
   border-radius: 16px;
   display: flex;
   padding: 15px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #E5E5E5;
 }
 
 .avatarBlock {
@@ -82,25 +81,24 @@
   align-items: center;
   padding-right: 15px;
   margin-right: 24px;
-  border-right: 1px solid #e5e5e5;
+  border-right: 1px solid #E5E5E5;
 }
 
 .avatar {
   width: 85px;
   height: 85px;
   margin-bottom: 12px;
-  background: #ff4b4b;
+  background: #FF4B4B;
   border-radius: 50%;
 }
 
 .avatarPurple {
-  background: #ce82ff;
+  background: #CE82FF;
 }
 
 .userName {
-  color: #3c3c3c;
+  color: #3C3C3C;
   text-align: center;
-  font-size: 17px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -115,8 +113,7 @@
 
 .message {
   text-align: start;
-  color: #3c3c3c;
-  font-size: 17px;
+  color: #3C3C3C;
   font-style: normal;
   font-weight: 400;
   line-height: normal;

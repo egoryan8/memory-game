@@ -16,9 +16,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1024px;
-  gap: 125px;
+  width: 1024px;
   padding: 22px 15px;
+  gap: 30px;
 }
 
 .textWrapper {
@@ -63,10 +63,17 @@
 }
 
 .notification {
-  display: flex;
+  display: inline-block;
 
   button {
     margin-left: 5px;
     background-color: transparent;
+  }
+}
+
+.levelWrapper {
+
+  h2 {
+    text-align: center;
   }
 }

@@ -12,11 +12,15 @@
   max-width: 630px;
   padding: 55px 15px;
   text-align: center;
-  font-size: 17px;
   font-weight: 700;
 
   li {
     margin-top: 8px;
+  }
+
+  li:hover {
+    background: var(--opacity);
+    cursor: default;
   }
 }
 

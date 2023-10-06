@@ -5,7 +5,7 @@
 :root {
   /* Font */
   --font: 'Nunito', sans-serif;
-  --font-size-base: 17px;
+  --font-size-base: 18px;
   --font-size-medium: 24px;
   --font-size-big: 40px;
 
@@ -20,6 +20,8 @@
   --color-border: #e5e5e5;
 
   --disabled: #afafaf;
+
+  --opacity: rgba(0, 0, 0, 0.05);
 
   /* Form */
   --forms-color-background: var(--color-background);
@@ -39,6 +41,8 @@
   margin: 0;
   padding: 0;
   text-decoration: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 html,

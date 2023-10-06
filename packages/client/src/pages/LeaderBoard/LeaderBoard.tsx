@@ -23,12 +23,13 @@ const LeaderBoard: React.FC = () => {
     })()
   }, [])
 
-  const bestPlayers = (leaderList || []).map(leader => {
+  const bestPlayers = (leaderList || []).map((leader, index) => {
     const { userData, codeHuntersMemoryGameScore } = leader
 
     return (
       <RatingCard
         key={userData.id}
+        place={index + 1}
         player={userData.display_name || userData.first_name}
         avatar={
           userData.avatar ? `${BASE_URI}/resources${userData.avatar}` : null
@@ -42,7 +43,7 @@ const LeaderBoard: React.FC = () => {
     <div className={s.page}>
       <Navigation />
       <div className={s.leaderboard}>
-        <h1 className={s.title}>Лучшие игроки</h1>
+        <h1 className={s.title}>Рейтинг игроков</h1>
         <ul>{bestPlayers}</ul>
       </div>
     </div>
