@@ -1,5 +1,4 @@
 import { RefObject } from 'react'
-import timerIcon from '@/assets/images/other/timer.svg'
 import { getGameConfig } from '@/config/gameConfig'
 
 interface Coordinates {
@@ -21,7 +20,8 @@ export interface Card {
 enum Colors {
   main = '#23272F',
   closed = '#556075',
-  opened = '#16181B',
+  opened = '#323844',
+  shadow = 'rgba(0,0,0,0.35)',
   red = '#930000',
 }
 
@@ -31,7 +31,7 @@ export const useCanvas = (
   seconds: string,
   gameCols: number
 ) => {
-  const { cols, gameConfig, icons, rows, totalGameCards, FPS, cardSize } =
+  const { cols, gameConfig, icons, rows, totalGameCards, FPS } =
     getGameConfig(gameCols)
 
   const getCanvasContext = (canvasRef: RefObject<HTMLCanvasElement>) => {
@@ -47,22 +47,20 @@ export const useCanvas = (
     const { canvas } = getCanvasContext(canvasRef)
 
     const totalWidth =
-      gameConfig.cols * (gameConfig.cardSize + gameConfig.cardMargin) -
-      gameConfig.cardMargin
+      gameConfig.cols * (gameConfig.cardSize + gameConfig.cardMargin)
     const totalHeight =
-      gameConfig.rows * (gameConfig.cardSize + gameConfig.cardMargin) -
-      gameConfig.cardMargin
+      gameConfig.rows * (gameConfig.cardSize + gameConfig.cardMargin)
 
-    const canvasWidth = totalWidth + 2 * gameConfig.canvasMargin
-    const canvasHeight = totalHeight + 2 * gameConfig.canvasMargin
+    const canvasWidth = totalWidth + gameConfig.cardMargin
+    const canvasHeight = totalHeight + gameConfig.cardMargin
 
     if (canvas) {
       canvas.width = canvasWidth
       canvas.height = canvasHeight
     }
 
-    const startX = gameConfig.canvasMargin
-    const startY = gameConfig.canvasMargin
+    const startX = gameConfig.cardMargin
+    const startY = gameConfig.cardMargin
 
     const iconSort = () => icons.sort(() => Math.random() - 0.5)
 
@@ -104,6 +102,18 @@ export const useCanvas = (
     const centerX = card.position.x + gameConfig.cardSize / 2
     const centerY = card.position.y + gameConfig.cardSize / 2
 
+    context.fillStyle = Colors.shadow
+
+    context.beginPath()
+    context.roundRect(
+      centerX - halfWidth,
+      centerY - gameConfig.cardSize / 2 + gameConfig.cardMargin / 2.5,
+      card.width,
+      gameConfig.cardSize,
+      gameConfig.borderRadius
+    )
+    context.fill()
+
     context.fillStyle = card.isOpen ? Colors.opened : Colors.closed
 
     context.beginPath()
@@ -126,14 +136,18 @@ export const useCanvas = (
       let iconWidth = card.icon.width
       let iconHeight = card.icon.height
 
-      // Если cols > 4, изменяем размер изображения
-      if (cols > 4) {
-        iconWidth = iconWidth / 2
-        iconHeight = iconHeight / 2
-      } else {
-        iconWidth = iconWidth / 1.5
-        iconHeight = iconHeight / 1.5
-      }
+      // Масштабируем иконку
+      const iconsScale = gameConfig.cardSize - 0.2 * gameConfig.cardSize * 2
+
+      // Вычисляем масштаб для иконки, чтобы она сохранила пропорции
+      const scaleSize = Math.min(
+        iconsScale / iconWidth,
+        iconsScale / iconHeight
+      )
+
+      // Масштабируем иконку с сохранением пропорций
+      iconWidth *= scaleSize
+      iconHeight *= scaleSize
 
       // Вычисляем смещение для центрирования иконки
       const iconOffsetX = -iconWidth / 2
@@ -151,58 +165,28 @@ export const useCanvas = (
     }
   }
 
-  const drawTimer = () => {
-    const { canvas, context } = getCanvasContext(canvasRef)
-    if (!canvas || !context) return
-
-    const timerHeight = 30
-
-    // Очищаем область, где находится таймер
-    context.clearRect(0, gameConfig.timerSize, canvas.width, timerHeight)
-
-    context.font = '20px Arial'
-    context.textAlign = 'center'
-    context.textBaseline = 'middle'
-    context.fillStyle = Colors.main
-    context.fillText(`${minutes}:${seconds}`, canvas.width / 2, timerHeight * 2)
-  }
-
   const initializeGame = (cards: Card[]) => {
     const { canvas, context } = getCanvasContext(canvasRef)
     if (!canvas || !context) return
 
     context.clearRect(0, 0, canvas.width, canvas.height)
 
-    // Рисуем иконку timerIcon
-    const timerImage = new Image()
-    timerImage.src = timerIcon
-    timerImage.onload = () => {
-      const iconX = canvas.width / 2 - timerImage.width / 2
-      const iconY = gameConfig.cardMargin
-
-      context.drawImage(timerImage, iconX, iconY)
-    }
-
     // Рисуем фон для игры
     context.fillStyle = Colors.main
     context.beginPath()
-    context.roundRect(
-      gameConfig.canvasMargin - gameConfig.cardMargin,
-      gameConfig.canvasMargin - gameConfig.cardMargin,
-      canvas.width - gameConfig.canvasMargin * 2 + gameConfig.cardMargin * 2,
-      canvas.height - gameConfig.canvasMargin * 2 + gameConfig.cardMargin * 2,
-      gameConfig.borderRadius
-    )
+    context.roundRect(0, 0, canvas.width, canvas.height, [
+      gameConfig.borderRadius,
+      gameConfig.borderRadius,
+      0,
+      0,
+    ])
     context.fill()
 
     // Рисуем карточки
     cards.forEach(card => drawCard(card))
-
-    // Рисуем таймер
-    drawTimer()
   }
 
-  const animationStep = cardSize === 120 ? 15 : 10
+  const animationStep = gameConfig.cardSize / 10
 
   const animateSquare = (card: Card, expand = false) => {
     const { context } = getCanvasContext(canvasRef)
@@ -225,7 +209,7 @@ export const useCanvas = (
         card.position.x,
         card.position.y,
         gameConfig.cardSize,
-        gameConfig.cardSize
+        gameConfig.cardSize + gameConfig.cardMargin / 2.5
       )
 
       card.width = newWidth
@@ -257,7 +241,6 @@ export const useCanvas = (
     animateSquare,
     calculateCardPositions,
     initializeGame,
-    drawTimer,
     totalGameCards,
     rows,
     cols,

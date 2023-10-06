@@ -21,6 +21,8 @@
 
   --disabled: #afafaf;
 
+  --opacity: rgba(0, 0, 0, 0.05);
+
   /* Form */
   --forms-color-background: var(--color-background);
   --forms-color-border: var(--color-border);
@@ -39,6 +41,8 @@
   margin: 0;
   padding: 0;
   text-decoration: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 html,

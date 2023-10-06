@@ -48,7 +48,7 @@ describe('Main test', () => {
       })
       // Проверяем, что мы на странице с игрой, саму кнопку не нажимаем, так как будет задействован canvas
       // который замокан
-      expect(screen.findByText('ПОЕХАЛИ!')).toBeDefined()
+      expect(screen.findByText('Начать')).toBeDefined()
       // Возвращаемся на главную страницу
       exit = await screen.findByText('Выход')
       exit.click()
