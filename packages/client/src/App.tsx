@@ -1,16 +1,24 @@
-import React, { Suspense, useEffect } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { Spinner } from './components/Spinner/Spinner'
+import React, { useEffect } from 'react'
+import { Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout/Layout'
-import withAuthCheck from '@/utils/hocs/withAuthCheck'
+import { routes } from '@/config/routerConfig'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
 import fetchUser from '@/store/asyncActions/auth/fetchUser'
 import { useAppSelector } from '@/hooks/useAppSelector'
 import { userSelector } from '@/store/features/userSlice'
+import { RequiredAuth } from '@/components/RequiredAuth/RequiredAuth'
+
+const routeComponents = routes.map(route => (
+  <Route
+    key={route.path}
+    path={route.path}
+    element={<RequiredAuth>{route.element}</RequiredAuth>}
+  />
+))
 
 function startServiceWorker() {
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
+  window.addEventListener('load', () => {
+    if ('serviceWorker' in navigator) {
       navigator.serviceWorker
         .register('/service-worker.js')
         .then(registration => {
@@ -19,8 +27,8 @@ function startServiceWorker() {
         .catch((error: string) => {
           console.log('SW registration failed: ', error)
         })
-    })
-  }
+    }
+  })
 }
 
 function App() {
@@ -31,20 +39,14 @@ function App() {
     if (!user.data && !user.loading) {
       dispatch(fetchUser())
     }
+    startServiceWorker()
   }, [])
 
   return (
-    <BrowserRouter>
-      <Suspense fallback={<Spinner />}>
-        <Routes>
-          <Route element={user.loading ? <Spinner /> : <Layout />}>
-            {withAuthCheck(user)}
-          </Route>
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+    <Routes>
+      <Route element={<Layout />}>{routeComponents}</Route>
+    </Routes>
   )
 }
 
-startServiceWorker()
 export default App

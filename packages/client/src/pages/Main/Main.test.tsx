@@ -8,6 +8,7 @@ import { mockUser } from '@/test/__mocks__/mockUser'
 import React from 'react'
 import { mockUseCanvas } from '@/test/__mocks__/mockUseCanvas'
 import { mockFetch } from '@/test/__mocks__/mockFetch'
+import { BrowserRouter } from 'react-router-dom'
 
 jest.mock('@/hooks/useCanvas')
 jest.mock('@/hooks/useNotification')
@@ -28,9 +29,11 @@ describe('Main test', () => {
 
     act(() => {
       render(
-        <Provider store={store}>
-          <App />
-        </Provider>
+        <BrowserRouter>
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </BrowserRouter>
       )
       store.dispatch(setUserData(mockUser as IUser))
     })
