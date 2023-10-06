@@ -53,7 +53,6 @@
   transition: opacity .1s ease-out;
 
   &:before {
-    font-size: 15px;
     content: attr(data-clue);
     position: absolute;
     top: calc(100% + 10px);
