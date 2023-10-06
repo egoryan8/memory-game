@@ -5,7 +5,10 @@
   background: var(--light);
   width: 100vw;
   height: 100vh;
-  background-image: repeating-conic-gradient(#ffffff 0% 25%, rgb(222 222 222 / 15%) 0% 50%);
+  background-image: repeating-conic-gradient(
+    #ffffff 0% 25%,
+    rgb(222 222 222 / 15%) 0% 50%
+  );
   background-position: 0 0, 25px 25px;
   background-size: 50px 50px;
 }

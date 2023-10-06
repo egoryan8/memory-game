@@ -1,7 +1,7 @@
 export enum AppPath {
-  LOGIN = '/',
+  LOGIN = '/login',
   REGISTER = '/register',
-  MAIN = '/main',
+  MAIN = '/',
   GAME = '/game',
   FORUM = '/forum',
   THREAD = '/forum/thread/:id',

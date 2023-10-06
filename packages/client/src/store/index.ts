@@ -1,20 +1,40 @@
 import { ThunkAction } from 'redux-thunk'
 import { Action, configureStore } from '@reduxjs/toolkit'
-import userSliceReducer from '@/store/features/userSlice'
-import gameSliceReducer from '@/store/features/gameSlice'
-import leaderBoardReducer from '@/store/features/leaderBoardSlice'
+import userSliceReducer, { IUserState } from '@/store/slices/userSlice'
+import gameSliceReducer, { IGameState } from '@/store/slices/gameSlice'
+import leaderBoardReducer, {
+  ILeaderBoardState,
+} from '@/store/slices/leaderBoardSlice'
 
-const store = configureStore({
-  reducer: {
-    userStore: userSliceReducer,
-    gameStore: gameSliceReducer,
-    leaderBoardStore: leaderBoardReducer,
-  },
-  devTools: process.env.NODE_ENV === 'development',
-})
+const createStore = (
+  getUser: () => Promise<any | Response>,
+  initialState?: RootState
+) => {
+  return configureStore({
+    reducer: {
+      user: userSliceReducer,
+      game: gameSliceReducer,
+      leaderBoard: leaderBoardReducer,
+    },
+    preloadedState: initialState,
+    devTools: process.env.NODE_ENV === 'development',
+    middleware: getDefaultMiddleware => {
+      return getDefaultMiddleware({
+        thunk: {
+          extraArgument: getUser,
+        },
+      })
+    },
+  })
+}
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export interface RootState {
+  user: IUserState
+  game: IGameState
+  leaderBoard: ILeaderBoardState
+}
+
+export type AppDispatch = ReturnType<typeof createStore>['dispatch']
 export type AppThunk = ThunkAction<void, RootState, unknown, Action<string>>
 
-export default store
+export default createStore

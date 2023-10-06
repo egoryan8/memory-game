@@ -1,14 +1,14 @@
 import { mockUseNotification } from '@/test/__mocks__/mockUseNotification'
 import { act, render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
-import store from '@/store'
+import createStore from '@/store'
 import App from '@/App'
-import { setUserData } from '@/store/features/userSlice'
-import { mockUser } from '@/test/__mocks__/mockUser'
 import React from 'react'
 import { mockUseCanvas } from '@/test/__mocks__/mockUseCanvas'
 import { mockFetch } from '@/test/__mocks__/mockFetch'
+import AuthApi from '@/api/AuthApi'
 import { BrowserRouter } from 'react-router-dom'
+import { mockInitialState } from '@/test/__mocks__/mockInitialState'
 
 jest.mock('@/hooks/useCanvas')
 jest.mock('@/hooks/useNotification')
@@ -28,6 +28,7 @@ describe('Main test', () => {
     let exit: HTMLElement
 
     act(() => {
+      const store = createStore(AuthApi.getUser, mockInitialState)
       render(
         <BrowserRouter>
           <Provider store={store}>
@@ -35,7 +36,6 @@ describe('Main test', () => {
           </Provider>
         </BrowserRouter>
       )
-      store.dispatch(setUserData(mockUser as IUser))
     })
     // Проверяем доступность кнопки перехода к игре при выборе режимов
     for (const gameMode of ['4X4', '6X6', '6X10']) {

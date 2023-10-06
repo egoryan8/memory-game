@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-interface IGameState {
+export interface IGameState {
   gameCols: number
 }
 

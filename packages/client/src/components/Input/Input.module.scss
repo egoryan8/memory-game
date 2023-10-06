@@ -8,7 +8,7 @@
   display: flex;
   border: 2px solid var(--forms-color-border);
   border-radius: 12px;
-  background: #F7F7F7;
+  background: #f7f7f7;
 
   input {
     flex: 1;
@@ -27,7 +27,7 @@
   outline: none;
 
   &::placeholder {
-    color: var(--color-text-gray)
+    color: var(--color-text-gray);
   }
 }
 
@@ -50,7 +50,7 @@
   color: var(--forms-color-border-error);
   cursor: pointer;
   user-select: none;
-  transition: opacity .1s ease-out;
+  transition: opacity 0.1s ease-out;
 
   &:before {
     font-size: 15px;
@@ -73,8 +73,8 @@
 
   &:after {
     position: absolute;
-    content: "";
-    background: #FFFFFF;
+    content: '';
+    background: #ffffff;
     top: calc(100% + 6px);
     left: 50%;
     transform: translateX(-50%) rotate(45deg);
@@ -88,7 +88,8 @@
   }
 
   &:hover {
-    &:before, &:after {
+    &:before,
+    &:after {
       opacity: 1;
       visibility: visible;
       z-index: 10;

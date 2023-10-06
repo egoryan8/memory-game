@@ -1,17 +1,19 @@
 import Button from '@/components/Button/Button'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Form from '@/components/Form/Form'
 import { INPUTS_DATA } from '@/components/Form/constants'
 import { SubmitHandler } from 'react-hook-form'
-import { useAppDispatch } from '@/hooks/useAppDispatch'
-import editPassword from '@/store/asyncActions/users/editPassword'
 import s from './ChangePassword.module.scss'
+import UserApi from '@/api/UserApi'
+import { AppPath } from '@/types/AppPath'
 
 const ChangePassword: React.FC = () => {
-  const dispatch = useAppDispatch()
-  const onSubmit: SubmitHandler<IPassword> = data =>
-    dispatch(editPassword(data))
+  const navigate = useNavigate()
+  const onSubmit: SubmitHandler<IPassword> = async data => {
+    await UserApi.editPassword(data)
+    navigate(AppPath.PROFILE)
+  }
 
   const inputNames = ['oldPassword', 'newPassword']
 

@@ -10,12 +10,12 @@
   --font-size-big: 40px;
 
   /* Sets of colors */
-  --color-text: #23272F;
+  --color-text: #23272f;
   --color-text-gray: #777777;
   --color-text-white: #ffffff;
 
   --color-background: #ffffff;
-  --color-background-secondary: #23272F;
+  --color-background-secondary: #23272f;
 
   --color-border: #e5e5e5;
 
@@ -24,11 +24,11 @@
   /* Form */
   --forms-color-background: var(--color-background);
   --forms-color-border: var(--color-border);
-  --forms-color-border-error: #F36C6C;
+  --forms-color-border-error: #f36c6c;
 
   /* Button */
-  --button-color-background: #23272F;
-  --button-color-background-secondary: #F77F00;
+  --button-color-background: #23272f;
+  --button-color-background-secondary: #f77f00;
   --button-color-background-disabled: #e5e5e5;
 
   --game-widget: #556075;
@@ -55,11 +55,17 @@ html {
   color: var(--color-text);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font: inherit;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 
@@ -67,18 +73,27 @@ a {
   color: inherit;
   text-decoration: none;
 
-  &:active, &:hover {
+  &:active,
+  &:hover {
     outline: 0;
   }
 }
 
-img, audio, iframe, svg, video {
+img,
+audio,
+iframe,
+svg,
+video {
   max-width: 100%;
   height: auto;
   vertical-align: top;
 }
 
-input, textarea, button, optgroup, select {
+input,
+textarea,
+button,
+optgroup,
+select {
   margin: 0;
   font: inherit;
   color: inherit;

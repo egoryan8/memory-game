@@ -2,11 +2,7 @@ import React, { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout/Layout'
 import { routes } from '@/config/routerConfig'
-import { useAppDispatch } from '@/hooks/useAppDispatch'
-import fetchUser from '@/store/asyncActions/auth/fetchUser'
-import { useAppSelector } from '@/hooks/useAppSelector'
-import { userSelector } from '@/store/features/userSlice'
-import { RequiredAuth } from '@/components/RequiredAuth/RequiredAuth'
+import RequiredAuth from '@/components/RequiredAuth/RequiredAuth'
 
 const routeComponents = routes.map(route => (
   <Route
@@ -32,13 +28,7 @@ function startServiceWorker() {
 }
 
 function App() {
-  const user = useAppSelector(userSelector)
-  const dispatch = useAppDispatch()
-
   useEffect(() => {
-    if (!user.data && !user.loading) {
-      dispatch(fetchUser())
-    }
     startServiceWorker()
   }, [])
 

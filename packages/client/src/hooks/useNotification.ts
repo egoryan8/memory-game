@@ -3,7 +3,7 @@ import { useState } from 'react'
 const useNotification = () => {
   const isSupported = 'Notification' in window && 'permission' in Notification
   const [isGranted, setIsGranted] = useState(
-    Notification.permission === 'granted'
+    isSupported && Notification.permission === 'granted'
   )
 
   const notifyUser = (title: string, body: string): void => {

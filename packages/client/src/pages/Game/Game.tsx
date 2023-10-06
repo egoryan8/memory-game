@@ -11,16 +11,16 @@ import { RootState } from '@/store'
 import { useSelector } from 'react-redux'
 import hooray from '@/assets/images/other/hooray.gif'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
-import setLeaderBoardResult from '@/store/asyncActions/leaderboard/setLeaderBoardResult'
 import { useAppSelector } from '@/hooks/useAppSelector'
-import { userSelector } from '@/store/features/userSlice'
+import { userSelector } from '@/store/slices/userSlice'
+import { setLeaderBoardResult } from '@/store/asyncThunks/leaderboard/setLeaderBoardResult'
 
 const Game: React.FC = () => {
   const navigate = useNavigate()
   const fullscreen = useFullscreen()
   const user = useAppSelector(userSelector)
 
-  const gameCols = useSelector((state: RootState) => state.gameStore.gameCols)
+  const gameCols = useSelector((state: RootState) => state.game.gameCols)
   const dispatch = useAppDispatch()
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
