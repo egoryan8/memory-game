@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { AppPath } from '@/types/AppPath'
 import { setGameCols } from '@/store/features/gameSlice'
 import { useDispatch } from 'react-redux'
-import { ChangeEventHandler, useEffect, useState } from 'react'
+import { ChangeEventHandler, useState } from 'react'
 
 const Main = () => {
   const navigate = useNavigate()
@@ -67,7 +67,7 @@ const Main = () => {
             </ol>
             {!notification.isGranted && (
               <div className={s.notification}>
-                <p>Для получения уведомлений, нажмите на колокольчик </p>
+                Для получения уведомлений, нажмите на колокольчик
                 <button onClick={() => notification.notifyUser('', '')}>
                   🔔
                 </button>

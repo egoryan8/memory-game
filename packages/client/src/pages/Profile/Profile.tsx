@@ -13,6 +13,7 @@ import { userSelector } from '@/store/features/userSlice'
 import s from './Profile.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { AppPath } from '@/types/AppPath'
+import logOut from '@/assets/images/other/logout.svg'
 
 interface IProfile {
   first_name: string
@@ -66,7 +67,7 @@ const Profile: React.FC = () => {
             Сменить пароль
           </Button>
           <Button className={s.exitButton} type="button" onClick={handleLogout}>
-            Выйти
+            <img src={logOut} alt="logout-icon" />
           </Button>
         </div>
       </div>
