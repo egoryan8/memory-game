@@ -11,11 +11,11 @@ import YandexIcon from '@/assets/images/other/ya.svg'
 import style from './Login.module.scss'
 import { AppPath } from '@/types/AppPath'
 
+export const authCode = new URLSearchParams(location.search).get('code')
+
 const Login: React.FC = () => {
   const dispatch = useAppDispatch()
   const inputNames = ['login', 'password']
-  const urlParams = new URLSearchParams(location.search)
-  const authCode = urlParams.get('code')
   const navigateTo = (path: string) => (window.location.href = path)
   const isClient = typeof window !== 'undefined'
   const redirectUri = isClient

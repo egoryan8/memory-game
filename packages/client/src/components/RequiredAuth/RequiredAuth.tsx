@@ -1,16 +1,17 @@
 import { useAppSelector } from '@/hooks/useAppSelector'
 import { userSelector } from '@/store/features/userSlice'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { AppPath } from '@/types/AppPath'
 import React, { Suspense, useEffect } from 'react'
 import { Spinner } from '@/components/Spinner/Spinner'
+import { authCode } from '@/pages/Login/Login'
 
 export const RequiredAuth = ({ children }: { children: JSX.Element }) => {
   const { loading, data } = useAppSelector(userSelector)
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!data && !loading) {
+    if (!data && !loading && !authCode) {
       navigate(AppPath.LOGIN)
     } else if (data && !loading) {
       switch (window.location.pathname) {
