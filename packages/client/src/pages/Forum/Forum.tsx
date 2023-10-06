@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid'
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import s from './Forum.module.scss'
-import { ReactComponent as NoteIcon } from './note.svg'
+import noteIcon from './note.svg'
 
 const Forum = () => {
   const [value, setValue] = useState('')
@@ -54,7 +54,7 @@ const Forum = () => {
               <li className={s.card} key={id}>
                 <Link to={`/forum/thread/${id}`}>
                   <div className={s['topic-ico']}>
-                    <NoteIcon />
+                    <img src={noteIcon} alt="Back logo" />
                   </div>
                   <div className={s.details}>
                     <div className={s['topic-name']}>{theme}</div>
