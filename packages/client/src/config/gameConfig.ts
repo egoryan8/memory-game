@@ -64,7 +64,7 @@ export const allIcons = [
   yarn,
 ]
 
-const screenHeight = window.innerHeight
+const screenHeight = typeof window !== 'undefined' ? window.innerHeight : 0
 
 const cardSize = {
   small: 85,
