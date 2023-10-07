@@ -4,7 +4,7 @@ import { oauthLogin } from '@/store/asyncThunks/auth/oauthLogin'
 import { REDIRECT_URI } from '@/utils/HTTPClient'
 
 const getAuthCode = () => new URLSearchParams(location.search).get('code')
-export const usaAuthCode = () => {
+export const useAuthCode = () => {
   const [authCode, setAuthCode] = useState(getAuthCode())
   const dispatch = useAppDispatch()
 

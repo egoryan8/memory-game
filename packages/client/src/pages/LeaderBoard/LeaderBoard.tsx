@@ -18,9 +18,7 @@ const LeaderBoard: React.FC = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    ;(async () => {
-      await dispatch(getLeaderBoardResults(leaderBoardParams))
-    })()
+    dispatch(getLeaderBoardResults(leaderBoardParams))
   }, [])
 
   const bestPlayers = (leaderList || []).map((leader, index) => {

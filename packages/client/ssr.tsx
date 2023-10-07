@@ -10,7 +10,7 @@ export interface ILoadUserApi {
 }
 export async function render(uri: string, api: ILoadUserApi) {
   const store = createStore(api.getUser)
-  await (async () => await store.dispatch(loadUser()))()
+  await store.dispatch(loadUser())
   const initialState = store.getState()
   return [
     initialState,

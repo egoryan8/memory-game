@@ -9,10 +9,7 @@ function AuthApi(cookie: string | undefined) {
         cookie: cookie,
       },
     })
-    return {
-      data,
-      xss: "</script><script>alert('pwned')</script><!--",
-    }
+    return { data }
   }
 
   return Object.freeze({ getUser })

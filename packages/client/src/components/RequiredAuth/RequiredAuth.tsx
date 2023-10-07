@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router-dom'
 import { AppPath } from '@/types/AppPath'
 import React, { Suspense, useEffect } from 'react'
 import { Spinner } from '@/components/Spinner/Spinner'
-import { usaAuthCode } from '@/hooks/usaAuthCode'
+import { useAuthCode } from '@/hooks/useAuthCode'
 
 const RequiredAuth = ({ children }: { children: JSX.Element }) => {
   const { loading, data } = useAppSelector(userSelector)
   const navigate = useNavigate()
-  usaAuthCode()
+  useAuthCode()
   useEffect(() => {
     if (!data && !loading) {
       navigate(AppPath.LOGIN)

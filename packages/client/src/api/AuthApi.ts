@@ -7,7 +7,7 @@ function AuthApi() {
 
   const logout = async () => await client.post('/logout')
 
-  const register = async (data: IUser) => await client.post('/signup', data)
+  const register = (data: IUser) => client.post('/signup', data)
 
   const getUser = async () => await client.get('/user')
 
