@@ -8,7 +8,7 @@
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: #3C3C3C center/cover;
+  background: #3c3c3c center/cover;
   object-fit: cover;
 }
 
@@ -19,7 +19,8 @@
   display: inline-block;
   width: 44px;
   height: 44px;
-  background: url("@/assets/images/other/image-icon.svg") center/50% var(--color-background-secondary) no-repeat;
+  background: url('@/assets/images/other/image-icon.svg') center/50%
+    var(--color-background-secondary) no-repeat;
   border-radius: 50%;
   cursor: pointer;
   margin: 0 auto;

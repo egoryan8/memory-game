@@ -1,19 +1,19 @@
 import Avatar from '@/components/Avatar/Avatar'
 import Button from '@/components/Button/Button'
 import Navigation from '@/components/Navigation/Navigation'
-import logout from '@/store/asyncActions/auth/logout'
 import React from 'react'
 import Form from '@/components/Form/Form'
 import { INPUTS_DATA } from '@/components/Form/constants'
 import { SubmitHandler } from 'react-hook-form'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
-import updateProfile from '@/store/asyncActions/users/updateProfile'
 import { useAppSelector } from '@/hooks/useAppSelector'
-import { userSelector } from '@/store/features/userSlice'
 import s from './Profile.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { AppPath } from '@/types/AppPath'
 import logOut from '@/assets/images/other/logout.svg'
+import { userSelector } from '@/store/slices/userSlice'
+import { logout } from '@/store/asyncThunks/auth/logout'
+import { updateProfile } from '@/store/asyncThunks/user/updateProfile'
 
 interface IProfile {
   first_name: string

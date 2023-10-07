@@ -14,6 +14,10 @@ interface ILogin {
   login: string
   password: string
 }
+interface IOAuthLogin {
+  authCode: string
+  redirectUri: string
+}
 
 interface IPassword {
   oldPassword: string

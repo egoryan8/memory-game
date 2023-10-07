@@ -1,4 +1,5 @@
 import { setupFetchStub } from '@/test/setupFetchStub'
+import { AxiosResponse } from 'axios'
 
 export const mockFetch = () => {
   const response = {
@@ -7,5 +8,5 @@ export const mockFetch = () => {
   }
   global.fetch = jest
     .fn()
-    .mockImplementation(setupFetchStub(response as unknown as Response))
+    .mockImplementation(setupFetchStub(response as unknown as AxiosResponse))
 }

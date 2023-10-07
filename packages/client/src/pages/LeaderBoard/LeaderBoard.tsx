@@ -4,23 +4,21 @@ import s from './LeaderBoard.module.scss'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
 import { useAppSelector } from '@/hooks/useAppSelector'
 import React, { useEffect } from 'react'
-import getLeaderBoardResults from '@/store/asyncActions/leaderboard/getLeaderBoardResults'
 import { BASE_URI } from '@/utils/HTTPClient'
+import { leaderBoardSelector } from '@/store/slices/leaderBoardSlice'
+import { getLeaderBoardResults } from '@/store/asyncThunks/leaderboard/getLeaderBoardResults'
 
+export const leaderBoardParams = {
+  ratingFieldName: 'codeHuntersMemoryGameScore',
+  cursor: 0,
+  limit: 1000,
+}
 const LeaderBoard: React.FC = () => {
-  const leaderList = useAppSelector(state => state.leaderBoardStore.leaders)
+  const leaderList = useAppSelector(leaderBoardSelector)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    const params = {
-      ratingFieldName: 'codeHuntersMemoryGameScore',
-      cursor: 0,
-      limit: 1000,
-    }
-
-    ;(async () => {
-      await dispatch(getLeaderBoardResults(params))
-    })()
+    dispatch(getLeaderBoardResults(leaderBoardParams))
   }, [])
 
   const bestPlayers = (leaderList || []).map((leader, index) => {

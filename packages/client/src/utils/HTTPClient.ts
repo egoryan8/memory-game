@@ -1,80 +1,51 @@
-export enum METHOD {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  DELETE = 'DELETE',
-}
+import axios, { AxiosRequestConfig } from 'axios'
+import * as process from 'process'
 
-export const BASE_URI = 'https://ya-praktikum.tech/api/v2'
-type HTTPMethod = (
-  url: string,
-  options?: Partial<RequestInit>
-) => Promise<Response>
+const port = 9000
+export const REDIRECT_URI = `http://localhost:${port}`
+export const BASE_URI = `${REDIRECT_URI}/api/v2`
 
-export type HTTPClientT = ReturnType<typeof HTTPClient>
 function HTTPClient(baseUri = '') {
-  const get: HTTPMethod = (url, options = {}) => {
-    return fetchWithRetry(url, { ...options, method: METHOD.GET })
+  const customAxios = axios.create({
+    baseURL: BASE_URI,
+    withCredentials: true,
+  })
+
+  const get = (url: string, body?: any, config?: AxiosRequestConfig) => {
+    url = joinUrl(url)
+    const queryParams = body ? `?${queryStringify(body)}` : ''
+    url = `${url}${queryParams}`
+    return customAxios.get(url, config)
   }
 
-  const post: HTTPMethod = (url, options = {}) =>
-    fetchWithRetry(url, {
-      ...options,
+  const post = (url: string, body?: any, config?: AxiosRequestConfig) =>
+    customAxios.post(joinUrl(url), JSON.stringify(body), {
+      ...config,
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
-        ...options.headers,
+        ...config?.headers,
       },
-      body: JSON.stringify(options.body),
-      method: METHOD.POST,
     })
 
-  const put: HTTPMethod = (url, options = {}) =>
-    fetchWithRetry(url, {
-      ...options,
+  const put = (url: string, body?: any, config?: AxiosRequestConfig) =>
+    customAxios.put(joinUrl(url), JSON.stringify(body), {
+      ...config,
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
-        ...options.headers,
+        ...config?.headers,
       },
-      body: JSON.stringify(options.body),
-      method: METHOD.PUT,
     })
 
-  const putFile: HTTPMethod = (url, options = {}) =>
-    fetchWithRetry(url, {
-      ...options,
-      headers: {
-        ...options.headers,
-      },
-      method: METHOD.PUT,
-    })
+  const putFile = (url: string, body?: any, config?: AxiosRequestConfig) =>
+    customAxios.put(joinUrl(url), body, config)
 
-  const del: HTTPMethod = (url, options = {}) =>
-    fetchWithRetry(url, {
-      ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
-      method: METHOD.DELETE,
-    })
+  const del = (url: string, config?: AxiosRequestConfig) =>
+    customAxios.delete(joinUrl(url), config)
 
-  const fetchWithRetry = (
-    urlPath: string,
-    options: Partial<RequestInit>
-  ): Promise<Response> => {
-    urlPath = baseUri.includes('https:')
-      ? baseUri + urlPath
-      : BASE_URI + baseUri + urlPath
-    if (options.method === METHOD.GET) {
-      const queryParams = options.body ? `?${queryStringify(options.body)}` : ''
-      urlPath = `${urlPath}${queryParams}`
-    }
-    return fetch(urlPath, {
-      credentials: 'include',
-      mode: 'cors',
-      ...options,
-    })
-  }
+  const joinUrl = (urlPath: string) =>
+    baseUri.includes('https:') ? baseUri + urlPath : baseUri + urlPath
 
   return Object.freeze({
     get,

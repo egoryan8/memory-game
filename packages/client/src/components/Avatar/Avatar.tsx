@@ -1,11 +1,11 @@
 import { useAppDispatch } from '@/hooks/useAppDispatch'
 import { useAppSelector } from '@/hooks/useAppSelector'
-import editAvatar from '@/store/asyncActions/users/editAvatar'
-import { userSelector } from '@/store/features/userSlice'
+import { userSelector } from '@/store/slices/userSlice'
 import { BASE_URI } from '@/utils/HTTPClient'
 import DefaultAvatar from '@/assets/images/other/default-avatar-icon.svg'
 import React from 'react'
 import s from './Avatar.module.scss'
+import { updateAvatar } from '@/store/asyncThunks/user/updateAvatar'
 
 const Avatar = () => {
   const dispatch = useAppDispatch()
@@ -15,7 +15,7 @@ const Avatar = () => {
     const file = event.target.files?.[0]
 
     if (!file) return
-    dispatch(editAvatar(file))
+    dispatch(updateAvatar(file))
   }
 
   return (

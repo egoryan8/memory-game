@@ -1,6 +1,5 @@
 import Button from '@/components/Button/Button'
 import Navigation from '@/components/Navigation/Navigation'
-import Title from '@/components/Title/Title'
 import s from './ForumThread.module.scss'
 import * as React from 'react'
 

@@ -3,24 +3,17 @@ import HTTPClient from '@/utils/HTTPClient'
 function UserApi() {
   const client = HTTPClient('/user')
 
-  const editProfile = async (data: Partial<IUser>) => {
-    const response = await client.put('/profile', { body: data as never })
-    return response
-  }
+  const editProfile = async (data: Partial<IUser>) =>
+    await client.put('/profile', data)
 
   const editAvatar = async (avatar: File) => {
     const formData = new FormData()
     formData.append('avatar', avatar)
-    const response = await client.putFile('/profile/avatar', {
-      body: formData as never,
-    })
-    return response
+    return await client.putFile('/profile/avatar', formData)
   }
 
-  const editPassword = async (data: IPassword) => {
-    const response = await client.put('/password', { body: data as never })
-    return response
-  }
+  const editPassword = async (data: IPassword) =>
+    await client.put('/password', data)
 
   return Object.freeze({
     editAvatar,
