@@ -91,6 +91,33 @@
 1. nginx, раздающий клиентскую статику (client)
 2. node, ваш сервер (server)
 3. postgres, вашу базу данных (postgres)
-
+4. adminer - ui клиент для удобной работы с бд
 Если вам понадобится только один сервис, просто уточните какой в команде
 `docker compose up {sevice_name}`, например `docker compose up server`
+
+#### Локальная работа
+При локальной работе с приложением в docker adminer доступен по адресу http://localhost:8080/
+
+Чтобы достучаться до БД/сервера в локальной среде нужно указать в качестве адреса сеть docker (у меня 172.18.0.1) с соответствующим сервису портом.
+
+#### Обновление отдельного сервиса
+Для обновления сервиса `some_service` не нужно останавливать все контейнеры,
+используйте команду:
+
+`docker-compose build some_service &&
+docker-compose stop some_service &&
+docker-compose down some_service --rmi local --volumes --remove-orphans &&
+docker-compose up -d some_service`
+
+Так обновление пройдёт почти незаметно
+
+#### Сделать дамп базы данных:
+
+Ввести в командной строке в корне проекта команду
+(к названию "dump.sql" дописывать дату экспорта)
+
+`docker-compose exec -T mypg-14 sh -c 'exec pg_dump -U postgres --inserts bugsbase > /db/db-backups/dump.sql'`
+
+#### Восстановить базу данных из дампа:
+
+`docker-compose exec mypg-14 sh -c 'exec psql -U postgres bugsbase < db/db-backups/dump.sql'`
