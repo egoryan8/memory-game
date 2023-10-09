@@ -17,7 +17,7 @@ const FormContainer = ({ children, contentType }: FormContainerProps) => {
       {children}
       <div className={s.nav}>
         <span>{isLogin ? 'Нет аккаунта?' : 'Уже есть аккаунт?'}</span>
-        <Link to={isLogin ? '/register' : '/'}>
+        <Link to={isLogin ? '/register' : '/login'}>
           <Button theme="orange" type="button" className={s.btn}>
             {isLogin ? 'Создать' : 'Войти'}
           </Button>
