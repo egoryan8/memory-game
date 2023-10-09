@@ -11,6 +11,8 @@ import cookieParser from 'cookie-parser'
 import compression from 'compression'
 import helmet from 'helmet'
 import AuthApi from './api/AuthApi'
+import { cleanPath } from './cleanPath'
+import { createClientAndConnect } from './db'
 
 dotenv.config()
 
@@ -21,9 +23,15 @@ async function startServer() {
   const port = Number(process.env.SERVER_PORT) || 9000
 
   let vite: ViteDevServer | undefined
-  const distPath = path.resolve(__dirname, '../client/dist/')
-  const srcPath = path.resolve(__dirname, '../client')
-  const ssrClientPath = require.resolve('client/ssr-dist/ssr.cjs')
+  const distPath = isDev()
+    ? path.resolve('../client/dist')
+    : cleanPath(path.resolve('../client/dist'))
+  const srcPath = isDev()
+    ? path.resolve('../client')
+    : cleanPath(path.resolve('../client'))
+  const ssrClientPath = isDev()
+    ? path.resolve('../client/ssr-dist')
+    : cleanPath(path.resolve('../client/ssr-dist'))
 
   if (isDev()) {
     vite = await createViteServer({
@@ -88,7 +96,7 @@ async function startServer() {
           path.resolve(srcPath, 'ssr.tsx')
         )) as SSRModule
       } else {
-        mod = await import(ssrClientPath)
+        mod = await import(path.resolve(ssrClientPath, 'ssr.cjs'))
       }
 
       const { render } = mod
@@ -119,4 +127,5 @@ async function startServer() {
   )
 }
 
+createClientAndConnect()
 startServer()

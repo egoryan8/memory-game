@@ -4,6 +4,8 @@ services:
     client:
         container_name: prakticum-client
         image: prakticum-client
+        env_file:
+          - ./.env
         build:
             context: .
             dockerfile: Dockerfile.client
@@ -12,9 +14,10 @@ services:
         restart: always
         ports:
             - "${CLIENT_PORT}:80"
-        environment:
-          - CLIENT_PORT=${CLIENT_PORT}
-          - SERVER_PORT=${SERVER_PORT}
+        depends_on:
+          - server
+        networks:
+          - common
     server:
         container_name: prakticum-server
         image: prackicum-server
@@ -26,17 +29,35 @@ services:
         restart: always
         ports:
             - "${SERVER_PORT}:${SERVER_PORT}"
-        environment:
-          SERVER_PORT: ${SERVER_PORT}
+        env_file:
+          - ./.env
+        depends_on:
+          - pg-14
+        networks:
+          - common
 
-    postgres:
-      image: postgres:14     
+    pg-14:
+      env_file:
+        - ./.env
+      image: postgres:14
       ports:
         - "${POSTGRES_PORT}:${POSTGRES_PORT}"
-      environment:
-        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-        POSTGRES_USER: ${POSTGRES_USER}
-        POSTGRES_DB: ${POSTGRES_DB}
       volumes:
-        - ./tmp/pgdata:/var/lib/postgresql/data
+        - ./db/db-init:/docker-entrypoint-initdb.d
+        - ./db/db-data:/var/lib/postgresql/data
+        - ./db/db-backups:/backup
+      networks:
+        - common
 
+    adminer:
+      image: adminer
+      restart: always
+      ports:
+        - "8080:8080"
+      networks:
+        - common
+
+
+networks:
+  common:
+    driver: bridge
