@@ -5,7 +5,11 @@ import { useAppDispatch } from '@/hooks/useAppDispatch'
 import { emojiList } from '@/config/emojiConfig'
 import { setEmoji } from '@/store/asyncThunks/emoji/setEmoji'
 
-const EmojiButton = ({ config, count, isSelected }: IEmojiResult) => {
+const EmojiButton: React.FC<IEmojiResult> = ({
+  config,
+  count,
+  isSelected,
+}: IEmojiResult) => {
   const dispatch = useAppDispatch()
   const [isClicked, setClicked] = useState(isSelected)
 

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import EmojiApi from '@/api/EmojiApi'
 import { getEmoji } from '@/store/asyncThunks/emoji/getEmoji'
+import { EmojiApi } from '@/api/EmojiApi'
 
 export const setEmoji = createAsyncThunk<any, IEmojiData>(
   'setEmoji',

@@ -32,8 +32,9 @@ const emojiSlice = createSlice({
       store.emojiList = payload
     })
 
-    builder.addCase(getEmoji.rejected, store => {
-      store.error = 'Failed to get emoji'
+    builder.addCase(getEmoji.rejected, (store, action) => {
+      const { payload } = action
+      store.error = `Failed to get emoji: ${payload}`
     })
 
     builder.addCase(setEmoji.rejected, (store, action) => {
