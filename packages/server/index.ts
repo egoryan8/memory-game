@@ -12,7 +12,8 @@ import compression from 'compression'
 import helmet from 'helmet'
 import AuthApi from './api/AuthApi'
 import { cleanPath } from './cleanPath'
-import { createClientAndConnect } from './db'
+import { createSequelizeConnection } from './db'
+import { apiRoutes } from './routes'
 
 dotenv.config()
 
@@ -58,10 +59,7 @@ async function startServer() {
       target: 'https://ya-praktikum.tech',
     })
   )
-
-  app.get('/api', (_, res) => {
-    res.json('👋 Howdy from the server :)')
-  })
+  app.use('/api', apiRoutes)
 
   if (!isDev()) {
     app.use('/assets', express.static(path.resolve(distPath, 'assets')))
@@ -127,5 +125,9 @@ async function startServer() {
   )
 }
 
-createClientAndConnect()
-startServer()
+async function start() {
+  await createSequelizeConnection()
+  await startServer()
+}
+
+start()
