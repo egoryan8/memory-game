@@ -2,6 +2,8 @@ import Button from '@/components/Button/Button'
 import Navigation from '@/components/Navigation/Navigation'
 import s from './ForumThread.module.scss'
 import * as React from 'react'
+import EmojiButton from '@/components/EmojiButton/EmojiButton'
+import emojiConfig from '@/config/emojiConfig'
 
 const ForumThread = () => {
   return (
@@ -28,7 +30,14 @@ const ForumThread = () => {
                 уходят в один фрагмент классической латыни 45 года н.э., то есть
                 более двух тысячелетий назад.
               </p>
-              <p className={s.time}>18 августа, 2023</p>
+              <div className={s.info}>
+                <p className={s.time}>18 августа, 2023</p>
+                <EmojiButton
+                  config={emojiConfig[0].config}
+                  count={emojiConfig[0].count}
+                  isSelected={emojiConfig[0].isSelected}
+                />
+              </div>
             </div>
           </li>
 
@@ -45,7 +54,14 @@ const ForumThread = () => {
                 второго сентября. Но почему, но почему расстаться все же нам
                 пришлось? Ведь было все у нас всерьез второго сентября.
               </p>
-              <p className={s.time}>3 сентября, 2023</p>
+              <div className={s.info}>
+                <p className={s.time}>3 сентября, 2023</p>
+                <EmojiButton
+                  config={emojiConfig[1].config}
+                  count={emojiConfig[1].count}
+                  isSelected={emojiConfig[1].isSelected}
+                />
+              </div>
             </div>
           </li>
         </ul>

@@ -20,4 +20,8 @@ export const mockInitialState = {
     leaders: null,
     error: null,
   },
+  emoji: {
+    emojiList: null,
+    error: null,
+  },
 }

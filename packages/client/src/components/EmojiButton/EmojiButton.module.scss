@@ -1,0 +1,26 @@
+.emojiButtonWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+
+  .emoji {
+    fill: var(--color-text);
+    stroke: var(--color-text)
+  }
+
+  &.isSelected {
+    border-color: var(--button-color-background-secondary);
+    background-color: var(--button-color-background-secondary);
+    color: var(--color-text-white);
+  }
+
+  .emoji {
+    padding-right: 8px;
+  }
+}

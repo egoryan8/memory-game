@@ -21,6 +21,13 @@
   border-bottom: 1px solid #E5E5E5;
 }
 
+.info {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .send-message {
   display: flex;
   align-items: center;
