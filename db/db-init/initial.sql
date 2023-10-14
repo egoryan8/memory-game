@@ -82,7 +82,9 @@ CREATE TRIGGER set_updated_at_likes_trigger BEFORE UPDATE ON likes FOR EACH ROW 
 --------------------------
 -------Initial data-------
 --------------------------
-INSERT INTO topics VALUES (1, 'Topic', 7153);
-INSERT INTO comments VALUES (1, NULL, 1, 7153, 'Some comment');
-INSERT INTO likes VALUES (1, NULL, 1, 7153, '😎');
-INSERT INTO likes VALUES (2, 1, NULL, 7153, '😏');
+INSERT INTO topics VALUES (1234567, 'Topic', 7153);
+INSERT INTO comments VALUES (11223344, NULL, 1234567, 7153, 'Some comment 1');
+INSERT INTO comments VALUES (11223345, NULL, 1234567, 7153, 'Some comment 2');
+INSERT INTO comments VALUES (11223346, NULL, 1234567, 7153, 'Some comment 3');
+INSERT INTO likes VALUES (1, 11223344, NULL, 7153, '😎');
+INSERT INTO likes VALUES (2, 11223344, NULL, 7153, '😏');

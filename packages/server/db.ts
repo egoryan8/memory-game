@@ -1,4 +1,6 @@
-import { Client } from 'pg'
+import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
+import { Topic } from './models/forum/topic'
+import { Comment } from './models/forum/comment'
 
 const {
   POSTGRES_HOST,
@@ -8,25 +10,26 @@ const {
   POSTGRES_PORT,
 } = process.env
 
-export const createClientAndConnect = async (): Promise<Client | null> => {
+const sequelizeOptions: SequelizeOptions = {
+  dialect: 'postgres',
+  host: POSTGRES_HOST || '0.0.0.0',
+  username: POSTGRES_USER || 'postgres',
+  password: POSTGRES_PASSWORD || '11223344',
+  database: POSTGRES_DB || 'memorybase',
+  port: Number(POSTGRES_PORT),
+  models: [Topic, Comment],
+}
+
+export async function createSequelizeConnection() {
+  const sequelize = new Sequelize(sequelizeOptions)
+  sequelize.addModels([Topic, Comment])
+
   try {
-    const client = new Client({
-      user: POSTGRES_USER || 'postgres',
-      host: POSTGRES_HOST || '0.0.0.0',
-      database: POSTGRES_DB,
-      password: POSTGRES_PASSWORD || '11223344',
-      port: Number(POSTGRES_PORT),
-    })
-    await client.connect()
-
-    const res = await client.query('SELECT NOW()')
-    console.log('  ➜ 🎸 Connected to the database at:', res?.rows?.[0].now)
-    client.end()
-
-    return client
-  } catch (e) {
-    console.error(e)
+    await sequelize.authenticate()
+    await sequelize.sync()
+    console.log('➜ 🎸 Connected to the database.')
+  } catch (error) {
+    console.error(error)
   }
-
-  return null
+  return sequelize
 }
