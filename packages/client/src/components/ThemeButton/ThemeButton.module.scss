@@ -1,0 +1,22 @@
+button.themeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  background: transparent;
+  padding: 8px;
+  border-radius: 50%;
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    background-color: rgba(246, 247, 249, .05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  img {
+    //width: 36px;
+  }
+}
