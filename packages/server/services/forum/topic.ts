@@ -6,13 +6,18 @@ export const allTopics: Handler = async (req, res) => {
     try {
       const topics = await Topic.findAll()
 
-      if (topics) res.status(200).json({ topics })
-      else res.status(404).json({ reason: 'ТОПИКОВ НЕТ!' })
+      if (topics) {
+        res.status(200).json({ topics })
+      } else {
+        res.status(404).json({ reason: 'ТОПИКОВ НЕТ!' })
+      }
     } catch (error) {
       console.log(error)
       res.status(500).json({ error: 'Internal Server Error' })
     }
-  } else console.log('НЕТ ДОСТУПА!!! НЕ АВТОРИЗОВАН!!!')
+  } else {
+    res.status(403).json({ message: 'Пользователь не авторизован!' })
+  }
 }
 
 export const createPost: Handler = async (req, res) => {

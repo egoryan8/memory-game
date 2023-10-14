@@ -6,18 +6,21 @@ export const allComments: Handler = async (req, res) => {
     try {
       const comments = await Comment.findAll()
 
-      if (comments) res.status(200).json({ comments })
-      else res.status(404).json({ reason: 'КОММЕНТАРИЕВ НЕТ!' })
+      if (comments) {
+        res.status(200).json({ comments })
+      } else {
+        res.status(404).json({ reason: 'КОММЕНТАРИЕВ НЕТ!' })
+      }
     } catch (error) {
       console.log(error)
       res.status(500).json({ error: 'Internal Server Error' })
     }
-  } else console.log('НЕТ ДОСТУПА!!! НЕ АВТОРИЗОВАН!!!')
+  } else {
+    res.status(403).json({ message: 'Пользователь не авторизован!' })
+  }
 }
 
 export const createComment: Handler = async (req, res) => {
-  console.log(req.body)
-
   if (req.headers.cookie && req.body) {
     const { topic_id, user_id, body } = req.body
 

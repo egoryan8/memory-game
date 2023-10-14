@@ -15,7 +15,6 @@
 .contentWrapper {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   width: 1024px;
   padding: 22px 15px;
   gap: 30px;
@@ -30,7 +29,7 @@
 }
 
 .levels {
-  margin: 24px 0;
+  margin: 20px 0;
   list-style: none;
   display: flex;
   gap: 10px;
@@ -42,7 +41,6 @@
   align-items: center;
   justify-content: flex-start;
   gap: 10px;
-  margin-bottom: 10px;
   font-weight: 900;
 }
 
@@ -72,8 +70,41 @@
 }
 
 .levelWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   h2 {
     text-align: center;
+    line-height: 60px;
+    margin-bottom: 0;
+  }
+}
+
+.titleDiv {
+  margin-bottom: 10px;
+
+  .titleSpan {
+    background: var(--button-color-background);
+    color: var(--color-text-white);
+    width: 55px;
+    height: 55px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 5px;
+    border-radius: 5px;
+  }
+}
+
+.difficultImg {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  background: var(--color-background);
+
+  img {
+    max-height: 125px;
+    opacity: .1;
   }
 }
