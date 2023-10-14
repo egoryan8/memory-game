@@ -33,7 +33,15 @@
   --button-color-background-secondary: #f77f00;
   --button-color-background-disabled: #e5e5e5;
 
+  /* Game */
+  --game-board: #23272f;
   --game-widget: #556075;
+}
+
+:root[data-theme="light"] {
+  --color-background-secondary: #0b5786;
+  --button-color-background: #0b5786;
+  --game-widget: #43799f;
 }
 
 * {

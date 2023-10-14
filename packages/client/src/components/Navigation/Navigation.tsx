@@ -1,3 +1,4 @@
+import ThemeButton from '@/components/ThemeButton/ThemeButton'
 import { NavLink } from 'react-router-dom'
 import { navConfig } from '@/config/navConfig'
 import s from './Navigation.module.scss'
@@ -8,18 +9,21 @@ const Navigation = () => {
     <nav className={s.nav}>
       <div className={s.wrapper}>
         <Logo />
-        <ul>
-          {navConfig.map(item => (
-            <li key={item.path}>
-              {item.logo}
-              <NavLink
-                to={item.path}
-                className={({ isActive }) => (isActive ? s.active : '')}>
-                {item.text}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
+        <div className={s.control}>
+          <ul>
+            {navConfig.map(item => (
+              <li key={item.path}>
+                {item.logo}
+                <NavLink
+                  to={item.path}
+                  className={({ isActive }) => (isActive ? s.active : '')}>
+                  {item.text}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+          <ThemeButton />
+        </div>
       </div>
     </nav>
   )

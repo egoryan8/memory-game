@@ -5,6 +5,7 @@ import gameSliceReducer, { IGameState } from '@/store/slices/gameSlice'
 import leaderBoardReducer, {
   ILeaderBoardState,
 } from '@/store/slices/leaderBoardSlice'
+import themeReducer, { IThemeState } from '@/store/slices/themeSlice'
 
 const createStore = (
   getUser: () => Promise<any | Response>,
@@ -15,6 +16,7 @@ const createStore = (
       user: userSliceReducer,
       game: gameSliceReducer,
       leaderBoard: leaderBoardReducer,
+      theme: themeReducer,
     },
     preloadedState: initialState,
     devTools: process.env.NODE_ENV === 'development',
@@ -32,6 +34,7 @@ export interface RootState {
   user: IUserState
   game: IGameState
   leaderBoard: ILeaderBoardState
+  theme: IThemeState
 }
 
 export type AppDispatch = ReturnType<typeof createStore>['dispatch']

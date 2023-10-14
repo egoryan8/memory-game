@@ -20,4 +20,7 @@ export const mockInitialState = {
     leaders: null,
     error: null,
   },
+  theme: {
+    theme: 'dark',
+  },
 }
