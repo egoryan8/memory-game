@@ -7,11 +7,26 @@ import { AppPath } from '@/types/AppPath'
 import { useDispatch } from 'react-redux'
 import { ChangeEventHandler, useState } from 'react'
 import { setGameCols } from '@/store/slices/gameSlice'
+import grid4 from '@/assets/images/other/grid4.svg'
+import grid6 from '@/assets/images/other/grid6.svg'
+import grid10 from '@/assets/images/other/grid10.svg'
 
 const Main = () => {
   const navigate = useNavigate()
   const notification = useNotification()
   const dispatch = useDispatch()
+
+  type GameIcons = {
+    easy: string
+    hard: string
+    veryHard: string
+  }
+
+  const gameIcons: GameIcons = {
+    easy: grid4,
+    hard: grid6,
+    veryHard: grid10,
+  }
 
   const [selectedValue, setSelectedValue] = useState<null | string>(null)
 
@@ -47,7 +62,16 @@ const Main = () => {
         <div className={s.contentWrapper}>
           <div className={s.textWrapper}>
             <h1 className={s.mainTitle}>
-              ИГРА MEMORY: <br /> Запомни свой стек
+              <div className={s.titleDiv}>
+                {'ИГРА MEMORY'.split('').map((letter, index) => (
+                  <span
+                    className={letter !== ' ' ? s.titleSpan : ''}
+                    key={index}>
+                    {letter}
+                  </span>
+                ))}
+              </div>
+              Запомни свой стек
             </h1>
             <p className={s.subtitle}>
               Узнай, насколько хорошо ты можешь запоминать и сочетать пары!
@@ -120,6 +144,14 @@ const Main = () => {
               disabled={!selectedValue}>
               Играть
             </Button>
+            <div className={s.difficultImg}>
+              {selectedValue && (
+                <img
+                  src={gameIcons[selectedValue as keyof GameIcons]}
+                  alt={selectedValue}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>

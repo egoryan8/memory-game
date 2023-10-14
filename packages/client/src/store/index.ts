@@ -6,6 +6,7 @@ import leaderBoardReducer, {
   ILeaderBoardState,
 } from '@/store/slices/leaderBoardSlice'
 import emojiReducer, { IEmojiState } from '@/store/slices/emojiSlice'
+import themeReducer, { IThemeState } from '@/store/slices/themeSlice'
 
 const createStore = (
   getUser: () => Promise<any | Response>,
@@ -16,6 +17,7 @@ const createStore = (
       user: userSliceReducer,
       game: gameSliceReducer,
       leaderBoard: leaderBoardReducer,
+      theme: themeReducer,
       emoji: emojiReducer,
     },
     preloadedState: initialState,
@@ -34,6 +36,7 @@ export interface RootState {
   user: IUserState
   game: IGameState
   leaderBoard: ILeaderBoardState
+  theme: IThemeState
   emoji: IEmojiState
 }
 
