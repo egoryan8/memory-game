@@ -20,36 +20,47 @@ export const allTheme: Handler = async (req, res) => {
   }
 }
 
-export const createPost: Handler = async (req, res) => {
+export const setUserTheme: Handler = async (req, res) => {
   if (req.headers.cookie && req.body) {
     const { theme, user_id } = req.body
 
-    const newPost = await Theme.create({
+    const newTheme = await Theme.create({
       theme,
       user_id,
     })
 
-    res.status(200).json(newPost)
+    res.status(200).json(newTheme)
   } else {
     res.status(404).json({ error: 'Данные не пришли или неполные' })
   }
 }
 
 export const updateTheme: Handler = async (req, res) => {
-  if (req.headers.cookie && req.body) {
-    const { theme, user_id } = req.body
+  const { user_id, theme } = req.body
 
-    const result = await Theme.update({ theme }, { where: { user_id } })
+  try {
+    const [themeInstance, created] = await Theme.upsert(
+      { user_id, theme },
+      { returning: true }
+    )
+    res.json({ themeInstance, created })
+  } catch (error) {
+    res.status(500).send({ error: 'Ошибка при обновлении темы' })
+  }
+}
 
-    if (result[0] === 0) {
-      // Если номер обновленных строк равен 0, значит не было найдено соответствующего пользователя
-      res
-        .status(404)
-        .json({ error: 'Данные не обновлены, возможно неверное user_id' })
+export const getTheme: Handler = async (req, res) => {
+  const { user_id } = req.query
+
+  try {
+    const theme = await Theme.findOne({ where: { user_id } })
+
+    if (theme) {
+      res.json(theme.theme)
     } else {
-      res.status(200).json({ message: 'Тема успешно обновлена' })
+      res.status(404).send({ error: 'Пользователь не найден' })
     }
-  } else {
-    res.status(404).json({ error: 'Данные не пришли или неполные' })
+  } catch (error) {
+    res.status(500).send({ error: 'Ошибка при получении темы' })
   }
 }

@@ -72,7 +72,7 @@ CREATE SEQUENCE themes_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1
 CREATE TABLE themes
 (
     id      integer DEFAULT nextval('themes_id_seq') NOT NULL,
-    user_id integer                                  NOT NULL,
+    user_id integer                                  NOT NULL UNIQUE,
     theme   text                                     NOT NULL,
     CONSTRAINT themes_pkey PRIMARY KEY ("id")
 ) WITH (oids = false);
@@ -144,5 +144,5 @@ VALUES (1, NULL, 1, 7153, '😎');
 INSERT INTO likes
 VALUES (2, 1, NULL, 7153, '😏');
 INSERT INTO themes
-VALUES (1, 1333365, 'Dark'),
-       (2, 1333365, 'light');
+VALUES (1, 1333365, 'dark'),
+       (2, 1333366, 'light');
