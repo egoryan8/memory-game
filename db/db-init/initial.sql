@@ -1,3 +1,8 @@
+DROP TABLE IF EXISTS topics cascade;
+DROP TABLE IF EXISTS comments cascade;
+DROP TABLE IF EXISTS likes cascade;
+DROP TABLE IF EXISTS themes;
+
 --------------------------
 -------Topics table-------
 --------------------------
@@ -54,8 +59,26 @@ CREATE TABLE likes (
     CONSTRAINT likes_pkey PRIMARY KEY (id)
 ) WITH (oids = false);
 
-ALTER TABLE likes ADD CONSTRAINT fk_likes_comment_id FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE;
-ALTER TABLE likes ADD CONSTRAINT fk_likes_topic_id FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE;
+ALTER TABLE likes
+    ADD CONSTRAINT fk_likes_comment_id FOREIGN KEY (comment_id) REFERENCES comments (id) ON DELETE CASCADE;
+ALTER TABLE likes
+    ADD CONSTRAINT fk_likes_topic_id FOREIGN KEY (topic_id) REFERENCES topics (id) ON DELETE CASCADE;
+--------------------------
+-----UserTheme table------
+--------------------------
+
+DROP SEQUENCE IF EXISTS themes_id_seq;
+CREATE SEQUENCE themes_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;
+
+CREATE TABLE themes
+(
+    id      integer DEFAULT nextval('themes_id_seq') NOT NULL,
+    user_id integer                                  NOT NULL UNIQUE,
+    theme   text                                     NOT NULL,
+    CONSTRAINT themes_pkey PRIMARY KEY ("id")
+) WITH (oids = false);
+
+
 --------------------------
 ----Functions&Triggers----
 --------------------------
@@ -98,3 +121,6 @@ INSERT INTO comments VALUES (1122334532, NULL, 12345678, 54434, 'Лена Лен
 INSERT INTO comments VALUES (1122334612, NULL, 12345678, 23332, 'Галя Сталина', 'Современные технологии достигли такого уровня, что новая модель организационной деятельности напрямую зависит от вывода текущих активов. В своём стремлении повысить качество жизни, они забывают, что консультация с широким активом прекрасно подходит для реализации позиций, занимаемых участниками в отношении поставленных задач');
 INSERT INTO likes VALUES (1, 11223344, 1234567, 21332, '😎');
 INSERT INTO likes VALUES (2, 11223345, 1234567, 23332, '😏');
+INSERT INTO themes
+VALUES (1, 1333365, 'dark'),
+       (2, 1333366, 'light');
