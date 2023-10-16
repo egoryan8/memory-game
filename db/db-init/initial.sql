@@ -2,7 +2,6 @@ DROP TABLE IF EXISTS topics cascade;
 DROP TABLE IF EXISTS comments cascade;
 DROP TABLE IF EXISTS likes cascade;
 DROP TABLE IF EXISTS themes;
-
 --------------------------
 -------Topics table-------
 --------------------------
@@ -66,19 +65,15 @@ ALTER TABLE likes
 --------------------------
 -----UserTheme table------
 --------------------------
-
 DROP SEQUENCE IF EXISTS themes_id_seq;
 CREATE SEQUENCE themes_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;
 
-CREATE TABLE themes
-(
+CREATE TABLE themes (
     id      integer DEFAULT nextval('themes_id_seq') NOT NULL,
     user_id integer                                  NOT NULL UNIQUE,
     theme   text                                     NOT NULL,
-    CONSTRAINT themes_pkey PRIMARY KEY ("id")
+    CONSTRAINT themes_pkey PRIMARY KEY (id)
 ) WITH (oids = false);
-
-
 --------------------------
 ----Functions&Triggers----
 --------------------------
