@@ -126,6 +126,10 @@ button {
   border: none;
 }
 
+b {
+  font-weight: 900;
+}
+
 h1 {
   font-size: var(--font-size-big);
   font-weight: 900;
@@ -140,18 +144,14 @@ h2 {
   margin: 15px 0;
 }
 
+h3 {
+  font-size: var(--font-size-medium);
+  font-weight: 900;
+}
+
 .ellipsis-content {
   display: block;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-
-.spinner {
-  font-size: 4rem;
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

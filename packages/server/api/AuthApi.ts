@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URI = 'https://ya-praktikum.tech/api/v2'
+export const BASE_URI = 'https://ya-praktikum.tech/api/v2'
 
 function AuthApi(cookie: string | undefined) {
   const getUser = async () => {

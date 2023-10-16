@@ -1,6 +1,7 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
 import { Topic } from './models/forum/topic'
 import { Comment } from './models/forum/comment'
+import { Like } from './models/forum/like'
 
 const {
   POSTGRES_HOST,
@@ -17,12 +18,12 @@ const sequelizeOptions: SequelizeOptions = {
   password: POSTGRES_PASSWORD || '11223344',
   database: POSTGRES_DB || 'memorybase',
   port: Number(POSTGRES_PORT),
-  models: [Topic, Comment],
+  models: [Topic, Comment, Like],
 }
 
 export async function createSequelizeConnection() {
   const sequelize = new Sequelize(sequelizeOptions)
-  sequelize.addModels([Topic, Comment])
+  sequelize.addModels([Topic, Comment, Like])
 
   try {
     await sequelize.authenticate()

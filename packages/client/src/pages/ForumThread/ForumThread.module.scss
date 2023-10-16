@@ -15,12 +15,6 @@
   text-align: center;
 }
 
-.title {
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #E5E5E5;
-}
-
 .info {
   width: 100%;
   display: flex;
@@ -71,6 +65,7 @@
 .cards {
   display: grid;
   row-gap: 24px;
+  padding-top: 20px;
 }
 
 .card {
@@ -91,12 +86,18 @@
   border-right: 1px solid #E5E5E5;
 }
 
-.avatar {
+.forumAvatar {
   width: 85px;
   height: 85px;
   margin-bottom: 12px;
-  background: #FF4B4B;
+  background: var(--color-background-secondary);
   border-radius: 50%;
+  color: var(--color-text-white);
+  font-size: 40px;
+  font-weight: 900;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .avatarPurple {

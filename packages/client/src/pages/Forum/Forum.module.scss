@@ -9,84 +9,73 @@
   align-self: center;
   flex-grow: 1;
   width: 100%;
-  max-width: 630px;
+  max-width: 1024px;
   padding: 55px 15px;
-  text-align: center;
 }
 
 .title {
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.newTheme {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 20px;
-
-  button {
-    min-height: auto;
-    width: 142px;
-  }
+  text-align: center;
 }
 
 .container {
   width: 100%;
+  border-top: 1px solid var(--color-border);
+  padding-top: 20px;
 
-  a {
+  .topic {
     min-height: 60px;
-    padding: 8px 28px 8px 21px;
+    padding: 30px;
     display: flex;
     align-items: center;
+    gap: 30px;
     border-radius: 16px;
     border: 1px solid #FFF;
+    margin-bottom: 20px;
+
+    .topicBody {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding-right: 20px;
+      border-right: 1px solid var(--color-border);
+
+      h3 {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        text-transform: uppercase;
+        line-height: 25px;
+      }
+
+      a {
+        text-decoration: underline;
+        color: var(--button-color-background-secondary);
+        width: fit-content;
+      }
+    }
 
     &:hover {
-      border: 1px solid #F0F0F0;
+      border: 1px solid var(--color-border);
+      background: var(--opacity);
     }
   }
 }
 
-.card {
-  padding-bottom: 1px;
-}
-
-.details {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-
-}
-
-.topic-ico {
-  margin-right: 20px;
-}
-
-.topic-name {
-  color: #3C3C3C;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  letter-spacing: 0.51px;
-}
-
-.last-mess {
-  color: #777;
+.lastComment {
   font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: 0.42px;
+  color: var(--color-text-gray);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 800px;
 }
 
-.answers {
-  margin-left: auto;
-  color: #777;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: 0.51px;
+.commentsCount {
+  color: var(--color-text-gray);
+  text-align: center;
+}
+
+.topicCreated {
+  color: var(--color-text-gray);
+  font-size: 12px;
 }
