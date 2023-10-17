@@ -1,9 +1,9 @@
 import { Router } from 'express'
-import { addLike, allLikes } from '../services/forum/likes'
+import { addLike, removeLike } from '../services/forum/likes'
 
 const likeRouter = Router()
 
-likeRouter.get('/', allLikes)
-likeRouter.get('/add', addLike)
+likeRouter.post('/add', addLike)
+likeRouter.post('/remove', removeLike)
 
 export { likeRouter }

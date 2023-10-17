@@ -11,10 +11,17 @@
     height: 35px;
     border: 1px solid var(--color-border);
     border-radius: 12px;
+    cursor: pointer;
+    background: var(--color-background);
 
     span {
       font-size: 14px;
     }
+  }
+
+  .active {
+    border: 1px solid var(--button-color-background-secondary);
+    color: var(--button-color-background-secondary);
   }
 }
 
@@ -25,10 +32,10 @@
   height: 35px;
   border: 1px solid var(--color-border);
   border-radius: 12px;
-  cursor: pointer;
   position: relative;
   background: var(--color-background);
   gap: 5px;
+  cursor: pointer;
 
   .emojiList {
     position: absolute;
@@ -43,5 +50,10 @@
     z-index: 1;
     border: 1px solid var(--color-border);
     gap: 4px;
+    cursor: default;
+
+    .emoji {
+      cursor: pointer;
+    }
   }
 }
