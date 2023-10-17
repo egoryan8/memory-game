@@ -21,7 +21,7 @@
 
   --disabled: #afafaf;
 
-  --opacity: rgba(0, 0, 0, 0.05);
+  --opacity: rgba(0, 0, 0, 0.03);
 
   /* Form */
   --forms-color-background: var(--color-background);
@@ -57,7 +57,6 @@ html,
 body,
 #root {
   height: 100%;
-  background-color: var(--color-background);
 }
 
 html {
@@ -65,6 +64,7 @@ html {
   font-size: var(--font-size-base);
   font-weight: 400;
   color: var(--color-text);
+  background: repeating-conic-gradient(from 0, rgba(0, 0, 0, 0.03) 0% 25%, #ffffff 0% 50%) 50%/40px 40px fixed;
 }
 
 h1,
@@ -112,6 +112,14 @@ select {
   vertical-align: middle;
 }
 
+input,
+textarea {
+  padding: 12px 15px;
+  outline: none;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+
 input:disabled {
   color: var(--disabled);
 }
@@ -124,6 +132,14 @@ button {
   color: inherit;
   cursor: pointer;
   border: none;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+b {
+  font-weight: 900;
 }
 
 h1 {
@@ -140,6 +156,11 @@ h2 {
   margin: 15px 0;
 }
 
+h3 {
+  font-size: var(--font-size-medium);
+  font-weight: 900;
+}
+
 .ellipsis-content {
   display: block;
   overflow: hidden;
@@ -147,11 +168,17 @@ h2 {
   text-overflow: ellipsis;
 }
 
-.spinner {
-  font-size: 4rem;
-  height: 100vh;
-  width: 100vw;
+.page {
+  height: 100%;
+  width: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+}
+
+.content-wrapper {
+  align-self: center;
+  flex-grow: 1;
+  width: 100%;
+  max-width: 1024px;
+  padding: 145px 15px 55px 15px;
 }

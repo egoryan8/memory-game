@@ -6,9 +6,10 @@
 
 .inputShell {
   display: flex;
-  border: 2px solid var(--forms-color-border);
+  border: 1px solid var(--forms-color-border);
   border-radius: 12px;
-  background: #f7f7f7;
+  backdrop-filter: blur(3px);
+  transition: background 0.3s, backdrop-filter 0.3s;
 
   input {
     flex: 1;

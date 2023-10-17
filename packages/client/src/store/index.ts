@@ -5,6 +5,7 @@ import gameSliceReducer, { IGameState } from '@/store/slices/gameSlice'
 import leaderBoardReducer, {
   ILeaderBoardState,
 } from '@/store/slices/leaderBoardSlice'
+import emojiReducer, { IEmojiState } from '@/store/slices/emojiSlice'
 import themeReducer, { IThemeState } from '@/store/slices/themeSlice'
 
 const createStore = (
@@ -17,6 +18,7 @@ const createStore = (
       game: gameSliceReducer,
       leaderBoard: leaderBoardReducer,
       theme: themeReducer,
+      emoji: emojiReducer,
     },
     preloadedState: initialState,
     devTools: process.env.NODE_ENV === 'development',
@@ -35,6 +37,7 @@ export interface RootState {
   game: IGameState
   leaderBoard: ILeaderBoardState
   theme: IThemeState
+  emoji: IEmojiState
 }
 
 export type AppDispatch = ReturnType<typeof createStore>['dispatch']

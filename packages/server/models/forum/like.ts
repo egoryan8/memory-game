@@ -1,14 +1,18 @@
-import { AllowNull, Column, Model, Table, DataType } from 'sequelize-typescript'
+import {
+  AllowNull,
+  Column,
+  Model,
+  Table,
+  DataType,
+  BelongsTo,
+} from 'sequelize-typescript'
+import { Comment } from './comment'
 
 @Table({ tableName: 'likes', timestamps: false })
 export class Like extends Model {
   @AllowNull(false)
-  @Column(DataType.TEXT)
+  @Column(DataType.INTEGER)
   comment_id!: number
-
-  @AllowNull(false)
-  @Column(DataType.TEXT)
-  topic_id!: number
 
   @AllowNull(false)
   @Column(DataType.INTEGER)
@@ -17,4 +21,7 @@ export class Like extends Model {
   @AllowNull(false)
   @Column(DataType.TEXT)
   emoji!: string
+
+  @BelongsTo(() => Comment, 'comment_id')
+  comment!: Comment
 }

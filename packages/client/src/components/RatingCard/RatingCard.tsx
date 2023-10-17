@@ -16,7 +16,7 @@ const RatingCard = ({ place, avatar, player, score }: RatingCardProps) => {
   }
 
   return (
-    <li className={`${s.player} ${s.user}`}>
+    <div className={`${s.player} ${s.user}`}>
       <div className={s.left}>
         <div className={s.position}>{icons[place] || place}</div>
         {avatar ? (
@@ -29,7 +29,7 @@ const RatingCard = ({ place, avatar, player, score }: RatingCardProps) => {
       <div className={s.score}>
         {declensionWords(score, ['очко', 'очка', 'очков'])}
       </div>
-    </li>
+    </div>
   )
 }
 

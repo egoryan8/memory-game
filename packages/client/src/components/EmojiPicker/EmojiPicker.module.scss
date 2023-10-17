@@ -1,0 +1,47 @@
+.selectedEmojiWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7.5px;
+
+  .selectedEmoji {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0 10px;
+    height: 35px;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+
+    span {
+      font-size: 14px;
+    }
+  }
+}
+
+.emojiPicker {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  height: 35px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  background: var(--color-background);
+  gap: 5px;
+
+  .emojiList {
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    width: 200px;
+    left: -1px;
+    bottom: 25px;
+    background: var(--color-background);
+    padding: 10px;
+    border-radius: 12px 12px 12px 0;
+    z-index: 1;
+    border: 1px solid var(--color-border);
+    gap: 4px;
+  }
+}

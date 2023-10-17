@@ -40,6 +40,31 @@ interface ILeaderBoardParams {
   limit: number
 }
 
+interface IEmojiParams {
+  userId: number
+  topicId: number
+  commentId: number
+}
+
+interface IEmojiResult {
+  config: {
+    userId: number
+    topicId: number
+    commentId: number
+    emojiId: number
+    emojiName: string
+  }
+  count: number
+  isSelected: boolean
+}
+
+interface IEmojiData {
+  userId: number
+  topicId: number
+  commentId: number
+  emojiId: number
+}
+
 //
 // Context
 //

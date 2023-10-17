@@ -38,11 +38,11 @@ const LeaderBoard: React.FC = () => {
   })
 
   return (
-    <div className={s.page}>
+    <div className="page">
       <Navigation />
-      <div className={s.leaderboard}>
-        <h1 className={s.title}>Рейтинг игроков</h1>
-        <ul>{bestPlayers}</ul>
+      <div className="content-wrapper">
+        <h1>Рейтинг игроков</h1>
+        <div className={s.container}>{bestPlayers}</div>
       </div>
     </div>
   )

@@ -2,60 +2,60 @@ DROP TABLE IF EXISTS topics cascade;
 DROP TABLE IF EXISTS comments cascade;
 DROP TABLE IF EXISTS likes cascade;
 DROP TABLE IF EXISTS themes;
-
 --------------------------
 -------Topics table-------
 --------------------------
+DROP TABLE IF EXISTS topics;
 DROP SEQUENCE IF EXISTS topics_id_seq;
 CREATE SEQUENCE topics_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;
 
-CREATE TABLE topics
-(
-    id         integer DEFAULT nextval('topics_id_seq') NOT NULL,
-    body       text                                     NOT NULL,
-    user_id    integer                                  NOT NULL,
+CREATE TABLE topics (
+    id integer DEFAULT nextval('topics_id_seq') NOT NULL,
+    title text NOT NULL,
+    body text NOT NULL,
+    user_id integer NOT NULL,
+    user_name text NOT NULL,
     created_at timestamptz,
     updated_at timestamptz,
-    CONSTRAINT topics_pkey PRIMARY KEY ("id")
+    CONSTRAINT topics_pkey PRIMARY KEY (id)
 ) WITH (oids = false);
 --------------------------
 ------Comments table------
 --------------------------
 DROP SEQUENCE IF EXISTS comments_id_seq;
+DROP SEQUENCE IF EXISTS comments_id_seq;
 CREATE SEQUENCE comments_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;
 
-CREATE TABLE comments
-(
-    id         integer DEFAULT nextval('comments_id_seq') NOT NULL,
+CREATE TABLE comments (
+    id integer DEFAULT nextval('comments_id_seq') NOT NULL,
     comment_id integer,
-    topic_id   integer,
-    user_id    integer                                    NOT NULL,
-    body       text                                       NOT NULL,
+    topic_id integer,
+    user_id integer NOT NULL,
+    user_name text NOT NULL,
+    body text NOT NULL,
     created_at timestamptz,
     updated_at timestamptz,
     CONSTRAINT comments_pkey PRIMARY KEY (id)
 ) WITH (oids = false);
 
-ALTER TABLE comments
-    ADD CONSTRAINT fk_comments_comment_id FOREIGN KEY (comment_id) REFERENCES comments (id) ON DELETE CASCADE;
-ALTER TABLE comments
-    ADD CONSTRAINT fk_comments_topic_id FOREIGN KEY (topic_id) REFERENCES topics (id) ON DELETE CASCADE;
+ALTER TABLE comments ADD CONSTRAINT fk_comments_comment_id FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE;
+ALTER TABLE comments ADD CONSTRAINT fk_comments_topic_id FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE;
 --------------------------
 -------Likes table--------
 --------------------------
+DROP TABLE IF EXISTS likes;
 DROP SEQUENCE IF EXISTS likes_id_seq;
 CREATE SEQUENCE likes_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;
 
-CREATE TABLE likes
-(
-    id         integer DEFAULT nextval('likes_id_seq') NOT NULL,
+CREATE TABLE likes (
+    id integer DEFAULT nextval('likes_id_seq') NOT NULL,
     comment_id integer,
-    topic_id   integer,
-    user_id    integer                                 NOT NULL,
-    emoji      text                                    NOT NULL,
+    topic_id integer,
+    user_id integer NOT NULL,
+    emoji text NOT NULL,
     created_at timestamptz,
     updated_at timestamptz,
-    CONSTRAINT likes_pkey PRIMARY KEY ("id")
+    CONSTRAINT likes_pkey PRIMARY KEY (id)
 ) WITH (oids = false);
 
 ALTER TABLE likes
@@ -65,84 +65,57 @@ ALTER TABLE likes
 --------------------------
 -----UserTheme table------
 --------------------------
-
 DROP SEQUENCE IF EXISTS themes_id_seq;
 CREATE SEQUENCE themes_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;
 
-CREATE TABLE themes
-(
+CREATE TABLE themes (
     id      integer DEFAULT nextval('themes_id_seq') NOT NULL,
     user_id integer                                  NOT NULL UNIQUE,
     theme   text                                     NOT NULL,
-    CONSTRAINT themes_pkey PRIMARY KEY ("id")
+    CONSTRAINT themes_pkey PRIMARY KEY (id)
 ) WITH (oids = false);
-
-
 --------------------------
 ----Functions&Triggers----
 --------------------------
 CREATE OR REPLACE FUNCTION set_created_at()
-    RETURNS TRIGGER AS
-$$
+  RETURNS TRIGGER AS $$
 BEGIN
-    NEW.created_at = NOW();
-    RETURN NEW;
+  NEW.created_at = NOW();
+  RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER set_created_at_comments_trigger
-    BEFORE INSERT
-    ON comments
-    FOR EACH ROW
-EXECUTE FUNCTION set_created_at();
-CREATE TRIGGER set_created_at_topics_trigger
-    BEFORE INSERT
-    ON topics
-    FOR EACH ROW
-EXECUTE FUNCTION set_created_at();
-CREATE TRIGGER set_created_at_likes_trigger
-    BEFORE INSERT
-    ON likes
-    FOR EACH ROW
-EXECUTE FUNCTION set_created_at();
-
+CREATE TRIGGER set_created_at_comments_trigger BEFORE INSERT ON comments FOR EACH ROW EXECUTE FUNCTION set_created_at();
+CREATE TRIGGER set_created_at_topics_trigger BEFORE INSERT ON topics FOR EACH ROW EXECUTE FUNCTION set_created_at();
+CREATE TRIGGER set_created_at_likes_trigger BEFORE INSERT ON likes FOR EACH ROW EXECUTE FUNCTION set_created_at();
 
 CREATE OR REPLACE FUNCTION set_updated_at()
-    RETURNS TRIGGER AS
-$$
+  RETURNS TRIGGER AS $$
 BEGIN
-    NEW.updated_at = NOW();
-    RETURN NEW;
+  NEW.updated_at = NOW();
+  RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER set_updated_at_comments_trigger
-    BEFORE UPDATE
-    ON comments
-    FOR EACH ROW
-EXECUTE FUNCTION set_updated_at();
-CREATE TRIGGER set_updated_at_topics_trigger
-    BEFORE UPDATE
-    ON topics
-    FOR EACH ROW
-EXECUTE FUNCTION set_updated_at();
-CREATE TRIGGER set_updated_at_likes_trigger
-    BEFORE UPDATE
-    ON likes
-    FOR EACH ROW
-EXECUTE FUNCTION set_updated_at();
-
+CREATE TRIGGER set_updated_at_comments_trigger BEFORE UPDATE ON comments FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+CREATE TRIGGER set_updated_at_topics_trigger BEFORE UPDATE ON topics FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+CREATE TRIGGER set_updated_at_likes_trigger BEFORE UPDATE ON likes FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 --------------------------
 -------Initial data-------
 --------------------------
-INSERT INTO topics
-VALUES (1, 'Topic', 7153);
-INSERT INTO comments
-VALUES (1, NULL, 1, 7153, 'Some comment');
-INSERT INTO likes
-VALUES (1, NULL, 1, 7153, '😎');
-INSERT INTO likes
-VALUES (2, 1, NULL, 7153, '😏');
+INSERT INTO topics VALUES (1234567, 'Нашествие белок', 'Значимость этих проблем настолько очевидна, что постоянный количественный рост и сфера нашей активности обеспечивает широкому кругу (специалистов) участие в формировании приоретизации разума над эмоциями. В частности, граница обучения кадров требует определения и уточнения существующих финансовых и административных условий. Есть над чем задуматься: сделанные на базе интернет-аналитики выводы будут ассоциативно распределены по отраслям.', 7153, 'Burgun Jorich');
+INSERT INTO topics VALUES (12345677, 'Поиск Жилья', 'Значимость этих проблем настолько очевидна, что постоянный количественный рост и сфера нашей активности обеспечивает широкому кругу (специалистов) участие в формировании приоретизации разума над эмоциями. В частности, граница обучения кадров требует определения и уточнения существующих финансовых и административных условий. Есть над чем задуматься: сделанные на базе интернет-аналитики выводы будут ассоциативно распределены по отраслям.', 7153, 'Burgun Jorich');
+INSERT INTO topics VALUES (12345678, 'Как это было?', 'Значимость этих проблем настолько очевидна, что постоянный количественный рост и сфера нашей активности обеспечивает широкому кругу (специалистов) участие в формировании приоретизации разума над эмоциями. В частности, граница обучения кадров требует определения и уточнения существующих финансовых и административных условий. Есть над чем задуматься: сделанные на базе интернет-аналитики выводы будут ассоциативно распределены по отраслям.', 7153, 'Burgun Jorich');
+INSERT INTO topics VALUES (12345679, 'Когда будет завтра?', 'Значимость этих проблем настолько очевидна, что постоянный количественный рост и сфера нашей активности обеспечивает широкому кругу (специалистов) участие в формировании приоретизации разума над эмоциями. В частности, граница обучения кадров требует определения и уточнения существующих финансовых и административных условий. Есть над чем задуматься: сделанные на базе интернет-аналитики выводы будут ассоциативно распределены по отраслям.', 7153, 'Burgun Jorich');
+INSERT INTO topics VALUES (12345673, 'Что такое зефир?', 'Значимость этих проблем настолько очевидна, что постоянный количественный рост и сфера нашей активности обеспечивает широкому кругу (специалистов) участие в формировании приоретизации разума над эмоциями. В частности, граница обучения кадров требует определения и уточнения существующих финансовых и административных условий. Есть над чем задуматься: сделанные на базе интернет-аналитики выводы будут ассоциативно распределены по отраслям.', 7153, 'Burgun Jorich');
+INSERT INTO comments VALUES (11223344, NULL, 1234567, 32323, 'Федя Жуков', 'Современные технологии достигли такого уровня, что новая модель организационной деятельности напрямую зависит от вывода текущих активов. В своём стремлении повысить качество жизни, они забывают, что консультация с широким активом прекрасно подходит для реализации позиций, занимаемых участниками в отношении поставленных задач');
+INSERT INTO comments VALUES (11223345, NULL, 1234567, 43433, 'Жора Федин', 'Современные технологии достигли такого уровня, что новая модель организационной деятельности напрямую зависит от вывода текущих активов. В своём стремлении повысить качество жизни, они забывают, что консультация с широким активом прекрасно подходит для реализации позиций, занимаемых участниками в отношении поставленных задач');
+INSERT INTO comments VALUES (11223346, NULL, 1234567, 21332, 'Дима Жижин', 'Современные технологии достигли такого уровня, что новая модель организационной деятельности напрямую зависит от вывода текущих активов. В своём стремлении повысить качество жизни, они забывают, что консультация с широким активом прекрасно подходит для реализации позиций, занимаемых участниками в отношении поставленных задач');
+INSERT INTO comments VALUES (112233443, NULL, 12345677, 54344, 'Сеня Губин', 'Современные технологии достигли такого уровня, что новая модель организационной деятельности напрямую зависит от вывода текущих активов. В своём стремлении повысить качество жизни, они забывают, что консультация с широким активом прекрасно подходит для реализации позиций, занимаемых участниками в отношении поставленных задач');
+INSERT INTO comments VALUES (1122334532, NULL, 12345678, 54434, 'Лена Ленина', 'Современные технологии достигли такого уровня, что новая модель организационной деятельности напрямую зависит от вывода текущих активов. В своём стремлении повысить качество жизни, они забывают, что консультация с широким активом прекрасно подходит для реализации позиций, занимаемых участниками в отношении поставленных задач');
+INSERT INTO comments VALUES (1122334612, NULL, 12345678, 23332, 'Галя Сталина', 'Современные технологии достигли такого уровня, что новая модель организационной деятельности напрямую зависит от вывода текущих активов. В своём стремлении повысить качество жизни, они забывают, что консультация с широким активом прекрасно подходит для реализации позиций, занимаемых участниками в отношении поставленных задач');
+INSERT INTO likes VALUES (1, 11223344, 1234567, 21332, '😎');
+INSERT INTO likes VALUES (2, 11223345, 1234567, 23332, '😏');
 INSERT INTO themes
 VALUES (1, 1333365, 'dark'),
        (2, 1333366, 'light');

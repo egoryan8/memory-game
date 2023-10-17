@@ -2,6 +2,10 @@
   display: flex;
   justify-content: center;
   background-color: var(--color-background-secondary);
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+  height: 90px;
 }
 
 .control {

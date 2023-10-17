@@ -23,4 +23,8 @@ export const mockInitialState = {
   theme: {
     theme: 'dark',
   },
+  emoji: {
+    emojiList: null,
+    error: null,
+  },
 }

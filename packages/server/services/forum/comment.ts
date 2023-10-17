@@ -1,32 +1,56 @@
 import type { Handler } from 'express'
 import { Comment } from '../../models/forum/comment'
+import { Like } from '../../models/forum/like'
+import { Sequelize } from 'sequelize-typescript'
 
-export const allComments: Handler = async (req, res) => {
-  if (req.headers.cookie) {
-    try {
-      const comments = await Comment.findAll()
+export const allComments: Handler = async (_req, res) => {
+  try {
+    const comments = await Comment.findAll({
+      include: Like,
+    })
 
-      if (comments) {
-        res.status(200).json({ comments })
-      } else {
-        res.status(404).json({ reason: 'КОММЕНТАРИЕВ НЕТ!' })
-      }
-    } catch (error) {
-      console.log(error)
-      res.status(500).json({ error: 'Internal Server Error' })
+    if (comments) {
+      res.status(200).json({ comments })
+    } else {
+      res.status(404).json({ reason: 'КОММЕНТАРИЕВ НЕТ!' })
     }
-  } else {
-    res.status(403).json({ message: 'Пользователь не авторизован!' })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: 'Internal Server Error' })
+  }
+}
+
+export const commentsByTopicId: Handler = async (req, res) => {
+  const topicId = req.params.topicId
+
+  try {
+    const comments = await Comment.findAll({
+      where: { topic_id: topicId },
+      order: [[Sequelize.col('created_at'), 'DESC']],
+      include: Like,
+    })
+
+    if (comments) {
+      res.status(200).json({ comments })
+    } else {
+      res.status(404).json({ reason: 'Комментариев для данного топика нет' })
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: 'Внутренняя ошибка сервера' })
   }
 }
 
 export const createComment: Handler = async (req, res) => {
-  if (req.headers.cookie && req.body) {
-    const { topic_id, user_id, body } = req.body
+  const user = res.locals.user
+
+  if (req.body) {
+    const { topic_id, body } = req.body
 
     const post = await Comment.create({
       topic_id,
-      user_id,
+      user_id: user.id,
+      user_name: `${user.first_name} ${user.second_name}`,
       body,
     })
 
