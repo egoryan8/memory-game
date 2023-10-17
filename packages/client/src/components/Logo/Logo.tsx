@@ -1,9 +1,14 @@
-import React, { useState, useEffect, FC } from 'react'
+import React, { useState, useEffect } from 'react'
 import { randomSortedIcons } from '@/config/gameConfig'
 import defaultLogo from '@/assets/images/other/default-logo-white.svg'
 import style from './Logo.module.scss'
 
-const LogoFlipper: FC = () => {
+interface logoProps {
+  logo?: boolean
+  letter?: string
+}
+
+const LogoFlipper: React.FC<logoProps> = ({ logo = true, letter = null }) => {
   const [isFlipped, setIsFlipped] = useState<boolean>(false)
   const [backLogo, setBackLogo] = useState<string | null>(null)
   const [isHovered, setIsHovered] = useState<boolean>(false)
@@ -23,7 +28,7 @@ const LogoFlipper: FC = () => {
   useEffect(() => {
     let timer: NodeJS.Timeout
     if (isFlipped) {
-      timer = setTimeout(() => setIsFlipped(false), 2000)
+      timer = setTimeout(() => setIsFlipped(false), 3000)
     }
 
     return () => clearTimeout(timer)
@@ -32,15 +37,16 @@ const LogoFlipper: FC = () => {
   useEffect(() => {
     let showTimer: NodeJS.Timeout
 
-    if (!isHovered && !isFlipped) {
-      showTimer = setInterval(() => handleClick(), 15000)
+    if (!isHovered && !isFlipped && !logo) {
+      const randomInterval = Math.floor(Math.random() * (30000 - 10000) + 5000)
+      showTimer = setInterval(() => handleClick(), randomInterval)
     }
 
     return () => clearInterval(showTimer)
   }, [isHovered, isFlipped])
 
   return (
-    <div className={style.logoContainer}>
+    <div className={logo ? style.logoContainer : style.noLogo}>
       <div
         className={`${style.logoFlipper} ${isFlipped && style.flipped}`}
         onClick={handleClick}>
@@ -48,13 +54,13 @@ const LogoFlipper: FC = () => {
           className={style.logoFront}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}>
-          <img src={defaultLogo} alt="Front logo" />
+          {logo ? <img src={defaultLogo} alt="Front logo" /> : letter}
         </div>
         <div className={style.logoBack}>
           {backLogo && <img src={backLogo} alt="Back logo" />}
         </div>
       </div>
-      Memory game
+      {logo && 'Memory game'}
     </div>
   )
 }

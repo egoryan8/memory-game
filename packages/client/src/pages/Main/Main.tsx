@@ -10,6 +10,7 @@ import { setGameCols } from '@/store/slices/gameSlice'
 import grid4 from '@/assets/images/other/grid4.svg'
 import grid6 from '@/assets/images/other/grid6.svg'
 import grid10 from '@/assets/images/other/grid10.svg'
+import Logo from '@/components/Logo/Logo'
 
 const Main = () => {
   const navigate = useNavigate()
@@ -63,13 +64,17 @@ const Main = () => {
           <div className={s.textWrapper}>
             <h1 className={s.mainTitle}>
               <div className={s.titleDiv}>
-                {'ИГРА MEMORY'.split('').map((letter, index) => (
-                  <span
-                    className={letter !== ' ' ? s.titleSpan : ''}
-                    key={index}>
-                    {letter}
-                  </span>
-                ))}
+                {'ИГРА MEMORY'.split('').map((letter, index) =>
+                  letter !== ' ' ? (
+                    <Logo logo={false} letter={letter} key={index} />
+                  ) : (
+                    <span
+                      className={letter !== ' ' ? s.titleSpan : ''}
+                      key={index}>
+                      {letter}
+                    </span>
+                  )
+                )}
               </div>
               Запомни свой стек
             </h1>

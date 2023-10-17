@@ -1,10 +1,20 @@
 @import '../../assets/styles/mixins';
 
+.noLogo {
+  width: 55px;
+  height: 55px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 5px;
+  border-radius: 5px;
+  color: var(--color-text-white);
+}
+
 .logoContainer {
   @include flex-position-center;
   width: 175px;
   height: 45px;
-  gap: 10px;
   color: var(--color-text-white);
   text-transform: uppercase;
   font-weight: 900;
@@ -27,8 +37,11 @@
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
+  background: var(--button-color-background);
+  border-radius: 5px;
   & img {
-    max-height: 45px;
+    max-height: 35px;
+    max-width: 35px;
   }
 }
 
