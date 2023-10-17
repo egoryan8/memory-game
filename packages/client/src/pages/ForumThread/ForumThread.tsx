@@ -147,7 +147,11 @@ const ForumThread: React.FC = () => {
                   <div className={s['message-block']}>
                     <p className={s.message}>{body}</p>
                     <div className={s.info}>
-                      <EmojiPicker data={likes} />
+                      <EmojiPicker
+                        data={likes}
+                        commentId={id}
+                        updateData={getData}
+                      />
                     </div>
                   </div>
                 </li>
