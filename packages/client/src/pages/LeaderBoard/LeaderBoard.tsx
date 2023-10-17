@@ -27,6 +27,7 @@ const LeaderBoard: React.FC = () => {
     return (
       <RatingCard
         key={userData.id}
+        userId={userData.id}
         place={index + 1}
         player={userData.display_name || userData.first_name}
         avatar={

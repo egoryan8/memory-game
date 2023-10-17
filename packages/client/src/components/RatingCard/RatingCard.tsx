@@ -1,14 +1,24 @@
 import { declensionWords } from '@/utils/declensionWords'
 import s from './RatingCard.module.scss'
+import { useAppSelector } from '@/hooks/useAppSelector'
+import { userSelector } from '@/store/slices/userSlice'
 
 interface RatingCardProps {
   place: number
   player: string
   score: number
+  userId?: number
   avatar?: string | null
 }
 
-const RatingCard = ({ place, avatar, player, score }: RatingCardProps) => {
+const RatingCard = ({
+  userId,
+  place,
+  avatar,
+  player,
+  score,
+}: RatingCardProps) => {
+  const user = useAppSelector(userSelector)
   const icons: { [key: number]: string } = {
     1: '🥇',
     2: '🥈',
@@ -16,7 +26,10 @@ const RatingCard = ({ place, avatar, player, score }: RatingCardProps) => {
   }
 
   return (
-    <div className={`${s.player} ${s.user}`}>
+    <div
+      className={`${s.player} ${
+        userId === user.data?.id ? s.currentUser : s.user
+      }`}>
       <div className={s.left}>
         <div className={s.position}>{icons[place] || place}</div>
         {avatar ? (
