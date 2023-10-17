@@ -18,6 +18,8 @@ const ForumThread: React.FC = () => {
   const [comments, setComments] = useState<Comment[]>([])
   const [showForm, setShowForm] = useState<boolean>(false)
   const [newComment, setNewComment] = useState('')
+  const [scrolled, setScrolled] = useState(false)
+  const formClass = showForm ? s.slideDown : s.slideUp
 
   const getData = async () => {
     try {
@@ -75,6 +77,22 @@ const ForumThread: React.FC = () => {
     getData()
   }, [])
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY >= 250) {
+        setScrolled(true)
+      } else {
+        setScrolled(false)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
   return (
     <div className="page">
       <Navigation />
@@ -82,7 +100,10 @@ const ForumThread: React.FC = () => {
         <Spinner />
       ) : (
         <div className="content-wrapper">
-          <div className={s.topicTitle}>
+          <div
+            className={
+              scrolled ? `${s.topicTitle} ${s.scrolled}` : s.topicTitle
+            }>
             <h1>
               <Link to={'/forum'}>Форум</Link>/<div>{topic?.title}</div>
             </h1>
@@ -102,22 +123,22 @@ const ForumThread: React.FC = () => {
           <Button onClick={showFormHandler}>
             {!showForm ? 'Написать комментарий' : 'Отмена'}
           </Button>
-          {showForm && (
-            <form className={s.commentForm} onSubmit={submitForm}>
-              <textarea
-                placeholder="Сообщение"
-                value={newComment}
-                onChange={event => setNewComment(event.target.value)}
-              />
-              <Button
-                className={s.submitButton}
-                theme="orange"
-                type="submit"
-                disabled={!newComment}>
-                Отправить
-              </Button>
-            </form>
-          )}
+          <form
+            className={`${s.commentForm} ${formClass}`}
+            onSubmit={submitForm}>
+            <textarea
+              placeholder="Сообщение"
+              value={newComment}
+              onChange={event => setNewComment(event.target.value)}
+            />
+            <Button
+              className={s.submitButton}
+              theme="orange"
+              type="submit"
+              disabled={!newComment}>
+              Отправить
+            </Button>
+          </form>
           <div className={s.commentsCount}>
             <b>
               {comments.length

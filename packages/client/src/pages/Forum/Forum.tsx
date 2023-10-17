@@ -13,6 +13,9 @@ const Forum: React.FC = () => {
   const [topics, setTopics] = useState<Topic[]>([])
   const [showForm, setShowForm] = useState<boolean>(false)
   const [newTopic, setNewTopic] = useState({ title: '', body: '' })
+  const formClass = showForm ? s.slideDown : s.slideUp
+
+  console.log(formClass)
 
   const getData = async () => {
     try {
@@ -68,32 +71,30 @@ const Forum: React.FC = () => {
           <Button onClick={showFormHandler}>
             {!showForm ? 'Создать топик' : 'Отмена'}
           </Button>
-          {showForm && (
-            <form className={s.topicForm} onSubmit={submitForm}>
-              <input
-                type="text"
-                placeholder="Заголовок"
-                value={newTopic.title}
-                onChange={event =>
-                  setNewTopic({ ...newTopic, title: event.target.value })
-                }
-              />
-              <textarea
-                placeholder="Сообщение"
-                value={newTopic.body}
-                onChange={event =>
-                  setNewTopic({ ...newTopic, body: event.target.value })
-                }
-              />
-              <Button
-                className={s.submitButton}
-                theme="orange"
-                type="submit"
-                disabled={!newTopic.body || !newTopic.title}>
-                Создать топик
-              </Button>
-            </form>
-          )}
+          <form className={`${s.topicForm} ${formClass}`} onSubmit={submitForm}>
+            <input
+              type="text"
+              placeholder="Заголовок"
+              value={newTopic.title}
+              onChange={event =>
+                setNewTopic({ ...newTopic, title: event.target.value })
+              }
+            />
+            <textarea
+              placeholder="Сообщение"
+              value={newTopic.body}
+              onChange={event =>
+                setNewTopic({ ...newTopic, body: event.target.value })
+              }
+            />
+            <Button
+              className={s.submitButton}
+              theme="orange"
+              type="submit"
+              disabled={!newTopic.body || !newTopic.title}>
+              Создать топик
+            </Button>
+          </form>
           <div className={s.container}>
             {topics.map(item => {
               const { id, title, body, comments, user_name, created_at } = item
