@@ -26,7 +26,6 @@ export class Topic extends Model {
   @Column(DataType.TEXT)
   user_name!: string
 
-  @AllowNull(false)
   @Column(DataType.DATE)
   created_at!: string
 

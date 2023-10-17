@@ -1,11 +1,13 @@
 import type { Handler } from 'express'
 import { Topic } from '../../models/forum/topic'
 import { Comment } from '../../models/forum/comment'
+import { Sequelize } from 'sequelize-typescript'
 
 export const allTopics: Handler = async (_req, res) => {
   try {
     const topics = await Topic.findAll({
       include: Comment,
+      order: [[Sequelize.col('created_at'), 'DESC']],
     })
     if (topics) {
       res.status(200).json({ topics })
@@ -36,14 +38,19 @@ export const getTopicById: Handler = async (req, res) => {
 }
 
 export const createPost: Handler = async (req, res) => {
+  const user = res.locals.user
+
   if (req.body) {
-    const { title, body, user_id } = req.body
+    const { title, body } = req.body
 
     const post = await Topic.create({
       title,
       body,
-      user_id,
+      user_name: `${user.first_name} ${user.second_name}`,
+      user_id: user.id,
     })
+
+    console.log(post, 'NEW POST')
 
     res.status(200).json(post)
   } else {

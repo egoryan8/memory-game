@@ -1,56 +1,45 @@
-.page {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.forum {
-  align-self: center;
-  flex-grow: 1;
-  width: 100%;
-  max-width: 1024px;
-  padding: 55px 15px;
-}
-
 .title {
   text-align: center;
 }
 
 .container {
   width: 100%;
-  border-top: 1px solid var(--color-border);
   padding-top: 20px;
 
   .topic {
     min-height: 60px;
     padding: 30px;
-    display: flex;
-    align-items: center;
-    gap: 30px;
     border-radius: 16px;
-    border: 1px solid #FFF;
-    margin-bottom: 20px;
+    border: 1px solid var(--color-border);
+    margin-bottom: 15px;
+    backdrop-filter: blur(3px);
+    transition: background 0.3s, backdrop-filter 0.3s;
 
     .topicBody {
       display: flex;
       flex-direction: column;
       gap: 20px;
-      padding-right: 20px;
-      border-right: 1px solid var(--color-border);
+      position: relative;
 
       h3 {
         display: flex;
         align-items: flex-start;
         gap: 10px;
         text-transform: uppercase;
-        line-height: 25px;
+        margin-bottom: 20px;
       }
 
       a {
-        text-decoration: underline;
-        color: var(--button-color-background-secondary);
         width: fit-content;
+        border: 1px solid var(--color-border);
+        font-size: 14px;
+        padding: 10px 15px;
+        border-radius: 16px;
+        text-decoration: underline;
+
+        img {
+          margin-right: 10px;
+        }
       }
     }
 
@@ -61,21 +50,29 @@
   }
 }
 
-.lastComment {
-  font-size: 14px;
-  color: var(--color-text-gray);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 800px;
-}
-
-.commentsCount {
-  color: var(--color-text-gray);
-  text-align: center;
-}
-
 .topicCreated {
-  color: var(--color-text-gray);
   font-size: 12px;
+  display: flex;
+  gap: 10px;
+}
+
+.topicForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 15px 0;
+  position: relative;
+
+  textarea {
+    min-height: 150px;
+    padding-bottom: 60px;
+    box-sizing: content-box;
+  }
+}
+
+.submitButton {
+  max-width: 200px;
+  position: absolute;
+  bottom: 0;
+  border-radius: 0 12px;
 }

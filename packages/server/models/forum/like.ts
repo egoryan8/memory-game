@@ -11,7 +11,7 @@ import { Comment } from './comment'
 @Table({ tableName: 'likes', timestamps: false })
 export class Like extends Model {
   @AllowNull(false)
-  @Column(DataType.TEXT)
+  @Column(DataType.INTEGER)
   comment_id!: number
 
   @AllowNull(false)

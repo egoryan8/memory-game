@@ -8,7 +8,8 @@
   display: flex;
   border: 1px solid var(--forms-color-border);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(3px);
+  transition: background 0.3s, backdrop-filter 0.3s;
 
   input {
     flex: 1;

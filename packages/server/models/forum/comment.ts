@@ -7,7 +7,6 @@ import {
   HasMany,
 } from 'sequelize-typescript'
 import { Like } from './like'
-// import {Like} from "./like";
 
 @Table({ tableName: 'comments', timestamps: false })
 export class Comment extends Model {
@@ -27,7 +26,6 @@ export class Comment extends Model {
   @Column(DataType.TEXT)
   body!: string
 
-  @AllowNull(false)
   @Column(DataType.DATE)
   created_at!: string
 

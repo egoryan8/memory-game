@@ -1,6 +1,7 @@
 import type { Handler } from 'express'
 import { Comment } from '../../models/forum/comment'
 import { Like } from '../../models/forum/like'
+import { Sequelize } from 'sequelize-typescript'
 
 export const allComments: Handler = async (_req, res) => {
   try {
@@ -25,6 +26,7 @@ export const commentsByTopicId: Handler = async (req, res) => {
   try {
     const comments = await Comment.findAll({
       where: { topic_id: topicId },
+      order: [[Sequelize.col('created_at'), 'DESC']],
       include: Like,
     })
 
@@ -40,12 +42,15 @@ export const commentsByTopicId: Handler = async (req, res) => {
 }
 
 export const createComment: Handler = async (req, res) => {
+  const user = res.locals.user
+
   if (req.body) {
-    const { topic_id, user_id, body } = req.body
+    const { topic_id, body } = req.body
 
     const post = await Comment.create({
       topic_id,
-      user_id,
+      user_id: user.id,
+      user_name: `${user.first_name} ${user.second_name}`,
       body,
     })
 
