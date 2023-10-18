@@ -141,25 +141,6 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
 
   return (
     <div className={style.selectedEmojiWrapper}>
-      {data.length
-        ? Object.entries(emojiMap).map(([emoji, ids], index) => {
-            const activeUser = ids.some(item => item.user_id === user.data?.id)
-
-            return (
-              <div
-                onClick={() => emojiToggle(activeUser, emoji)}
-                className={
-                  activeUser
-                    ? `${style.selectedEmoji} ${style.active}`
-                    : style.selectedEmoji
-                }
-                key={index}>
-                {emoji}
-                <span>{ids.length}</span>
-              </div>
-            )
-          })
-        : null}
       <div
         className={style.emojiPicker}
         onClick={toggleEmojiPicker}
@@ -180,6 +161,25 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
           </div>
         )}
       </div>
+      {data.length
+        ? Object.entries(emojiMap).map(([emoji, ids], index) => {
+            const activeUser = ids.some(item => item.user_id === user.data?.id)
+
+            return (
+              <div
+                onClick={() => emojiToggle(activeUser, emoji)}
+                className={
+                  activeUser
+                    ? `${style.selectedEmoji} ${style.active}`
+                    : style.selectedEmoji
+                }
+                key={index}>
+                {emoji}
+                <span>{ids.length}</span>
+              </div>
+            )
+          })
+        : null}
     </div>
   )
 }

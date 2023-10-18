@@ -23,6 +23,8 @@
 
   --opacity: rgba(0, 0, 0, 0.03);
 
+  --gradient: repeating-conic-gradient(from 0, rgb(246, 246, 246) 0% 25%, #ffffff 0% 50%) 50%/40px 40px fixed;
+
   /* Form */
   --forms-color-background: var(--color-background);
   --forms-color-border: var(--color-border);
@@ -51,13 +53,14 @@
   text-decoration: none;
   -webkit-user-select: none;
   user-select: none;
+  transition: background-color 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
 html,
 body,
 #root {
   height: 100%;
-  background: repeating-conic-gradient(from 0, rgb(246, 246, 246) 0% 25%, #ffffff 0% 50%) 50%/40px 40px fixed;
+  background: var(--gradient);
 }
 
 html {

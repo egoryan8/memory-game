@@ -5,13 +5,12 @@
   color: #ffffff;
   border: none;
   border-radius: 12px;
-  transition: opacity 0.3s ease-in-out;
   font-weight: 700;
   text-transform: uppercase;
   outline: none;
 
   &:hover:not(:disabled) {
-    opacity: 0.8;
+    opacity: 0.9;
   }
 
   &:disabled {
