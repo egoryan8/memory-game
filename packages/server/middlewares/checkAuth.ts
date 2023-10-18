@@ -19,7 +19,6 @@ export const checkAuth = async (
       })
       .then(user => {
         res.locals.user = user
-        console.log(res.locals.user)
         next()
       })
   } else {

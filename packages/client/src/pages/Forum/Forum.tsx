@@ -15,8 +15,6 @@ const Forum: React.FC = () => {
   const [newTopic, setNewTopic] = useState({ title: '', body: '' })
   const formClass = showForm ? s.slideDown : s.slideUp
 
-  console.log(formClass)
-
   const getData = async () => {
     try {
       const responseTopics = await fetch('http://localhost:9000/api/topics')
