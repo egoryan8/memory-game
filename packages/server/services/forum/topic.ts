@@ -50,8 +50,6 @@ export const createPost: Handler = async (req, res) => {
       user_id: user.id,
     })
 
-    console.log(post, 'NEW POST')
-
     res.status(200).json(post)
   } else {
     res.status(404).json({ error: 'Данные не пришли или неполные' })
