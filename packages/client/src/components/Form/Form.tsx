@@ -1,5 +1,5 @@
 import Button from '@/components/Button/Button'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import Input from '@/components/Input/Input'
 import { validationRules } from '@/utils/validation'
@@ -12,7 +12,6 @@ interface IForm {
   inputNames: string[]
   type: string
   data?: any
-  disabled?: boolean
   isLabel?: boolean
 }
 
@@ -22,19 +21,30 @@ const FormComponent: React.FC<IForm> = ({
   inputNames,
   type,
   data,
-  disabled,
   isLabel,
 }) => {
-  const { control, handleSubmit, formState, trigger, setValue } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState,
+    trigger,
+    setValue,
+    getValues,
+    reset,
+  } = useForm({
     reValidateMode: 'onChange',
     defaultValues: data || {},
   })
 
-  const isFormEdited = formState.isDirty
-
   const handleInputChange = (name: string, value: string) => {
     setValue(name, value)
   }
+
+  useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset(getValues())
+    }
+  }, [formState.isSubmitSuccessful, reset, getValues])
 
   return (
     <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
@@ -65,7 +75,6 @@ const FormComponent: React.FC<IForm> = ({
                   error={formState.errors[item.id]?.message}
                   required={item.required}
                   placeholder={item.label}
-                  disabled={disabled}
                 />
               )}
             />
@@ -73,14 +82,16 @@ const FormComponent: React.FC<IForm> = ({
         })}
       </div>
 
-      {!disabled && (
-        <Button
-          type="submit"
-          className={s.btn}
-          disabled={type === 'edit_profile' ? !isFormEdited : false}>
-          {FORM_TYPE[type.toUpperCase() as keyof typeof FORM_TYPE]}
-        </Button>
-      )}
+      <Button
+        type="submit"
+        className={s.btn}
+        disabled={
+          type === 'edit_profile'
+            ? !formState.isDirty && !formState.isSubmitSuccessful
+            : false
+        }>
+        {FORM_TYPE[type.toUpperCase() as keyof typeof FORM_TYPE]}
+      </Button>
     </form>
   )
 }

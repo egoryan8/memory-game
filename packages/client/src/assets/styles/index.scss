@@ -5,7 +5,7 @@
 :root {
   /* Font */
   --font: 'Nunito', sans-serif;
-  --font-size-base: 18px;
+  --font-size-base: 16px;
   --font-size-medium: 24px;
   --font-size-big: 40px;
 
@@ -110,6 +110,10 @@ select {
   font: inherit;
   color: inherit;
   vertical-align: middle;
+}
+
+.form-label {
+  font-weight: 900;
 }
 
 input,

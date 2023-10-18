@@ -1,7 +1,7 @@
 import Navigation from '@/components/Navigation/Navigation'
 import s from './ForumThread.module.scss'
 import * as React from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Comment } from 'server/models/forum/comment'
 import { Spinner } from '@/components/Spinner/Spinner'
@@ -65,7 +65,6 @@ const ForumThread: React.FC = () => {
       if (response.ok) {
         getData().then(() => {
           setNewComment('')
-          setShowForm(false)
         })
       } else {
         console.error('Не удалось создать новый комментарий')
@@ -129,7 +128,7 @@ const ForumThread: React.FC = () => {
             className={`${s.commentForm} ${formClass}`}
             onSubmit={submitForm}>
             <textarea
-              placeholder="Сообщение"
+              placeholder="Комментарий..."
               value={newComment}
               onChange={event => setNewComment(event.target.value)}
             />

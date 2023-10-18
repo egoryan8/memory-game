@@ -35,7 +35,11 @@ const Input = ({
 }: InputProps) => {
   return (
     <div className={label && s.wrapper}>
-      {label && <label htmlFor={id}>{label}</label>}
+      {label && (
+        <label className="form-label" htmlFor={id}>
+          {label}
+        </label>
+      )}
 
       <div className={`${s.inputShell} ${error && s.inputError}`}>
         <input

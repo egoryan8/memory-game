@@ -46,7 +46,6 @@ const Forum: React.FC = () => {
       if (response.ok) {
         getData().then(() => {
           setNewTopic({ title: '', body: '' })
-          setShowForm(false)
         })
       } else {
         console.error('Не удалось создать новый топик')
@@ -74,14 +73,14 @@ const Forum: React.FC = () => {
           <form className={`${s.topicForm} ${formClass}`} onSubmit={submitForm}>
             <input
               type="text"
-              placeholder="Заголовок"
+              placeholder="Тема топика..."
               value={newTopic.title}
               onChange={event =>
                 setNewTopic({ ...newTopic, title: event.target.value })
               }
             />
             <textarea
-              placeholder="Сообщение"
+              placeholder="Описание..."
               value={newTopic.body}
               onChange={event =>
                 setNewTopic({ ...newTopic, body: event.target.value })
