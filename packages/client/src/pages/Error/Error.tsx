@@ -6,6 +6,8 @@ import { AppPath } from '@/types/AppPath'
 interface IError {
   name: string
   text: string
+  linkText?: string
+  linkPath?: string
 }
 
 const Error = (error: IError) => {
@@ -15,7 +17,9 @@ const Error = (error: IError) => {
         {error.name}
         <span className={styles.errorText}>{error.text}</span>
       </h1>
-      <Link to={AppPath.MAIN}>Вернуться на главную</Link>
+      <Link to={error.linkPath || AppPath.MAIN}>
+        {error.linkText || 'Вернуться на главную страницу'}
+      </Link>
     </div>
   )
 }

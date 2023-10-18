@@ -5,7 +5,7 @@ import Button from '@/components/Button/Button'
 import { useNavigate } from 'react-router-dom'
 import { AppPath } from '@/types/AppPath'
 import { useDispatch } from 'react-redux'
-import { ChangeEventHandler, useState } from 'react'
+import { ChangeEventHandler, useEffect, useState } from 'react'
 import { setGameCols } from '@/store/slices/gameSlice'
 import grid4 from '@/assets/images/other/grid4.svg'
 import grid6 from '@/assets/images/other/grid6.svg'
@@ -33,10 +33,10 @@ const Main = () => {
 
   const handleRadioChange: ChangeEventHandler<HTMLInputElement> = event => {
     const selectedValue = event.target.id // Должно быть 'easy', 'hard' или 'veryHard'
-    let cols = 4 // Значение по умолчанию
 
     setSelectedValue(selectedValue)
 
+    let cols = 4
     if (selectedValue === 'easy') {
       cols = 4
     } else if (selectedValue === 'hard') {
