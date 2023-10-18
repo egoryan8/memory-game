@@ -43,7 +43,7 @@ export const getTheme: Handler = async (req, res) => {
     if (theme) {
       res.status(200).json(theme.theme)
     } else {
-      res.status(404).send({ error: 'Пользователь не найден' })
+      res.status(200).json(null)
     }
   } catch (error) {
     res.status(500).send({ error: 'Ошибка при получении темы' })
