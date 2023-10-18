@@ -1,7 +1,7 @@
 import Navigation from '@/components/Navigation/Navigation'
 import s from './ForumThread.module.scss'
 import * as React from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Comment } from 'server/models/forum/comment'
 import { Spinner } from '@/components/Spinner/Spinner'
@@ -9,6 +9,8 @@ import { declensionWords } from '@/utils/declensionWords'
 import { Topic } from 'server/models/forum/topic'
 import Button from '@/components/Button/Button'
 import EmojiPicker from '@/components/EmojiPicker/EmojiPicker'
+import Error from '@/pages/Error/Error'
+import { AppPath } from '@/types/AppPath'
 
 const ForumThread: React.FC = () => {
   const { topicId } = useParams()
@@ -98,7 +100,7 @@ const ForumThread: React.FC = () => {
       <Navigation />
       {isLoading ? (
         <Spinner />
-      ) : (
+      ) : topic ? (
         <div className="content-wrapper">
           <div
             className={
@@ -180,6 +182,13 @@ const ForumThread: React.FC = () => {
             })}
           </ul>
         </div>
+      ) : (
+        <Error
+          name=" "
+          text="Упс! Такого топика нет..."
+          linkText="Вернуться на страницу форума"
+          linkPath={AppPath.FORUM}
+        />
       )}
     </div>
   )
