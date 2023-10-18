@@ -16,7 +16,6 @@ const Main = () => {
   const navigate = useNavigate()
   const notification = useNotification()
   const dispatch = useDispatch()
-  let cols = 4 // Значение по умолчанию
 
   type GameIcons = {
     easy: string
@@ -31,17 +30,13 @@ const Main = () => {
   }
 
   const [selectedValue, setSelectedValue] = useState<null | string>(null)
-  useEffect(() => {
-    const gameColsCount = localStorage.getItem('gameCols')
-    cols = gameColsCount ? parseInt(gameColsCount, 10) : cols
-    dispatch(setGameCols(cols))
-  }, [])
 
   const handleRadioChange: ChangeEventHandler<HTMLInputElement> = event => {
     const selectedValue = event.target.id // Должно быть 'easy', 'hard' или 'veryHard'
 
     setSelectedValue(selectedValue)
 
+    let cols = 4
     if (selectedValue === 'easy') {
       cols = 4
     } else if (selectedValue === 'hard') {
