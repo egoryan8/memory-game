@@ -5,7 +5,7 @@ import Button from '@/components/Button/Button'
 import { useNavigate } from 'react-router-dom'
 import { AppPath } from '@/types/AppPath'
 import { useDispatch } from 'react-redux'
-import { ChangeEventHandler, useState } from 'react'
+import { ChangeEventHandler, useEffect, useState } from 'react'
 import { setGameCols } from '@/store/slices/gameSlice'
 import grid4 from '@/assets/images/other/grid4.svg'
 import grid6 from '@/assets/images/other/grid6.svg'
@@ -16,6 +16,7 @@ const Main = () => {
   const navigate = useNavigate()
   const notification = useNotification()
   const dispatch = useDispatch()
+  let cols = 4 // Значение по умолчанию
 
   type GameIcons = {
     easy: string
@@ -30,10 +31,14 @@ const Main = () => {
   }
 
   const [selectedValue, setSelectedValue] = useState<null | string>(null)
+  useEffect(() => {
+    const gameColsCount = localStorage.getItem('gameCols')
+    cols = gameColsCount ? parseInt(gameColsCount, 10) : cols
+    dispatch(setGameCols(cols))
+  }, [])
 
   const handleRadioChange: ChangeEventHandler<HTMLInputElement> = event => {
     const selectedValue = event.target.id // Должно быть 'easy', 'hard' или 'veryHard'
-    let cols = 4 // Значение по умолчанию
 
     setSelectedValue(selectedValue)
 
