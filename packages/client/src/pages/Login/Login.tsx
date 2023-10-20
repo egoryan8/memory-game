@@ -71,6 +71,7 @@ const Login: React.FC = () => {
           Яндекс.ID
         </Button>
       </FormContainer>
+      <div className={style.copyright}>© 2023 CodeHunters</div>
     </>
   )
 }

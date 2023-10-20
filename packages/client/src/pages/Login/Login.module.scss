@@ -14,7 +14,7 @@
 
 .title {
   position: absolute;
-  top: 20px;
+  top: 10px;
 
   .titleDiv {
     display: flex;
@@ -34,4 +34,9 @@
       border-radius: 5px;
     }
   }
+}
+
+.copyright {
+  position: absolute;
+  bottom: 30px;
 }
