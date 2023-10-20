@@ -23,6 +23,8 @@
 
   --opacity: rgba(0, 0, 0, 0.03);
 
+  --second-color: #004570;
+
   --gradient: repeating-conic-gradient(from 0, rgb(246, 246, 246) 0% 25%, #ffffff 0% 50%) 50%/40px 40px fixed;
 
   /* Form */
@@ -41,9 +43,9 @@
 }
 
 :root[data-theme="light"] {
-  --color-background-secondary: #0b5786;
-  --button-color-background: #0b5786;
-  --game-widget: #43799f;
+  --color-background-secondary: var(--second-color);
+  --button-color-background: var(--second-color);
+  --game-widget: #36749f;
 }
 
 * {

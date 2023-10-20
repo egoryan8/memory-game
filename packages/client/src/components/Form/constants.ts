@@ -16,7 +16,7 @@ export const INPUTS_DATA = {
   login: {
     id: 'login',
     name: 'login',
-    label: 'Имя пользователя',
+    label: 'Логин',
     type: 'text',
     required: true,
   },

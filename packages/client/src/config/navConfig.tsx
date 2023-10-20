@@ -2,11 +2,12 @@ import { AppPath } from '@/types/AppPath'
 import GameIco from '@/components/Navigation/icons/dice.svg'
 import ForumIco from '@/components/Navigation/icons/forum.svg'
 import RatingIco from '@/components/Navigation/icons/medal.svg'
-import ProfileIco from '@/components/Navigation/icons/profile.svg'
+import Avatar from '@/components/Avatar/Avatar'
+import React from 'react'
 
 export const navConfig = [
   {
-    text: 'Играть',
+    text: 'Игра',
     path: AppPath.MAIN,
     logo: <img src={GameIco} alt="Game icon" />,
   },
@@ -23,6 +24,6 @@ export const navConfig = [
   {
     text: 'Профиль',
     path: AppPath.PROFILE,
-    logo: <img src={ProfileIco} alt="Profile icon" />,
+    logo: <Avatar isEdit={false} />,
   },
 ]

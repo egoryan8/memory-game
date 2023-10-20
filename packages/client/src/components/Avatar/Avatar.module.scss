@@ -4,12 +4,19 @@
   height: 120px;
 }
 
+.avatarAutoSize {
+  display: contents;
+}
+
 .img {
-  width: 120px;
-  height: 120px;
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+  display: block;
   border-radius: 50%;
   background: #3c3c3c center/cover;
   object-fit: cover;
+  aspect-ratio: 1;
 }
 
 .customFileInput {

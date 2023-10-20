@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Navigation from '@/components/Navigation/Navigation'
 import { declensionWords } from '@/utils/declensionWords'
 import { Link } from 'react-router-dom'
 import s from './Forum.module.scss'
@@ -59,7 +58,6 @@ const Forum: React.FC = () => {
 
   return (
     <div className="page">
-      <Navigation />
       {isLoading ? (
         <Spinner />
       ) : (

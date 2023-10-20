@@ -1,11 +1,10 @@
 import useNotification from '@/hooks/useNotification'
 import s from './Main.module.scss'
-import Navigation from '@/components/Navigation/Navigation'
 import Button from '@/components/Button/Button'
 import { useNavigate } from 'react-router-dom'
 import { AppPath } from '@/types/AppPath'
 import { useDispatch } from 'react-redux'
-import { ChangeEventHandler, useEffect, useState } from 'react'
+import { ChangeEventHandler, useState } from 'react'
 import { setGameCols } from '@/store/slices/gameSlice'
 import grid4 from '@/assets/images/other/grid4.svg'
 import grid6 from '@/assets/images/other/grid6.svg'
@@ -58,7 +57,6 @@ const Main = () => {
 
   return (
     <div className={s.wrapper}>
-      <Navigation />
       <div className={s.content}>
         <div className={s.contentWrapper}>
           <div className={s.textWrapper}>

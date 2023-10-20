@@ -1,6 +1,5 @@
 import Avatar from '@/components/Avatar/Avatar'
 import Button from '@/components/Button/Button'
-import Navigation from '@/components/Navigation/Navigation'
 import React from 'react'
 import Form from '@/components/Form/Form'
 import { INPUTS_DATA } from '@/components/Form/constants'
@@ -48,27 +47,31 @@ const Profile: React.FC = () => {
   )
 
   return (
-    <div className={s.page}>
-      <Navigation />
-      <div className={s.profile}>
-        <div className={s.avatar}>
-          <Avatar />
-        </div>
-        <Form
-          inputTypes={INPUTS_DATA}
-          data={user.data}
-          onSubmit={handleFormOnSubmit}
-          inputNames={inputNames}
-          type="edit_profile"
-          isLabel={true}
-        />
-        <div className={s.buttons}>
-          <Button type="button" onClick={handleChangePassword}>
-            Сменить пароль
-          </Button>
-          <Button className={s.exitButton} type="button" onClick={handleLogout}>
-            <img src={logOut} alt="logout-icon" />
-          </Button>
+    <div className="page">
+      <div className="content-wrapper">
+        <div className={s.profileBlock}>
+          <div className={s.avatar}>
+            <Avatar />
+          </div>
+          <Form
+            inputTypes={INPUTS_DATA}
+            data={user.data}
+            onSubmit={handleFormOnSubmit}
+            inputNames={inputNames}
+            type="edit_profile"
+            isLabel={true}
+          />
+          <div className={s.buttons}>
+            <Button type="button" onClick={handleChangePassword}>
+              Сменить пароль
+            </Button>
+            <Button
+              className={s.exitButton}
+              type="button"
+              onClick={handleLogout}>
+              <img src={logOut} alt="logout-icon" />
+            </Button>
+          </div>
         </div>
       </div>
     </div>

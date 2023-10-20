@@ -56,29 +56,64 @@ const Game: React.FC = () => {
     fullscreen.isFullscreen && fullscreen.exit()
   }
 
+  // Определение позиции мыши
+  const getMousePosition = (
+    event: React.MouseEvent<HTMLCanvasElement>,
+    canvas: HTMLCanvasElement
+  ) => {
+    const rect = canvas.getBoundingClientRect()
+    const mouseX = event.clientX - rect.left
+    const mouseY = event.clientY - rect.top
+    return { mouseX, mouseY }
+  }
+
+  // Определение позиции мыши в рамках карточки
+  const isMouseOverCard = (
+    card: Card,
+    mouseX: number,
+    mouseY: number,
+    cardSize: number
+  ) => {
+    const { x, y } = card.position
+    return (
+      mouseX >= x &&
+      mouseX <= x + cardSize &&
+      mouseY >= y &&
+      mouseY <= y + cardSize
+    )
+  }
+
   // Обработка клика по canvas
   const handleCanvasClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
     const { canvas } = getCanvasContext(canvasRef)
     if (!canvas || !startTimer) return
 
-    const rect = canvas.getBoundingClientRect()
-    const mouseX = event.clientX - rect.left
-    const mouseY = event.clientY - rect.top
+    const { mouseX, mouseY } = getMousePosition(event, canvas)
 
     cards.forEach((card, index) => {
-      const { x, y } = card.position
-
-      if (
-        mouseX >= x &&
-        mouseX <= x + gameConfig.cardSize &&
-        mouseY >= y &&
-        mouseY <= y + gameConfig.cardSize
-      ) {
+      if (isMouseOverCard(card, mouseX, mouseY, gameConfig.cardSize)) {
         if (card.isMatched || card.isOpen || card.isClicked) return
+
         setOpenCards(prevOpenCards => [...prevOpenCards, index])
         animateSquare(card)
       }
     })
+  }
+
+  // Отображение курсора
+  const handleMouseMove = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const { mouseX, mouseY } = getMousePosition(event, canvas)
+
+    const isOverBox = cards.some(card => {
+      if (!timer || card.isMatched || card.isOpen || card.isClicked) return
+
+      return isMouseOverCard(card, mouseX, mouseY, gameConfig.cardSize)
+    })
+
+    canvas.style.cursor = isOverBox ? 'pointer' : 'default'
   }
 
   const flipCards = (cards: Card[]) => {
@@ -223,7 +258,11 @@ const Game: React.FC = () => {
     <>
       <main className={style.wrapper}>
         <div className={style.field}>
-          <canvas ref={canvasRef} onClick={handleCanvasClick} />
+          <canvas
+            ref={canvasRef}
+            onClick={handleCanvasClick}
+            onMouseMove={handleMouseMove}
+          />
           <div className={style.points}>
             <ul className={style.options}>
               <li className={style.option}>

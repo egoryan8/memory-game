@@ -1,4 +1,3 @@
-import Navigation from '@/components/Navigation/Navigation'
 import s from './ForumThread.module.scss'
 import * as React from 'react'
 import { Link, useParams } from 'react-router-dom'
@@ -96,7 +95,6 @@ const ForumThread: React.FC = () => {
 
   return (
     <div className="page">
-      <Navigation />
       {isLoading ? (
         <Spinner />
       ) : topic ? (

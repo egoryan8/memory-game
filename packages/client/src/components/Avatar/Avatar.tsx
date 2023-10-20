@@ -7,7 +7,7 @@ import React from 'react'
 import s from './Avatar.module.scss'
 import { updateAvatar } from '@/store/asyncThunks/user/updateAvatar'
 
-const Avatar = () => {
+const Avatar = ({ isEdit = true }) => {
   const dispatch = useAppDispatch()
   const user = useAppSelector(userSelector)
 
@@ -19,7 +19,7 @@ const Avatar = () => {
   }
 
   return (
-    <div className={s.avatar}>
+    <div className={isEdit ? s.avatar : s.avatarAutoSize}>
       <img
         className={s.img}
         src={
@@ -29,14 +29,18 @@ const Avatar = () => {
         }
         alt="User Avatar"
       />
-      <input
-        id="file"
-        type="file"
-        name="file"
-        hidden
-        onChange={handleAvatarChange}
-      />
-      <label className={s.customFileInput} htmlFor="file" />
+      {isEdit && (
+        <>
+          <input
+            id="file"
+            type="file"
+            name="file"
+            hidden
+            onChange={handleAvatarChange}
+          />
+          <label className={s.customFileInput} htmlFor="file" />
+        </>
+      )}
     </div>
   )
 }

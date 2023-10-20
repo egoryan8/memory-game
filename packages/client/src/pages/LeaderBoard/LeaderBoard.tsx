@@ -1,4 +1,3 @@
-import Navigation from '@/components/Navigation/Navigation'
 import RatingCard from '@/components/RatingCard/RatingCard'
 import s from './LeaderBoard.module.scss'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
@@ -40,7 +39,6 @@ const LeaderBoard: React.FC = () => {
 
   return (
     <div className="page">
-      <Navigation />
       <div className="content-wrapper">
         <h1>Рейтинг игроков</h1>
         <div className={s.container}>{bestPlayers}</div>

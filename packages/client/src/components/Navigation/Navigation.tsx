@@ -8,7 +8,9 @@ const Navigation = () => {
   return (
     <nav className={s.nav}>
       <div className={s.wrapper}>
-        <Logo />
+        <div className={s.logoBlock}>
+          <Logo />
+        </div>
         <div className={s.control}>
           <ul>
             {navConfig.map(item => (

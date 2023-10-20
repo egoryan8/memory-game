@@ -3,6 +3,7 @@
   justify-content: center;
   background-color: var(--color-background-secondary);
   position: fixed;
+  top: 0;
   width: 100%;
   z-index: 1;
   height: 90px;
@@ -24,12 +25,13 @@
   ul {
     display: flex;
     align-items: center;
-    gap: 35px;
+    gap: 30px;
 
     li {
       display: flex;
       column-gap: 7px;
       align-items: center;
+      height: 30px;
     }
 
     a {
@@ -42,5 +44,14 @@
         color: var(--button-color-background-secondary);
       }
     }
+  }
+}
+
+@media (max-width: 790px) {
+  .logoBlock {
+    display: none;
+  }
+  .wrapper {
+    justify-content: center;
   }
 }
