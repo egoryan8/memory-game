@@ -66,11 +66,11 @@ const Main = () => {
                   letter !== ' ' ? (
                     <Logo logo={false} letter={letter} key={index} />
                   ) : (
-                    <span
-                      className={letter !== ' ' ? s.titleSpan : ''}
+                    <div
+                      className={letter !== ' ' ? s.titleSpan : s.titleGap}
                       key={index}>
                       {letter}
-                    </span>
+                    </div>
                   )
                 )}
               </div>
@@ -79,11 +79,11 @@ const Main = () => {
                   letter !== ' ' ? (
                     <Logo logo={false} letter={letter} key={index} />
                   ) : (
-                    <span
-                      className={letter !== ' ' ? s.titleSpan : ''}
+                    <div
+                      className={letter !== ' ' ? s.titleSpan : s.titleGap}
                       key={index}>
                       {letter}
-                    </span>
+                    </div>
                   )
                 )}
               </div>

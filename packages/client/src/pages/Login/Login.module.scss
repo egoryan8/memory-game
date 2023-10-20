@@ -22,6 +22,12 @@
     justify-content: center;
     align-items: center;
 
+    .titleGap {
+      display: inline-block;
+      width: 5px;
+      height: 20px;
+    }
+
     .titleSpan {
       background: var(--button-color-background);
       color: var(--color-text-white);

@@ -23,6 +23,10 @@
 
 .textWrapper {
   max-width: 65%;
+
+  h1 {
+    line-height: 50px;
+  }
 }
 
 .li {
@@ -83,7 +87,12 @@
 }
 
 .titleDiv {
-  margin-bottom: 10px;
+
+  .titleGap {
+    display: inline-block;
+    width: 5px;
+    height: 20px;
+  }
 
   .titleSpan {
     background: var(--button-color-background);

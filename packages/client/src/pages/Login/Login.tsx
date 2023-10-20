@@ -33,11 +33,11 @@ const Login: React.FC = () => {
               letter !== ' ' ? (
                 <Logo logo={false} letter={letter} key={index} />
               ) : (
-                <span
-                  className={letter !== ' ' ? style.titleSpan : ''}
+                <div
+                  className={letter !== ' ' ? style.titleSpan : style.titleGap}
                   key={index}>
                   {letter}
-                </span>
+                </div>
               )
             )}
           </div>
@@ -46,11 +46,11 @@ const Login: React.FC = () => {
               letter !== ' ' ? (
                 <Logo logo={false} letter={letter} key={index} />
               ) : (
-                <span
-                  className={letter !== ' ' ? style.titleSpan : ''}
+                <div
+                  className={letter !== ' ' ? style.titleSpan : style.titleGap}
                   key={index}>
                   {letter}
-                </span>
+                </div>
               )
             )}
           </div>
