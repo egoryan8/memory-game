@@ -7,7 +7,7 @@ import React from 'react'
 
 export const navConfig = [
   {
-    text: 'Игра',
+    text: 'Играть',
     path: AppPath.MAIN,
     logo: <img src={GameIco} alt="Game icon" />,
   },
