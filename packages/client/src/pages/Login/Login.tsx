@@ -10,6 +10,7 @@ import style from './Login.module.scss'
 import { login } from '@/store/asyncThunks/auth/login'
 import OAuthApi from '@/api/OAuthApi'
 import { REDIRECT_URI } from '@/utils/HTTPClient'
+import Logo from '@/components/Logo/Logo'
 
 const Login: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -25,6 +26,36 @@ const Login: React.FC = () => {
 
   return (
     <>
+      <h1 className={style.title}>
+        <div className={style.titleDiv}>
+          <div>
+            {'M E M O R Y'.split('').map((letter, index) =>
+              letter !== ' ' ? (
+                <Logo logo={false} letter={letter} key={index} />
+              ) : (
+                <span
+                  className={letter !== ' ' ? style.titleSpan : ''}
+                  key={index}>
+                  {letter}
+                </span>
+              )
+            )}
+          </div>
+          <div>
+            {'G A M E'.split('').map((letter, index) =>
+              letter !== ' ' ? (
+                <Logo logo={false} letter={letter} key={index} />
+              ) : (
+                <span
+                  className={letter !== ' ' ? style.titleSpan : ''}
+                  key={index}>
+                  {letter}
+                </span>
+              )
+            )}
+          </div>
+        </div>
+      </h1>
       <FormContainer contentType={'login'}>
         <Form
           inputTypes={INPUTS_DATA}

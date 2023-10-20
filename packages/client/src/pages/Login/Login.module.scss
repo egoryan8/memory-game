@@ -11,3 +11,27 @@
     width: 20px;
   }
 }
+
+.title {
+  position: absolute;
+  top: 20px;
+
+  .titleDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .titleSpan {
+      background: var(--button-color-background);
+      color: var(--color-text-white);
+      width: 55px;
+      height: 55px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 5px;
+      border-radius: 5px;
+    }
+  }
+}
