@@ -77,7 +77,7 @@ const Main = () => {
               <div className={s.titleDiv}>
                 {'M E M O R Y'.split('').map((letter, index) =>
                   letter !== ' ' ? (
-                    <Logo logo={false} letter={letter} key={index} />
+                    <Logo logo={false} big={true} letter={letter} key={index} />
                   ) : (
                     <div
                       className={letter !== ' ' ? s.titleSpan : s.titleGap}

@@ -57,3 +57,16 @@
 .flipped {
   transform: rotateY(180deg);
 }
+
+.big {
+  width: 85px;
+  height: 85px;
+  font-size: 60px;
+  .logoFront,
+  .logoBack {
+    & img {
+      max-height: 55px;
+      max-width: 55px;
+    }
+  }
+}

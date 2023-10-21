@@ -6,9 +6,14 @@ import style from './Logo.module.scss'
 interface logoProps {
   logo?: boolean
   letter?: string
+  big?: boolean
 }
 
-const LogoFlipper: React.FC<logoProps> = ({ logo = true, letter = null }) => {
+const LogoFlipper: React.FC<logoProps> = ({
+  logo = true,
+  letter = null,
+  big = false,
+}) => {
   const [isFlipped, setIsFlipped] = useState<boolean>(false)
   const [backLogo, setBackLogo] = useState<string | null>(null)
   const [isHovered, setIsHovered] = useState<boolean>(false)
@@ -46,7 +51,10 @@ const LogoFlipper: React.FC<logoProps> = ({ logo = true, letter = null }) => {
   }, [isHovered, isFlipped])
 
   return (
-    <div className={logo ? style.logoContainer : style.noLogo}>
+    <div
+      className={`${logo ? style.logoContainer : style.noLogo} ${
+        big && style.big
+      }`}>
       <div
         className={`${style.logoFlipper} ${isFlipped && style.flipped}`}
         onClick={handleClick}>
