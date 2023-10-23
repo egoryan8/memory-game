@@ -7,6 +7,7 @@ import {
   HasMany,
 } from 'sequelize-typescript'
 import { Like } from './like'
+import { Reply } from './reply'
 
 @Table({ tableName: 'comments', timestamps: false })
 export class Comment extends Model {
@@ -31,4 +32,7 @@ export class Comment extends Model {
 
   @HasMany(() => Like, 'comment_id')
   likes!: Like[]
+
+  @HasMany(() => Reply, 'comment_id')
+  replies!: Reply[]
 }

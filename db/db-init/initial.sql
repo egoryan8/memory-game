@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS topics cascade;
 DROP TABLE IF EXISTS comments cascade;
+DROP TABLE IF EXISTS replies cascade;
 DROP TABLE IF EXISTS likes cascade;
 DROP TABLE IF EXISTS themes;
 --------------------------
@@ -41,6 +42,28 @@ CREATE TABLE comments (
 ALTER TABLE comments ADD CONSTRAINT fk_comments_comment_id FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE;
 ALTER TABLE comments ADD CONSTRAINT fk_comments_topic_id FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE;
 --------------------------
+------Replies table------
+--------------------------
+DROP SEQUENCE IF EXISTS replies_id_seq;
+DROP SEQUENCE IF EXISTS replies_id_seq;
+CREATE SEQUENCE replies_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;
+
+CREATE TABLE replies (
+    id integer DEFAULT nextval('replies_id_seq') NOT NULL,
+    comment_id integer,
+    topic_id integer,
+    reply_id integer,
+    user_id integer NOT NULL,
+    user_name text NOT NULL,
+    body text NOT NULL,
+    created_at timestamptz,
+    updated_at timestamptz,
+    CONSTRAINT replies_pkey PRIMARY KEY (id)
+) WITH (oids = false);
+
+ALTER TABLE replies ADD CONSTRAINT fk_replies_comment_id FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE;
+ALTER TABLE replies ADD CONSTRAINT fk_replies_topic_id FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE;
+--------------------------
 -------Likes table--------
 --------------------------
 DROP TABLE IF EXISTS likes;
@@ -50,6 +73,7 @@ CREATE SEQUENCE likes_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 
 CREATE TABLE likes (
     id integer DEFAULT nextval('likes_id_seq') NOT NULL,
     comment_id integer,
+    reply_id integer,
     topic_id integer,
     user_id integer NOT NULL,
     emoji text NOT NULL,
@@ -86,6 +110,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER set_created_at_comments_trigger BEFORE INSERT ON comments FOR EACH ROW EXECUTE FUNCTION set_created_at();
+CREATE TRIGGER set_created_at_replies_trigger BEFORE INSERT ON replies FOR EACH ROW EXECUTE FUNCTION set_created_at();
 CREATE TRIGGER set_created_at_topics_trigger BEFORE INSERT ON topics FOR EACH ROW EXECUTE FUNCTION set_created_at();
 CREATE TRIGGER set_created_at_likes_trigger BEFORE INSERT ON likes FOR EACH ROW EXECUTE FUNCTION set_created_at();
 
@@ -98,6 +123,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER set_updated_at_comments_trigger BEFORE UPDATE ON comments FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+CREATE TRIGGER set_updated_at_replies_trigger BEFORE UPDATE ON replies FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 CREATE TRIGGER set_updated_at_topics_trigger BEFORE UPDATE ON topics FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 CREATE TRIGGER set_updated_at_likes_trigger BEFORE UPDATE ON likes FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 --------------------------
@@ -113,4 +139,3 @@ INSERT INTO comments VALUES (11223345, NULL, 1234567, 43433, 'Жора Феди�
 INSERT INTO comments VALUES (11223346, NULL, 1234567, 21332, 'Дима Жижин', 'Современные технологии достигли такого уровня, что новая модель организационной деятельности напрямую зависит от вывода текущих активов. В своём стремлении повысить качество жизни, они забывают, что консультация с широким активом прекрасно подходит для реализации позиций, занимаемых участниками в отношении поставленных задач');
 INSERT INTO comments VALUES (112233443, NULL, 12345677, 54344, 'Сеня Губин', 'Современные технологии достигли такого уровня, что новая модель организационной деятельности напрямую зависит от вывода текущих активов. В своём стремлении повысить качество жизни, они забывают, что консультация с широким активом прекрасно подходит для реализации позиций, занимаемых участниками в отношении поставленных задач');
 INSERT INTO comments VALUES (1122334532, NULL, 12345678, 54434, 'Лена Ленина', 'Современные технологии достигли такого уровня, что новая модель организационной деятельности напрямую зависит от вывода текущих активов. В своём стремлении повысить качество жизни, они забывают, что консультация с широким активом прекрасно подходит для реализации позиций, занимаемых участниками в отношении поставленных задач');
-INSERT INTO comments VALUES (1122334612, NULL, 12345678, 23332, 'Галя Сталина', 'Современные технологии достигли такого уровня, что новая модель организационной деятельности напрямую зависит от вывода текущих активов. В своём стремлении повысить качество жизни, они забывают, что консультация с широким активом прекрасно подходит для реализации позиций, занимаемых участниками в отношении поставленных задач');

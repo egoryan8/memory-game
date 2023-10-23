@@ -37,7 +37,7 @@ export const getTopicById: Handler = async (req, res) => {
   }
 }
 
-export const createPost: Handler = async (req, res) => {
+export const addPost: Handler = async (req, res) => {
   const user = res.locals.user
 
   if (req.body) {

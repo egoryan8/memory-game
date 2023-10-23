@@ -1,25 +1,37 @@
 import s from './ForumThread.module.scss'
 import * as React from 'react'
-import { Link, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import { Comment } from 'server/models/forum/comment'
+import { Topic } from 'server/models/forum/topic'
+import { Reply } from 'server/models/forum/reply'
 import { Spinner } from '@/components/Spinner/Spinner'
 import { declensionWords } from '@/utils/declensionWords'
-import { Topic } from 'server/models/forum/topic'
 import Button from '@/components/Button/Button'
 import EmojiPicker from '@/components/EmojiPicker/EmojiPicker'
 import Error from '@/pages/Error/Error'
 import { AppPath } from '@/types/AppPath'
+import ForumThreadReplyForm from '@/pages/ForumThread/ForumThreadReplyForm'
+import replyIcon from './replyIcon.svg'
+import cancelReplyIcon from './cancelReplyIcon.svg'
 
 const ForumThread: React.FC = () => {
   const { topicId } = useParams()
+
+  const location = window.location.pathname
 
   const [isLoading, setIsLoading] = useState(true)
   const [topic, setTopic] = useState<Topic | null>(null)
   const [comments, setComments] = useState<Comment[]>([])
   const [showForm, setShowForm] = useState<boolean>(false)
-  const [newComment, setNewComment] = useState('')
-  const [scrolled, setScrolled] = useState(false)
+  const [scrolled, setScrolled] = useState<boolean>(false)
+  const [newComment, setNewComment] = useState<string>('')
+  const [replyTo, setReplyTo] = useState({
+    userName: '',
+    body: '',
+    comment_id: null,
+    reply_id: null,
+  })
   const formClass = showForm ? s.slideDown : s.slideUp
 
   const getData = async () => {
@@ -32,6 +44,7 @@ const ForumThread: React.FC = () => {
       )
       const jsonComments = await responseComments.json()
       const jsonTopic = await responseTopic.json()
+
       setComments(jsonComments.comments)
       setTopic(jsonTopic.topic)
     } catch (error) {
@@ -47,19 +60,16 @@ const ForumThread: React.FC = () => {
     event.preventDefault()
 
     try {
-      const response = await fetch(
-        'http://localhost:9000/api/comments/create',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            topic_id: topicId,
-            body: newComment,
-          }),
-        }
-      )
+      const response = await fetch('http://localhost:9000/api/comments/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          topic_id: topicId,
+          body: newComment,
+        }),
+      })
 
       if (response.ok) {
         getData().then(() => {
@@ -71,6 +81,20 @@ const ForumThread: React.FC = () => {
     } catch (error) {
       console.error('Ошибка при публикации комментария:', error)
     }
+  }
+
+  const clearReplyToState = () => {
+    setReplyTo({
+      ...replyTo,
+      userName: '',
+      body: '',
+      reply_id: null,
+      comment_id: null,
+    })
+  }
+
+  const findReply = (replies: Reply[], id: number) => {
+    return replies.find(item => item.id === id)
   }
 
   useEffect(() => {
@@ -149,23 +173,24 @@ const ForumThread: React.FC = () => {
                 : 'Комментариев еще нет'}
             </b>
           </div>
-          <ul className={s.cards}>
-            {comments.map(item => {
-              const { id, body, likes, user_name, created_at } = item
+          <div className={s.cards}>
+            {comments.map(comment => {
+              const { id, body, likes, replies, user_name, created_at } =
+                comment
 
               return (
-                <li className={s.card} key={id}>
+                <div className={s.card} key={id}>
                   <div className={s.avatarBlock}>
                     <div className={s.forumAvatar}>
                       {user_name.split('')[0]}
                     </div>
                     <div className={s.userName}>{user_name}</div>
-                    <p className={s.time}>
+                    <div className={s.time}>
                       {new Date(created_at).toLocaleString()}
-                    </p>
+                    </div>
                   </div>
-                  <div className={s['message-block']}>
-                    <p className={s.message}>{body}</p>
+                  <div className={s.messageBlock}>
+                    <div className={s.message}>{body}</div>
                     <div className={s.info}>
                       <EmojiPicker
                         data={likes}
@@ -173,15 +198,121 @@ const ForumThread: React.FC = () => {
                         updateData={getData}
                       />
                     </div>
+                    {replies.length ? (
+                      <>
+                        <div className={s.commentsCount}>
+                          <b>
+                            {declensionWords(replies.length, [
+                              'ответ',
+                              'ответа',
+                              'ответов',
+                            ])}
+                          </b>
+                        </div>
+                        <div className={s.replies}>
+                          <div className={`${s.cards} ${s.replyCard}`}>
+                            {replies.map(reply => {
+                              const replyToReply = findReply(
+                                replies,
+                                reply.reply_id
+                              )
+
+                              return (
+                                <div
+                                  id={`reply-${reply.id}`}
+                                  className={s.reply}
+                                  key={reply.id}>
+                                  <div className={s.replyCreator}>
+                                    {reply.user_name + ' '}
+                                    <span>
+                                      {new Date(
+                                        reply.created_at
+                                      ).toLocaleString() + ' '}
+                                    </span>
+                                    <img
+                                      onClick={replyTo => {
+                                        setReplyTo({
+                                          ...replyTo,
+                                          userName: reply.user_name,
+                                          body: reply.body,
+                                          reply_id: reply.id,
+                                          comment_id: id,
+                                        })
+                                      }}
+                                      src={replyIcon}
+                                      alt="Reply Icon"
+                                      title="Ответить"
+                                    />
+                                  </div>
+                                  <div className={s.replyBody}>
+                                    {reply.reply_id && (
+                                      <a
+                                        href={`${location}#reply-${reply.reply_id}`}>
+                                        <div className={s.replyTo}>
+                                          <div className={s.replyToUser}>
+                                            <img
+                                              src={replyIcon}
+                                              alt="Reply Icon"
+                                              title="Ответить"
+                                            />
+                                            <b>{replyToReply?.user_name}</b>
+                                          </div>
+                                          <div className={s.replyToBody}>
+                                            {replyToReply?.body}
+                                          </div>
+                                        </div>
+                                      </a>
+                                    )}
+                                    {reply.body}
+                                  </div>
+                                  <EmojiPicker
+                                    data={reply.likes}
+                                    replyId={reply.id}
+                                    updateData={getData}
+                                  />
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      ''
+                    )}
+                    {replyTo.body && replyTo.comment_id === id && (
+                      <div className={s.replyTo}>
+                        <div className={s.replyToUser}>
+                          <img
+                            src={replyIcon}
+                            alt="Reply Icon"
+                            title="Ответить"
+                          />
+                          <b>{replyTo.userName}</b>
+                        </div>
+                        <div className={s.replyToBody}>{replyTo.body}</div>
+                        <img
+                          onClick={clearReplyToState}
+                          src={cancelReplyIcon}
+                          alt="Cancel Reply Icon"
+                          title="Отменить"
+                        />
+                      </div>
+                    )}
+                    <ForumThreadReplyForm
+                      commentId={id}
+                      replyId={replyTo.reply_id}
+                      updateData={getData}
+                      clearReplyState={clearReplyToState}
+                    />
                   </div>
-                </li>
+                </div>
               )
             })}
-          </ul>
+          </div>
         </div>
       ) : (
         <Error
-          name=" "
+          name="🤔"
           text="Упс! Такого топика нет..."
           linkText="Вернуться на страницу форума"
           linkPath={AppPath.FORUM}

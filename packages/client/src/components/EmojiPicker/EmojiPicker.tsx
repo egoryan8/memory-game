@@ -11,13 +11,15 @@ interface EmojiPickerProps {
     emoji?: string
     user_id?: number
   }[]
-  commentId: number
+  commentId?: number
+  replyId?: number
   updateData: () => void
 }
 
 const EmojiPicker: React.FC<EmojiPickerProps> = ({
   data,
-  commentId,
+  commentId = null,
+  replyId = null,
   updateData,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -75,6 +77,7 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
         },
         body: JSON.stringify({
           comment_id: commentId,
+          reply_id: replyId,
           emoji,
         }),
       })
@@ -99,6 +102,7 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
         },
         body: JSON.stringify({
           comment_id: commentId,
+          reply_id: replyId,
         }),
       })
 

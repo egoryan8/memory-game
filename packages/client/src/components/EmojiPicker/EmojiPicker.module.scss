@@ -12,7 +12,6 @@
     border: 1px solid var(--color-border);
     border-radius: 12px;
     cursor: pointer;
-    background: var(--color-background);
 
     span {
       font-size: 14px;
@@ -33,7 +32,6 @@
   border: 1px solid var(--color-border);
   border-radius: 12px;
   position: relative;
-  background: var(--color-background);
   gap: 5px;
   cursor: pointer;
 
@@ -43,14 +41,15 @@
     flex-wrap: wrap;
     width: 200px;
     left: -1px;
-    bottom: 25px;
-    background: var(--color-background);
+    bottom: 30px;
+    background: rgba(255, 255, 255, 0.9);
     padding: 10px;
-    border-radius: 12px 12px 12px 0;
+    border-radius: 12px;
     z-index: 1;
     border: 1px solid var(--color-border);
     gap: 4px;
     cursor: default;
+    font-size: 18px;
 
     .emoji {
       cursor: pointer;

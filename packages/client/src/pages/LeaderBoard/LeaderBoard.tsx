@@ -10,8 +10,9 @@ import { getLeaderBoardResults } from '@/store/asyncThunks/leaderboard/getLeader
 export const leaderBoardParams = {
   ratingFieldName: 'codeHuntersMemoryGameScore',
   cursor: 0,
-  limit: 1000,
+  limit: 100,
 }
+
 const LeaderBoard: React.FC = () => {
   const leaderList = useAppSelector(leaderBoardSelector)
   const dispatch = useAppDispatch()
@@ -40,7 +41,7 @@ const LeaderBoard: React.FC = () => {
   return (
     <div className="page">
       <div className="content-wrapper">
-        <h1>Рейтинг игроков</h1>
+        <h1>ТОП-100 игроков</h1>
         <div className={s.container}>{bestPlayers}</div>
       </div>
     </div>

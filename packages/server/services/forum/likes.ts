@@ -5,11 +5,12 @@ export const addLike: Handler = async (req, res) => {
   const user = res.locals.user
 
   if (req.body) {
-    const { comment_id, emoji } = req.body
+    const { comment_id, reply_id, emoji } = req.body
 
     const existingLike = await Like.findOne({
       where: {
         comment_id,
+        reply_id,
         user_id: user.id,
       },
     })
@@ -21,6 +22,7 @@ export const addLike: Handler = async (req, res) => {
     } else {
       const like = await Like.create({
         comment_id,
+        reply_id,
         user_id: user.id,
         emoji,
       })
@@ -36,11 +38,12 @@ export const removeLike: Handler = async (req, res) => {
   const user = res.locals.user
 
   if (req.body) {
-    const { comment_id } = req.body
+    const { comment_id, reply_id } = req.body
 
     await Like.destroy({
       where: {
         comment_id,
+        reply_id,
         user_id: user.id,
       },
     })

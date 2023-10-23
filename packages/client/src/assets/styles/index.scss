@@ -46,6 +46,7 @@
   --color-background-secondary: var(--second-color);
   --button-color-background: var(--second-color);
   --game-widget: #36749f;
+  --gradient: repeating-conic-gradient(from 0, rgb(239, 246, 255) 0% 25%, #ffffff 0% 50%) 50%/40px 40px fixed;
 }
 
 * {
@@ -70,6 +71,7 @@ html {
   font-size: var(--font-size-base);
   font-weight: 400;
   color: var(--color-text);
+  scroll-behavior: smooth;
 }
 
 h1,

@@ -2,23 +2,7 @@ import type { Handler } from 'express'
 import { Comment } from '../../models/forum/comment'
 import { Like } from '../../models/forum/like'
 import { Sequelize } from 'sequelize-typescript'
-
-export const allComments: Handler = async (_req, res) => {
-  try {
-    const comments = await Comment.findAll({
-      include: Like,
-    })
-
-    if (comments) {
-      res.status(200).json({ comments })
-    } else {
-      res.status(404).json({ reason: 'КОММЕНТАРИЕВ НЕТ!' })
-    }
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({ error: 'Internal Server Error' })
-  }
-}
+import { Reply } from '../../models/forum/reply'
 
 export const commentsByTopicId: Handler = async (req, res) => {
   const topicId = req.params.topicId
@@ -26,8 +10,17 @@ export const commentsByTopicId: Handler = async (req, res) => {
   try {
     const comments = await Comment.findAll({
       where: { topic_id: topicId },
-      order: [[Sequelize.col('created_at'), 'DESC']],
-      include: Like,
+      order: [
+        [Sequelize.col('created_at'), 'DESC'],
+        [{ model: Reply, as: 'replies' }, 'created_at', 'ASC'],
+      ],
+      include: [
+        { model: Like },
+        {
+          model: Reply,
+          include: [{ model: Like }],
+        },
+      ],
     })
 
     if (comments) {
@@ -41,7 +34,7 @@ export const commentsByTopicId: Handler = async (req, res) => {
   }
 }
 
-export const createComment: Handler = async (req, res) => {
+export const addComment: Handler = async (req, res) => {
   const user = res.locals.user
 
   if (req.body) {

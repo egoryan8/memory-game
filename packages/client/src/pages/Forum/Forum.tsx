@@ -32,7 +32,7 @@ const Forum: React.FC = () => {
     event.preventDefault()
 
     try {
-      const response = await fetch('http://localhost:9000/api/topics/create', {
+      const response = await fetch('http://localhost:9000/api/topics/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
