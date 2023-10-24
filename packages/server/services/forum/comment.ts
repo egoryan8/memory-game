@@ -1,10 +1,9 @@
 import type { Handler } from 'express'
 import { Comment } from '../../models/forum/comment'
-import { Like } from '../../models/forum/like'
 import { Sequelize } from 'sequelize-typescript'
 import { Reply } from '../../models/forum/reply'
 
-export const commentsByTopicId: Handler = async (req, res) => {
+export const getCommentsByTopicId: Handler = async (req, res) => {
   const topicId = req.params.topicId
 
   try {
@@ -14,13 +13,7 @@ export const commentsByTopicId: Handler = async (req, res) => {
         [Sequelize.col('created_at'), 'DESC'],
         [{ model: Reply, as: 'replies' }, 'created_at', 'ASC'],
       ],
-      include: [
-        { model: Like },
-        {
-          model: Reply,
-          include: [{ model: Like }],
-        },
-      ],
+      include: [{ model: Reply }],
     })
 
     if (comments) {

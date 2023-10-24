@@ -1,6 +1,6 @@
 import s from './ForumThread.module.scss'
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Comment } from 'server/models/forum/comment'
 import { Topic } from 'server/models/forum/topic'
@@ -14,6 +14,7 @@ import { AppPath } from '@/types/AppPath'
 import ForumThreadReplyForm from '@/pages/ForumThread/ForumThreadReplyForm'
 import replyIcon from './replyIcon.svg'
 import cancelReplyIcon from './cancelReplyIcon.svg'
+import sendReplyIcon from '@/pages/ForumThread/sendReplyIcon.svg'
 
 const ForumThread: React.FC = () => {
   const { topicId } = useParams()
@@ -24,7 +25,6 @@ const ForumThread: React.FC = () => {
   const [topic, setTopic] = useState<Topic | null>(null)
   const [comments, setComments] = useState<Comment[]>([])
   const [showForm, setShowForm] = useState<boolean>(false)
-  const [scrolled, setScrolled] = useState<boolean>(false)
   const [newComment, setNewComment] = useState<string>('')
   const [replyTo, setReplyTo] = useState({
     userName: '',
@@ -34,18 +34,12 @@ const ForumThread: React.FC = () => {
   })
   const formClass = showForm ? s.slideDown : s.slideUp
 
-  const getData = async () => {
+  const getTopicData = async () => {
     try {
-      const responseComments = await fetch(
-        `http://localhost:9000/api/comments/${topicId}`
-      )
       const responseTopic = await fetch(
         `http://localhost:9000/api/topics/${topicId}`
       )
-      const jsonComments = await responseComments.json()
       const jsonTopic = await responseTopic.json()
-
-      setComments(jsonComments.comments)
       setTopic(jsonTopic.topic)
     } catch (error) {
       console.error('Ошибка при получении данных:', error)
@@ -54,7 +48,19 @@ const ForumThread: React.FC = () => {
     }
   }
 
-  const showFormHandler = () => setShowForm(!showForm)
+  const getCommentsData = async () => {
+    try {
+      const responseComments = await fetch(
+        `http://localhost:9000/api/comments/${topicId}`
+      )
+      const jsonComments = await responseComments.json()
+      setComments(jsonComments.comments)
+    } catch (error) {
+      console.error('Ошибка при получении данных:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const submitForm = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -72,7 +78,7 @@ const ForumThread: React.FC = () => {
       })
 
       if (response.ok) {
-        getData().then(() => {
+        getCommentsData().then(() => {
           setNewComment('')
         })
       } else {
@@ -82,6 +88,8 @@ const ForumThread: React.FC = () => {
       console.error('Ошибка при публикации комментария:', error)
     }
   }
+
+  const showFormHandler = useCallback(() => setShowForm(!showForm), [showForm])
 
   const clearReplyToState = () => {
     setReplyTo({
@@ -98,23 +106,7 @@ const ForumThread: React.FC = () => {
   }
 
   useEffect(() => {
-    getData()
-  }, [])
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY >= 250) {
-        setScrolled(true)
-      } else {
-        setScrolled(false)
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
+    getTopicData().then(() => getCommentsData())
   }, [])
 
   return (
@@ -123,10 +115,7 @@ const ForumThread: React.FC = () => {
         <Spinner />
       ) : topic ? (
         <div className="content-wrapper">
-          <div
-            className={
-              scrolled ? `${s.topicTitle} ${s.scrolled}` : s.topicTitle
-            }>
+          <div className={s.topicTitle}>
             <h1>
               <Link to={'/forum'}>Форум</Link>/<div>{topic?.title}</div>
             </h1>
@@ -144,7 +133,7 @@ const ForumThread: React.FC = () => {
           </div>
           <div className={s.topicBody}>{topic?.body}</div>
           <Button onClick={showFormHandler}>
-            {!showForm ? 'Написать комментарий' : 'Отмена'}
+            {!showForm ? 'Оставить комментарий' : 'Отмена'}
           </Button>
           <form
             className={`${s.commentForm} ${formClass}`}
@@ -156,16 +145,15 @@ const ForumThread: React.FC = () => {
             />
             <Button
               className={s.submitButton}
-              theme="orange"
               type="submit"
               disabled={!newComment}>
-              Отправить
+              <img src={sendReplyIcon} alt="Reply Icon" title="Отправить" />
             </Button>
           </form>
           <div className={s.commentsCount}>
             <b>
-              {comments.length
-                ? declensionWords(comments.length, [
+              {comments?.length
+                ? declensionWords(comments?.length, [
                     'комментарий',
                     'комментария',
                     'комментариев',
@@ -175,8 +163,7 @@ const ForumThread: React.FC = () => {
           </div>
           <div className={s.cards}>
             {comments.map(comment => {
-              const { id, body, likes, replies, user_name, created_at } =
-                comment
+              const { id, body, replies, user_name, created_at } = comment
 
               return (
                 <div className={s.card} key={id}>
@@ -192,11 +179,7 @@ const ForumThread: React.FC = () => {
                   <div className={s.messageBlock}>
                     <div className={s.message}>{body}</div>
                     <div className={s.info}>
-                      <EmojiPicker
-                        data={likes}
-                        commentId={id}
-                        updateData={getData}
-                      />
+                      <EmojiPicker commentId={id} />
                     </div>
                     {replies.length ? (
                       <>
@@ -265,11 +248,7 @@ const ForumThread: React.FC = () => {
                                     )}
                                     {reply.body}
                                   </div>
-                                  <EmojiPicker
-                                    data={reply.likes}
-                                    replyId={reply.id}
-                                    updateData={getData}
-                                  />
+                                  <EmojiPicker replyId={reply.id} />
                                 </div>
                               )
                             })}
@@ -301,7 +280,7 @@ const ForumThread: React.FC = () => {
                     <ForumThreadReplyForm
                       commentId={id}
                       replyId={replyTo.reply_id}
-                      updateData={getData}
+                      updateData={getCommentsData}
                       clearReplyState={clearReplyToState}
                     />
                   </div>

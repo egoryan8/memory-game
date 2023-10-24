@@ -6,6 +6,7 @@ import { Topic } from 'server/models/forum/topic'
 import answerIcon from './answers.svg'
 import { Spinner } from '@/components/Spinner/Spinner'
 import Button from '@/components/Button/Button'
+import sendReplyIcon from '@/pages/ForumThread/sendReplyIcon.svg'
 
 const Forum: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -84,48 +85,52 @@ const Forum: React.FC = () => {
             />
             <Button
               className={s.submitButton}
-              theme="orange"
               type="submit"
               disabled={!newTopic.body || !newTopic.title}>
-              Создать топик
+              <img src={sendReplyIcon} alt="Reply Icon" title="Создать топик" />
             </Button>
           </form>
           <div className={s.container}>
-            {topics.map(item => {
-              const { id, title, body, comments, user_name, created_at } = item
+            {topics.length ? (
+              topics.map(item => {
+                const { id, title, body, comments, user_name, created_at } =
+                  item
 
-              return (
-                <div className={s.topic} key={id}>
-                  <div className={s.topicBody}>
-                    <div>
-                      <h3>{title}</h3>
-                      <div className={s.topicCreated}>
-                        <div>
-                          <b>Автор топика: </b>
-                          {user_name}
-                        </div>
-                        |
-                        <div>
-                          <b>Дата создания: </b>
-                          {new Date(created_at).toLocaleString()}
+                return (
+                  <div className={s.topic} key={id}>
+                    <div className={s.topicBody}>
+                      <div>
+                        <h3>{title}</h3>
+                        <div className={s.topicCreated}>
+                          <div>
+                            <b>Автор топика: </b>
+                            {user_name}
+                          </div>
+                          |
+                          <div>
+                            <b>Дата создания: </b>
+                            {new Date(created_at).toLocaleString()}
+                          </div>
                         </div>
                       </div>
+                      <div className={s.bodyText}>{body}</div>
+                      <Link to={`/forum/thread/${id}`}>
+                        <img src={answerIcon} alt={'Answer ' + id} />
+                        {comments.length
+                          ? declensionWords(comments.length, [
+                              'комментарий',
+                              'комментария',
+                              'комментариев',
+                            ])
+                          : 'Оставить первый комментарий'}
+                      </Link>
                     </div>
-                    <div className={s.bodyText}>{body}</div>
-                    <Link to={`/forum/thread/${id}`}>
-                      <img src={answerIcon} alt={'Answer ' + id} />
-                      {comments.length
-                        ? declensionWords(comments.length, [
-                            'комментарий',
-                            'комментария',
-                            'комментариев',
-                          ])
-                        : 'Оставить первый комментарий'}
-                    </Link>
                   </div>
-                </div>
-              )
-            })}
+                )
+              })
+            ) : (
+              <b>Топиков еще нет</b>
+            )}
           </div>
         </div>
       )}
