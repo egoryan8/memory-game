@@ -106,7 +106,6 @@ const Forum: React.FC = () => {
                             <b>Автор топика: </b>
                             {user_name}
                           </div>
-                          |
                           <div>
                             <b>Дата создания: </b>
                             {new Date(created_at).toLocaleString()}

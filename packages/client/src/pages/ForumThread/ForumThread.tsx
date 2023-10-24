@@ -125,7 +125,6 @@ const ForumThread: React.FC = () => {
               <b>Автор топика: </b>
               {topic?.user_name}
             </div>
-            |
             <div>
               <b>Дата создания: </b>
               {topic && new Date(topic.created_at).toLocaleString()}
@@ -258,31 +257,33 @@ const ForumThread: React.FC = () => {
                     ) : (
                       ''
                     )}
-                    {replyTo.body && replyTo.comment_id === id && (
-                      <div className={s.replyTo}>
-                        <div className={s.replyToUser}>
+                    <div className={s.replyFormBlock}>
+                      {replyTo.body && replyTo.comment_id === id && (
+                        <div className={s.replyTo}>
+                          <div className={s.replyToUser}>
+                            <img
+                              src={replyIcon}
+                              alt="Reply Icon"
+                              title="Ответить"
+                            />
+                            <b>{replyTo.userName}</b>
+                          </div>
+                          <div className={s.replyToBody}>{replyTo.body}</div>
                           <img
-                            src={replyIcon}
-                            alt="Reply Icon"
-                            title="Ответить"
+                            onClick={clearReplyToState}
+                            src={cancelReplyIcon}
+                            alt="Cancel Reply Icon"
+                            title="Отменить"
                           />
-                          <b>{replyTo.userName}</b>
                         </div>
-                        <div className={s.replyToBody}>{replyTo.body}</div>
-                        <img
-                          onClick={clearReplyToState}
-                          src={cancelReplyIcon}
-                          alt="Cancel Reply Icon"
-                          title="Отменить"
-                        />
-                      </div>
-                    )}
-                    <ForumThreadReplyForm
-                      commentId={id}
-                      replyId={replyTo.reply_id}
-                      updateData={getCommentsData}
-                      clearReplyState={clearReplyToState}
-                    />
+                      )}
+                      <ForumThreadReplyForm
+                        commentId={id}
+                        replyId={replyTo.reply_id}
+                        updateData={getCommentsData}
+                        clearReplyState={clearReplyToState}
+                      />
+                    </div>
                   </div>
                 </div>
               )

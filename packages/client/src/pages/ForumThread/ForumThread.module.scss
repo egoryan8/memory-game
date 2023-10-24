@@ -18,8 +18,7 @@
   padding: 30px;
   gap: 30px;
   border: 1px solid var(--color-border);
-  backdrop-filter: blur(3px);
-  transition: background 0.3s, backdrop-filter 0.3s;
+  background: var(--half-opacity);
 }
 
 .avatarBlock {
@@ -76,7 +75,7 @@
 
 .topicCreated {
   display: flex;
-  gap: 15px;
+  gap: 10px;
   padding-top: 20px;
   border-top: 1px solid var(--color-border);
   font-size: 14px;
@@ -154,7 +153,6 @@
 
 .replyForm {
   position: relative;
-  margin-top: 15px;
 
   input {
     width: 100%;
@@ -235,13 +233,15 @@
 }
 
 .replyTo {
-  border-left: 5px solid var(--button-color-background-secondary);
-  padding-left: 10px;
+  border-left: 12px solid var(--button-color-background-secondary);
   margin-top: 10px;
   display: grid;
   align-items: center;
   position: relative;
   font-size: 14px;
+  background: var(--opacity);
+  padding: 15px 25px 15px 15px;
+  border-radius: 12px;
 
   .replyToUser {
 
@@ -252,6 +252,7 @@
       cursor: default;
       bottom: -2.5px;
       transform: rotateY(-180deg);
+      right: 0;
     }
   }
 
@@ -264,7 +265,25 @@
 
   img {
     position: absolute;
-    right: 0;
+    right: 12px;
     cursor: pointer;
+  }
+}
+
+.replyFormBlock {
+  position: sticky;
+  bottom: 10px;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  margin-top: 15px;
+  border-radius: 20px;
+  display: grid;
+  gap: 10px;
+  backdrop-filter: blur(5px);
+  z-index: 1;
+
+  .replyTo {
+    margin-top: 0;
   }
 }

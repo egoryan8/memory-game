@@ -170,9 +170,9 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
         <img src={emojiPickerIcon} alt="Emoji" />
         {isOpen && (
           <div className={style.emojiList}>
-            {popularEmojis.map((emoji, index) => (
+            {popularEmojis.map(emoji => (
               <div
-                key={index}
+                key={emoji}
                 className={style.emoji}
                 onClick={event =>
                   addEmojiHandler(event.currentTarget.textContent || '')
@@ -188,20 +188,17 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
             const activeUser = ids.some(item => item.user_id === user.data?.id)
 
             return (
-              <>
-                <div className={style.tooltip}></div>
-                <div
-                  onClick={() => addEmojiToggle(activeUser, emoji)}
-                  className={
-                    activeUser
-                      ? `${style.selectedEmoji} ${style.active}`
-                      : style.selectedEmoji
-                  }
-                  key={index}>
-                  {emoji}
-                  <span>{ids.length}</span>
-                </div>
-              </>
+              <div
+                onClick={() => addEmojiToggle(activeUser, emoji)}
+                className={
+                  activeUser
+                    ? `${style.selectedEmoji} ${style.active}`
+                    : style.selectedEmoji
+                }
+                key={index}>
+                {emoji}
+                <span>{ids.length}</span>
+              </div>
             )
           })
         : null}

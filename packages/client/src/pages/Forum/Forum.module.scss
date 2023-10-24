@@ -12,8 +12,7 @@
     border-radius: 16px;
     border: 1px solid var(--color-border);
     margin-bottom: 15px;
-    backdrop-filter: blur(3px);
-    transition: background 0.3s, backdrop-filter 0.3s;
+    background: var(--half-opacity);
 
     .topicBody {
       display: flex;
@@ -35,17 +34,15 @@
         font-size: 14px;
         padding: 10px 15px;
         border-radius: 16px;
-        text-decoration: underline;
+
+        &:hover {
+          text-decoration: underline;
+        }
 
         img {
           margin-right: 10px;
         }
       }
-    }
-
-    &:hover {
-      border: 1px solid var(--color-border);
-      background: var(--opacity);
     }
   }
 }
