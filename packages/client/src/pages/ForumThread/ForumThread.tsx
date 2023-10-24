@@ -205,7 +205,8 @@ const ForumThread: React.FC = () => {
                                   className={s.reply}
                                   key={reply.id}>
                                   <div className={s.replyCreator}>
-                                    {reply.user_name + ' '}
+                                    {reply.user_name}
+                                    <span> ответил(а) в </span>
                                     <span>
                                       {new Date(
                                         reply.created_at
