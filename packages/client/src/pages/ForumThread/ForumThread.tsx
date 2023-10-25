@@ -15,6 +15,7 @@ import ForumThreadReplyForm from '@/pages/ForumThread/ForumThreadReplyForm'
 import replyIcon from './replyIcon.svg'
 import cancelReplyIcon from './cancelReplyIcon.svg'
 import sendReplyIcon from '@/pages/ForumThread/sendReplyIcon.svg'
+import { FormattedBodyText } from '@/pages/Forum/Forum'
 
 const ForumThread: React.FC = () => {
   const { topicId } = useParams()
@@ -73,7 +74,7 @@ const ForumThread: React.FC = () => {
         },
         body: JSON.stringify({
           topic_id: topicId,
-          body: newComment,
+          body: newComment.trim(),
         }),
       })
 
@@ -130,7 +131,9 @@ const ForumThread: React.FC = () => {
               {topic && new Date(topic.created_at).toLocaleString()}
             </div>
           </div>
-          <div className={s.topicBody}>{topic?.body}</div>
+          <div className={s.topicBody}>
+            <FormattedBodyText text={topic?.body} />
+          </div>
           <Button onClick={showFormHandler}>
             {!showForm ? 'Оставить комментарий' : 'Отмена'}
           </Button>
@@ -176,7 +179,7 @@ const ForumThread: React.FC = () => {
                     </div>
                   </div>
                   <div className={s.messageBlock}>
-                    <div className={s.message}>{body}</div>
+                    <FormattedBodyText text={body} />
                     <div className={s.info}>
                       <EmojiPicker commentId={id} />
                     </div>

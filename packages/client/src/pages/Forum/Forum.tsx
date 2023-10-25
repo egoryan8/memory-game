@@ -8,6 +8,15 @@ import { Spinner } from '@/components/Spinner/Spinner'
 import Button from '@/components/Button/Button'
 import sendReplyIcon from '@/pages/ForumThread/sendReplyIcon.svg'
 
+export const FormattedBodyText: React.FC<{ text: string }> = ({ text }) => {
+  const lines = text.split('\n')
+  const formattedText = lines.map((line, index) =>
+    line.trim().length ? <p key={index}>{line.trim()}</p> : <br key={index} />
+  )
+
+  return <div className={s.message}>{formattedText}</div>
+}
+
 const Forum: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [topics, setTopics] = useState<Topic[]>([])
@@ -38,7 +47,10 @@ const Forum: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newTopic),
+        body: JSON.stringify({
+          title: newTopic.title,
+          body: newTopic.body.trim(),
+        }),
       })
 
       if (response.ok) {
@@ -112,7 +124,7 @@ const Forum: React.FC = () => {
                           </div>
                         </div>
                       </div>
-                      <div className={s.bodyText}>{body}</div>
+                      <FormattedBodyText text={body} />
                       <Link to={`/forum/thread/${id}`}>
                         <img src={answerIcon} alt={'Answer ' + id} />
                         {comments.length
