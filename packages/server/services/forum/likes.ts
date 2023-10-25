@@ -50,12 +50,11 @@ export const addLike: Handler = async (req, res) => {
         comment_id,
         reply_id,
         user_id: user.id,
+        emoji,
       },
     })
 
     if (existingLike) {
-      existingLike.emoji = emoji
-      await existingLike.save()
       res.status(200).json(existingLike)
     } else {
       const like = await Like.create({
@@ -76,13 +75,14 @@ export const removeLike: Handler = async (req, res) => {
   const user = res.locals.user
 
   if (req.body) {
-    const { comment_id, reply_id } = req.body
+    const { comment_id, reply_id, emoji } = req.body
 
     await Like.destroy({
       where: {
         comment_id,
         reply_id,
         user_id: user.id,
+        emoji,
       },
     })
 
