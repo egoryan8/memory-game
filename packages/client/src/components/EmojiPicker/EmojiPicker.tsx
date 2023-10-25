@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import style from '@/components/EmojiPicker/EmojiPicker.module.scss'
 import emojiPickerIcon from '@/components/EmojiPicker/emojiPicker.svg'
 import { useAppSelector } from '@/hooks/useAppSelector'
@@ -22,7 +22,6 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [emojis, setEmojis] = useState<Like[]>([])
-  const [emojiMap, setEmojiMap] = useState<{ [emoji: string]: Like[] }>({})
   const emojiPickerRef = useRef<HTMLDivElement | null>(null)
   const user = useAppSelector(userSelector)
 
@@ -59,23 +58,23 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
     !activeUser ? addEmojiHandler(emoji) : removerEmojiHandler()
   }
 
-  const emojiMapData = () => {
-    const emojiMap: { [emoji: string]: Like[] } = {}
+  const emojiMap = useMemo(() => {
+    const emojiMapData: { [emoji: string]: Like[] } = {}
 
     emojis.forEach(item => {
       const { emoji, user_id } = item
 
       if (!emoji || !user_id) return
 
-      if (emojiMap[emoji]) {
-        emojiMap[emoji].push(item)
+      if (emojiMapData[emoji]) {
+        emojiMapData[emoji].push(item)
       } else {
-        emojiMap[emoji] = [item]
+        emojiMapData[emoji] = [item]
       }
     })
 
-    setEmojiMap(emojiMap)
-  }
+    return emojiMapData
+  }, [emojis])
 
   const getEmojisData = async () => {
     const api = replyId
@@ -154,12 +153,6 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
 
     getEmojisData()
   }, [replyId, commentId])
-
-  useEffect(() => {
-    if (!emojis.length) return
-
-    emojiMapData()
-  }, [emojis])
 
   return (
     <div className={style.selectedEmojiWrapper}>

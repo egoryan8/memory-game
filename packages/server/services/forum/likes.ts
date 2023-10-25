@@ -25,6 +25,7 @@ export const getLikesByCommentOrReplyId: Handler = async (req, res) => {
 
     const likes = await Like.findAll({
       where: id,
+      order: [['created_at', 'ASC']],
     })
 
     if (likes) {
