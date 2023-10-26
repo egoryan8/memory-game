@@ -1,8 +1,8 @@
 @import '../../assets/styles/mixins';
 
 .noLogo {
-  width: 55px;
-  height: 55px;
+  width: 70px;
+  height: 70px;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -39,8 +39,8 @@
   background: var(--button-color-background);
   border-radius: 10px;
   & img {
-    max-height: 35px;
-    max-width: 35px;
+    max-height: 45px;
+    max-width: 45px;
   }
 }
 
