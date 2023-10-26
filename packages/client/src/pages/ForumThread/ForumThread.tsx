@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import s from './ForumThread.module.scss'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Comment } from 'server/models/forum/comment'
 import { Topic } from 'server/models/forum/topic'
 import { Reply } from 'server/models/forum/reply'
@@ -92,25 +92,25 @@ const ForumThread: React.FC = () => {
         <Spinner />
       ) : topic ? (
         <div className="content-wrapper">
-          <div className={s.topicTitle}>
-            <h1>
-              <Link to={'/forum'}>Форум</Link>/<div>{topic?.title}</div>
-            </h1>
-          </div>
-          <div className={s.topicCreated}>
-            <div>
-              <b>Автор топика: </b>
-              {topic?.user_name}
+          <div className={s.topic}>
+            <div className={s.topicCreated}>
+              <div>
+                <b>Автор топика: </b>
+                {topic?.user_name}
+              </div>
+              <div>
+                <b>Дата создания: </b>
+                <span className={s.date}>
+                  {topic && getCurrentDate(topic.created_at)}
+                </span>
+              </div>
             </div>
-            <div>
-              <b>Дата создания: </b>
-              <span className={s.date}>
-                {topic && getCurrentDate(topic.created_at)}
-              </span>
+            <div className={s.topicTitle}>
+              <h1>{topic?.title}</h1>
             </div>
-          </div>
-          <div className={s.topicBody}>
-            <FormattedBodyText text={topic?.body} />
+            <div className={s.topicBody}>
+              <FormattedBodyText text={topic?.body} />
+            </div>
           </div>
           <div className={s.commentsCount}>
             <b>

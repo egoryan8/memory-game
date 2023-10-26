@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { declensionWords } from '@/utils/declensionWords'
 import { Link } from 'react-router-dom'
 import s from './Forum.module.scss'
 import { Topic } from 'server/models/forum/topic'
-import answerIcon from './answers.svg'
 import { Spinner } from '@/components/Spinner/Spinner'
 import Button from '@/components/Button/Button'
 import sendReplyIcon from '@/pages/ForumThread/sendReplyIcon.svg'
@@ -128,8 +126,7 @@ const Forum: React.FC = () => {
           <div className={s.container}>
             {topics.length ? (
               topics.map(item => {
-                const { id, title, body, comments, user_name, created_at } =
-                  item
+                const { id, title, body, user_name, created_at } = item
                 return (
                   <div className={s.topic} key={id}>
                     <div className={s.topicBody}>
@@ -151,16 +148,7 @@ const Forum: React.FC = () => {
                       <FormattedBodyText
                         text={`${body.substring(0, 300)}...`}
                       />
-                      <Link to={`/forum/thread/${id}`}>
-                        <img src={answerIcon} alt={'Answer ' + id} />
-                        {comments.length
-                          ? declensionWords(comments.length, [
-                              'комментарий',
-                              'комментария',
-                              'комментариев',
-                            ])
-                          : 'Оставить первый комментарий'}
-                      </Link>
+                      <Link to={`/forum/thread/${id}`}>Читать дальше...</Link>
                     </div>
                   </div>
                 )

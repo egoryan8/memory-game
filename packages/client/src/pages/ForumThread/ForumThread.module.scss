@@ -1,3 +1,10 @@
+.topic {
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  background: var(--half-opacity);
+}
+
 .cards {
   display: grid;
   gap: 10px;
@@ -60,12 +67,6 @@
 .topicCreated {
   display: flex;
   gap: 10px;
-  padding-top: 20px;
-  border-top: 1px solid var(--color-border);
-}
-
-.topicBody {
-  margin: 20px 0;
 }
 
 .topicTitle {
@@ -80,7 +81,7 @@
 }
 
 .commentsCount {
-  margin: 20px 0;
+  margin: 20px;
 
   img {
     margin-right: 5px;
@@ -261,7 +262,7 @@
   background: rgba(255, 255, 255, 0.85);
   padding: 10px;
   border: 1px solid var(--color-border);
-  border-radius: 20px;
+  border-radius: 16px;
   display: grid;
   gap: 10px;
   backdrop-filter: blur(5px);
