@@ -111,6 +111,7 @@ const ForumThread: React.FC = () => {
             <div className={s.topicBody}>
               <FormattedBodyText text={topic?.body} />
             </div>
+            <EmojiPicker topicId={topicId} />
           </div>
           <div className={s.commentsCount}>
             <b>

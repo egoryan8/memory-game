@@ -2,13 +2,18 @@ import type { Handler } from 'express'
 import { Like } from '../../models/forum/like'
 
 export const getLikesByCommentOrReplyId: Handler = async (req, res) => {
-  const { commentId, replyId } = req.params
+  const { topicId, commentId, replyId } = req.params
 
   try {
     const id: {
+      topic_id?: string
       comment_id?: string
       reply_id?: string
     } = {}
+
+    if (topicId) {
+      id.topic_id = topicId
+    }
 
     if (commentId) {
       id.comment_id = commentId
@@ -19,7 +24,7 @@ export const getLikesByCommentOrReplyId: Handler = async (req, res) => {
     }
 
     if (Object.keys(id).length === 0) {
-      res.status(400).json({ error: 'Не указан ни commentId, ни replyId' })
+      res.status(400).json({ error: 'Не указан ни один Id' })
       return
     }
 
@@ -43,10 +48,11 @@ export const addLike: Handler = async (req, res) => {
   const user = res.locals.user
 
   if (req.body) {
-    const { comment_id, reply_id, emoji } = req.body
+    const { topic_id, comment_id, reply_id, emoji } = req.body
 
     const existingLike = await Like.findOne({
       where: {
+        topic_id,
         comment_id,
         reply_id,
         user_id: user.id,
@@ -58,6 +64,7 @@ export const addLike: Handler = async (req, res) => {
       res.status(200).json(existingLike)
     } else {
       const like = await Like.create({
+        topic_id,
         comment_id,
         reply_id,
         user_id: user.id,
@@ -75,10 +82,11 @@ export const removeLike: Handler = async (req, res) => {
   const user = res.locals.user
 
   if (req.body) {
-    const { comment_id, reply_id, emoji } = req.body
+    const { topic_id, comment_id, reply_id, emoji } = req.body
 
     await Like.destroy({
       where: {
+        topic_id,
         comment_id,
         reply_id,
         user_id: user.id,

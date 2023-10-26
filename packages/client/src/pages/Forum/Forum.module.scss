@@ -29,17 +29,9 @@
       gap: 20px;
       position: relative;
 
-      h3 {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        text-transform: uppercase;
-      }
-
       .titleLink {
         border: none;
         padding: 0;
-        color: var(--button-color-background-secondary);
       }
 
       a {
@@ -63,7 +55,7 @@
 
 .topicCreated {
   display: flex;
-  gap: 10px;
+  gap: 15px;
 }
 
 .topicForm {

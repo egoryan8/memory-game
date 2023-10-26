@@ -126,7 +126,8 @@ const Forum: React.FC = () => {
           <div className={s.container}>
             {topics.length ? (
               topics.map(item => {
-                const { id, title, body, user_name, created_at } = item
+                const { id, title, body, comments, user_name, created_at } =
+                  item
                 return (
                   <div className={s.topic} key={id}>
                     <div className={s.topicBody}>
@@ -141,6 +142,10 @@ const Forum: React.FC = () => {
                             {getCurrentDate(created_at)}
                           </span>
                         </div>
+                        <div>
+                          <b>💬 </b>
+                          <span className={s.date}>{comments.length}</span>
+                        </div>
                       </div>
                       <Link className={s.titleLink} to={`/forum/thread/${id}`}>
                         <h3>{title}</h3>
@@ -148,7 +153,7 @@ const Forum: React.FC = () => {
                       <FormattedBodyText
                         text={`${body.substring(0, 300)}...`}
                       />
-                      <Link to={`/forum/thread/${id}`}>Читать дальше...</Link>
+                      <Link to={`/forum/thread/${id}`}>Читать дальше</Link>
                     </div>
                   </div>
                 )

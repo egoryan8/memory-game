@@ -8,9 +8,11 @@ import { Like } from 'server/models/forum/like'
 interface EmojiPickerProps {
   commentId?: number
   replyId?: number
+  topicId?: string
 }
 
 const EmojiPicker: React.FC<EmojiPickerProps> = ({
+  topicId = null,
   commentId = null,
   replyId = null,
 }) => {
@@ -68,9 +70,18 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
   }, [emojis])
 
   const getEmojisData = async () => {
-    const api = replyId
-      ? `http://localhost:9000/api/likes/reply/${replyId}`
-      : `http://localhost:9000/api/likes/comment/${commentId}`
+    const pathIdMap: { [key: string]: number | string | null } = {
+      reply: replyId,
+      comment: commentId,
+      topic: topicId,
+    }
+
+    const selectedPath = Object.keys(pathIdMap).find(
+      path => pathIdMap[path] !== null
+    )
+    const id = selectedPath && pathIdMap[selectedPath]
+
+    const api = `http://localhost:9000/api/likes/${selectedPath}/${id}`
 
     try {
       const responseLikes = await fetch(api)
@@ -83,6 +94,7 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
 
   const sendEmojiRequest = async (action: string, emoji: string) => {
     const data = {
+      topic_id: topicId,
       comment_id: commentId,
       reply_id: replyId,
       emoji,
@@ -140,10 +152,10 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
   }, [])
 
   useEffect(() => {
-    if (!replyId && !commentId) return
+    if (!topicId && !replyId && !commentId) return
 
     getEmojisData()
-  }, [replyId, commentId])
+  }, [topicId, commentId, replyId])
 
   return (
     <div className={style.selectedEmojiWrapper}>
