@@ -1,29 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import style from '@/components/EmojiPicker/EmojiPicker.module.scss'
 import emojiPickerIcon from '@/components/EmojiPicker/emojiPicker.svg'
 import { useAppSelector } from '@/hooks/useAppSelector'
 import { userSelector } from '@/store/slices/userSlice'
+import { Like } from 'server/models/forum/like'
 
 interface EmojiPickerProps {
-  data: {
-    id?: number
-    comment_id?: number
-    emoji?: string
-    user_id?: number
-  }[]
-  commentId: number
-  updateData: () => void
+  commentId?: number
+  replyId?: number
 }
 
 const EmojiPicker: React.FC<EmojiPickerProps> = ({
-  data,
-  commentId,
-  updateData,
+  commentId = null,
+  replyId = null,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const [emojiMap, setEmojiMap] = useState<{
-    [emoji: string]: EmojiPickerProps['data']
-  }>({})
+  const [emojis, setEmojis] = useState<Like[]>([])
   const emojiPickerRef = useRef<HTMLDivElement | null>(null)
   const user = useAppSelector(userSelector)
 
@@ -44,76 +36,90 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
     '🔥',
     '🎉',
     '🚀',
+    '🤑',
+    '😈',
+    '🤡',
+    '💩',
+    '👻️',
+    '👽',
+    '👾',
+    '🤖',
   ]
 
-  const toggleEmojiPicker = () => setIsOpen(!isOpen)
+  const emojiListToggle = useCallback(() => setIsOpen(!isOpen), [isOpen])
 
-  const emojiMapData = () => {
-    const emojiMap: { [emoji: string]: EmojiPickerProps['data'] } = {}
+  const existingEmoji = (emoji: string) =>
+    emojis.find(item => item.emoji === emoji && item.user_id === user.data?.id)
 
-    data.forEach(item => {
+  const emojiMap = useMemo(() => {
+    const emojiMapData: { [emoji: string]: Like[] } = {}
+
+    emojis.forEach(item => {
       const { emoji, user_id } = item
 
       if (!emoji || !user_id) return
 
-      if (emojiMap[emoji]) {
-        emojiMap[emoji].push(item)
-      } else {
-        emojiMap[emoji] = [item]
-      }
+      emojiMapData[emoji]
+        ? emojiMapData[emoji].push(item)
+        : (emojiMapData[emoji] = [item])
     })
 
-    setEmojiMap(emojiMap)
+    return emojiMapData
+  }, [emojis])
+
+  const getEmojisData = async () => {
+    const api = replyId
+      ? `http://localhost:9000/api/likes/reply/${replyId}`
+      : `http://localhost:9000/api/likes/comment/${commentId}`
+
+    try {
+      const responseLikes = await fetch(api)
+      const jsonLikes = await responseLikes.json()
+      setEmojis(jsonLikes.likes)
+    } catch (error) {
+      console.error('Ошибка при получении лайков:', error)
+    }
   }
 
-  const addEmojiHandler = async (emoji: string | null) => {
+  const sendEmojiRequest = async (action: string, emoji: string) => {
+    const data = {
+      comment_id: commentId,
+      reply_id: replyId,
+      emoji,
+    }
+
     try {
-      const response = await fetch('http://localhost:9000/api/likes/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          comment_id: commentId,
-          emoji,
-        }),
-      })
+      const response = await fetch(
+        `http://localhost:9000/api/likes/${action}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        }
+      )
 
       if (response.ok) {
-        setIsOpen(false)
-        updateData()
+        getEmojisData()
       } else {
-        console.error('Не удалось поставить новый лайк')
+        console.error('Не удалось выполнить операцию')
       }
     } catch (error) {
       console.error('Ошибка:', error)
     }
   }
 
-  const removerEmojiHandler = async () => {
-    try {
-      const response = await fetch('http://localhost:9000/api/likes/remove', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          comment_id: commentId,
-        }),
-      })
+  const addEmojiHandler = async (emoji: string) => {
+    existingEmoji(emoji)
+      ? await removerEmojiHandler(emoji)
+      : await sendEmojiRequest('add', emoji)
 
-      if (response.ok) {
-        updateData()
-      } else {
-        console.error('Не удалось удалить лайк')
-      }
-    } catch (error) {
-      console.error('Ошибка:', error)
-    }
+    setIsOpen(false)
   }
 
-  const emojiToggle = (activeUser: boolean, emoji: string) => {
-    !activeUser ? addEmojiHandler(emoji) : removerEmojiHandler()
+  const removerEmojiHandler = async (emoji: string) => {
+    await sendEmojiRequest('remove', emoji)
   }
 
   useEffect(() => {
@@ -134,42 +140,20 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
   }, [])
 
   useEffect(() => {
-    if (!data.length) return
+    if (!replyId && !commentId) return
 
-    emojiMapData()
-  }, [data])
+    getEmojisData()
+  }, [replyId, commentId])
 
   return (
     <div className={style.selectedEmojiWrapper}>
-      <div
-        className={style.emojiPicker}
-        onClick={toggleEmojiPicker}
-        ref={emojiPickerRef}>
-        <img src={emojiPickerIcon} alt="Emoji" />
-        {isOpen && (
-          <div className={style.emojiList}>
-            {popularEmojis.map((emoji, index) => (
-              <div
-                key={index}
-                className={style.emoji}
-                onClick={event =>
-                  addEmojiHandler(event.currentTarget.textContent)
-                }>
-                {emoji}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-      {data.length
+      {emojis.length
         ? Object.entries(emojiMap).map(([emoji, ids], index) => {
-            const activeUser = ids.some(item => item.user_id === user.data?.id)
-
             return (
               <div
-                onClick={() => emojiToggle(activeUser, emoji)}
+                onClick={() => addEmojiHandler(emoji)}
                 className={
-                  activeUser
+                  existingEmoji(emoji)
                     ? `${style.selectedEmoji} ${style.active}`
                     : style.selectedEmoji
                 }
@@ -180,6 +164,30 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
             )
           })
         : null}
+      <div
+        className={style.emojiPicker}
+        onClick={emojiListToggle}
+        ref={emojiPickerRef}>
+        <img src={emojiPickerIcon} alt="Emoji" />
+        {isOpen && (
+          <div className={style.emojiList}>
+            {popularEmojis.map(emoji => (
+              <div
+                key={emoji}
+                className={
+                  existingEmoji(emoji)
+                    ? `${style.emoji} ${style.emojiActive}`
+                    : style.emoji
+                }
+                onClick={event =>
+                  addEmojiHandler(event.currentTarget.textContent || '')
+                }>
+                {emoji}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

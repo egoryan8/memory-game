@@ -12,7 +12,6 @@
     border: 1px solid var(--color-border);
     border-radius: 12px;
     cursor: pointer;
-    background: var(--color-background);
 
     span {
       font-size: 14px;
@@ -22,38 +21,47 @@
   .active {
     border: 1px solid var(--button-color-background-secondary);
     color: var(--button-color-background-secondary);
+    background: rgba(247, 127, 0, 0.05);
   }
 }
 
 .emojiPicker {
   display: flex;
   align-items: center;
-  padding: 0 10px;
+  justify-content: center;
+  padding: 0 5px;
   height: 35px;
+  aspect-ratio: 1 / 1;
   border: 1px solid var(--color-border);
   border-radius: 12px;
   position: relative;
-  background: var(--color-background);
-  gap: 5px;
   cursor: pointer;
 
   .emojiList {
     position: absolute;
     display: flex;
     flex-wrap: wrap;
-    width: 200px;
+    justify-content: space-between;
+    width: 220px;
     left: -1px;
-    bottom: 25px;
-    background: var(--color-background);
+    bottom: 30px;
+    background: rgba(255, 255, 255, 0.95);
     padding: 10px;
-    border-radius: 12px 12px 12px 0;
+    border-radius: 12px;
     z-index: 1;
     border: 1px solid var(--color-border);
-    gap: 4px;
     cursor: default;
+    overflow-y: auto;
 
     .emoji {
       cursor: pointer;
+      padding: 1.5px 3.25px;
+      margin: 1px;
+      border-radius: 5px;
+    }
+
+    .emojiActive {
+      background: rgba(247, 127, 0, 0.2);
     }
   }
 }

@@ -1,39 +1,54 @@
+import React, { useCallback, useEffect, useState } from 'react'
 import s from './ForumThread.module.scss'
-import * as React from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
 import { Comment } from 'server/models/forum/comment'
+import { Topic } from 'server/models/forum/topic'
+import { Reply } from 'server/models/forum/reply'
 import { Spinner } from '@/components/Spinner/Spinner'
 import { declensionWords } from '@/utils/declensionWords'
-import { Topic } from 'server/models/forum/topic'
-import Button from '@/components/Button/Button'
 import EmojiPicker from '@/components/EmojiPicker/EmojiPicker'
 import Error from '@/pages/Error/Error'
 import { AppPath } from '@/types/AppPath'
+import ForumThreadReplyForm from '@/pages/ForumThread/ForumThreadReplyForm'
+import replyIcon from './replyIcon.svg'
+import cancelReplyIcon from './cancelReplyIcon.svg'
+import { FormattedBodyText } from '@/pages/Forum/Forum'
+import { getCurrentDate } from '@/utils/currentDate'
 
 const ForumThread: React.FC = () => {
   const { topicId } = useParams()
 
+  const location = window.location.pathname
+
   const [isLoading, setIsLoading] = useState(true)
   const [topic, setTopic] = useState<Topic | null>(null)
   const [comments, setComments] = useState<Comment[]>([])
-  const [showForm, setShowForm] = useState<boolean>(false)
-  const [newComment, setNewComment] = useState('')
-  const [scrolled, setScrolled] = useState(false)
-  const formClass = showForm ? s.slideDown : s.slideUp
+  const [replyTo, setReplyTo] = useState({
+    user_name: '',
+    body: '',
+    reply_id: null,
+    comment_id: 0,
+  })
 
-  const getData = async () => {
+  const getTopicData = async () => {
+    try {
+      const responseTopic = await fetch(
+        `http://localhost:9000/api/topics/${topicId}`
+      )
+      const jsonTopic = await responseTopic.json()
+      setTopic(jsonTopic.topic)
+    } catch (error) {
+      console.error('Ошибка при получении данных:', error)
+    }
+  }
+
+  const getCommentsData = async () => {
     try {
       const responseComments = await fetch(
         `http://localhost:9000/api/comments/${topicId}`
       )
-      const responseTopic = await fetch(
-        `http://localhost:9000/api/topics/${topicId}`
-      )
       const jsonComments = await responseComments.json()
-      const jsonTopic = await responseTopic.json()
       setComments(jsonComments.comments)
-      setTopic(jsonTopic.topic)
     } catch (error) {
       console.error('Ошибка при получении данных:', error)
     } finally {
@@ -41,56 +56,34 @@ const ForumThread: React.FC = () => {
     }
   }
 
-  const showFormHandler = () => setShowForm(!showForm)
+  const setDataReplyToState = useCallback(
+    (user_name: string, body: string, reply_id = null, comment_id: number) =>
+      setReplyTo({
+        ...replyTo,
+        user_name,
+        body,
+        reply_id,
+        comment_id,
+      }),
+    [replyTo]
+  )
 
-  const submitForm = async (event: React.FormEvent) => {
-    event.preventDefault()
+  const clearDataReplyToState = useCallback(() => {
+    setReplyTo({
+      ...replyTo,
+      user_name: '',
+      body: '',
+      reply_id: null,
+      comment_id: 0,
+    })
+  }, [replyTo])
 
-    try {
-      const response = await fetch(
-        'http://localhost:9000/api/comments/create',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            topic_id: topicId,
-            body: newComment,
-          }),
-        }
-      )
-
-      if (response.ok) {
-        getData().then(() => {
-          setNewComment('')
-        })
-      } else {
-        console.error('Не удалось создать новый комментарий')
-      }
-    } catch (error) {
-      console.error('Ошибка при публикации комментария:', error)
-    }
+  const findReply = (replies: Reply[], id: number) => {
+    return replies.find(item => item.id === id)
   }
 
   useEffect(() => {
-    getData()
-  }, [])
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY >= 250) {
-        setScrolled(true)
-      } else {
-        setScrolled(false)
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
+    getTopicData().then(() => getCommentsData())
   }, [])
 
   return (
@@ -99,10 +92,7 @@ const ForumThread: React.FC = () => {
         <Spinner />
       ) : topic ? (
         <div className="content-wrapper">
-          <div
-            className={
-              scrolled ? `${s.topicTitle} ${s.scrolled}` : s.topicTitle
-            }>
+          <div className={s.topicTitle}>
             <h1>
               <Link to={'/forum'}>Форум</Link>/<div>{topic?.title}</div>
             </h1>
@@ -112,36 +102,20 @@ const ForumThread: React.FC = () => {
               <b>Автор топика: </b>
               {topic?.user_name}
             </div>
-            |
             <div>
               <b>Дата создания: </b>
-              {topic && new Date(topic.created_at).toLocaleString()}
+              <span className={s.date}>
+                {topic && getCurrentDate(topic.created_at)}
+              </span>
             </div>
           </div>
-          <div className={s.topicBody}>{topic?.body}</div>
-          <Button onClick={showFormHandler}>
-            {!showForm ? 'Написать комментарий' : 'Отмена'}
-          </Button>
-          <form
-            className={`${s.commentForm} ${formClass}`}
-            onSubmit={submitForm}>
-            <textarea
-              placeholder="Комментарий..."
-              value={newComment}
-              onChange={event => setNewComment(event.target.value)}
-            />
-            <Button
-              className={s.submitButton}
-              theme="orange"
-              type="submit"
-              disabled={!newComment}>
-              Отправить
-            </Button>
-          </form>
+          <div className={s.topicBody}>
+            <FormattedBodyText text={topic?.body} />
+          </div>
           <div className={s.commentsCount}>
             <b>
-              {comments.length
-                ? declensionWords(comments.length, [
+              {comments?.length
+                ? declensionWords(comments?.length, [
                     'комментарий',
                     'комментария',
                     'комментариев',
@@ -149,39 +123,135 @@ const ForumThread: React.FC = () => {
                 : 'Комментариев еще нет'}
             </b>
           </div>
-          <ul className={s.cards}>
-            {comments.map(item => {
-              const { id, body, likes, user_name, created_at } = item
+          <div className={s.cards}>
+            {comments.map(comment => {
+              const { id, body, replies, user_name, created_at } = comment
 
               return (
-                <li className={s.card} key={id}>
-                  <div className={s.avatarBlock}>
-                    <div className={s.forumAvatar}>
-                      {user_name.split('')[0]}
-                    </div>
-                    <div className={s.userName}>{user_name}</div>
-                    <p className={s.time}>
-                      {new Date(created_at).toLocaleString()}
-                    </p>
-                  </div>
-                  <div className={s['message-block']}>
-                    <p className={s.message}>{body}</p>
-                    <div className={s.info}>
-                      <EmojiPicker
-                        data={likes}
-                        commentId={id}
-                        updateData={getData}
+                <div className={s.card} key={id}>
+                  <div className={s.messageBlock}>
+                    <div className={s.replyCreator}>
+                      {user_name}
+                      <span> оставил(а) комментарий </span>
+                      <span>{getCurrentDate(created_at)}</span>
+                      <img
+                        className={s.commentReplyIcon}
+                        onClick={() =>
+                          setDataReplyToState(user_name, body, null, id)
+                        }
+                        src={replyIcon}
+                        alt="Reply Icon"
+                        title="Ответить"
                       />
                     </div>
+                    <div className={s.messageBlockBody}>
+                      <FormattedBodyText text={body} />
+                    </div>
+                    <EmojiPicker commentId={id} />
+                    {replies.length ? (
+                      <>
+                        <b className={s.answersCount}>
+                          {declensionWords(replies.length, [
+                            'ответ',
+                            'ответа',
+                            'ответов',
+                          ])}
+                        </b>
+                        <div className={s.replies}>
+                          <div className={`${s.cards} ${s.replyCard}`}>
+                            {replies.map(reply => {
+                              const replyToReply = findReply(
+                                replies,
+                                reply.reply_id
+                              )
+                              return (
+                                <div
+                                  id={`reply-${reply.id}`}
+                                  className={s.reply}
+                                  key={reply.id}>
+                                  <div className={s.replyCreator}>
+                                    {reply.user_name}
+                                    <span> ответил(а) </span>
+                                    <span>
+                                      {getCurrentDate(reply.created_at)}
+                                    </span>
+                                    <img
+                                      onClick={() =>
+                                        setDataReplyToState(
+                                          reply.user_name,
+                                          reply.body,
+                                          reply.id,
+                                          id
+                                        )
+                                      }
+                                      src={replyIcon}
+                                      alt="Reply Icon"
+                                      title="Ответить"
+                                    />
+                                  </div>
+                                  {reply.reply_id && (
+                                    <a
+                                      href={`${location}#reply-${reply.reply_id}`}>
+                                      <div className={s.replyTo}>
+                                        <div className={s.replyToUser}>
+                                          <img
+                                            src={replyIcon}
+                                            alt="Reply Icon"
+                                            title="Ответить"
+                                          />
+                                          <b>{replyToReply?.user_name}</b>
+                                        </div>
+                                        <div className={s.replyToBody}>
+                                          {replyToReply?.body}
+                                        </div>
+                                      </div>
+                                    </a>
+                                  )}
+                                  <div className={s.replyBody}>
+                                    <FormattedBodyText text={reply.body} />
+                                  </div>
+                                  <EmojiPicker replyId={reply.id} />
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      ''
+                    )}
                   </div>
-                </li>
+                </div>
               )
             })}
-          </ul>
+            <div className={s.replyFormBlock}>
+              {replyTo.body && (
+                <div className={s.replyTo}>
+                  <div className={s.replyToUser}>
+                    <img src={replyIcon} alt="Reply Icon" title="Ответить" />
+                    <b>{replyTo.user_name}</b>
+                  </div>
+                  <div className={s.replyToBody}>{replyTo.body}</div>
+                  <img
+                    onClick={clearDataReplyToState}
+                    src={cancelReplyIcon}
+                    alt="Cancel Reply Icon"
+                    title="Отменить"
+                  />
+                </div>
+              )}
+              <ForumThreadReplyForm
+                replyId={replyTo.reply_id}
+                commentId={replyTo.comment_id}
+                updateData={getCommentsData}
+                clearReplyState={clearDataReplyToState}
+              />
+            </div>
+          </div>
         </div>
       ) : (
         <Error
-          name=" "
+          name="🤔"
           text="Упс! Такого топика нет..."
           linkText="Вернуться на страницу форума"
           linkPath={AppPath.FORUM}

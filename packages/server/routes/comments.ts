@@ -1,14 +1,9 @@
 import { Router } from 'express'
-import {
-  allComments,
-  commentsByTopicId,
-  createComment,
-} from '../services/forum/comment'
+import { getCommentsByTopicId, addComment } from '../services/forum/comment'
 
 const commentRouter = Router()
 
-commentRouter.get('/', allComments)
-commentRouter.get('/:topicId', commentsByTopicId)
-commentRouter.post('/create', createComment)
+commentRouter.get('/:topicId', getCommentsByTopicId)
+commentRouter.post('/add', addComment)
 
 export { commentRouter }
