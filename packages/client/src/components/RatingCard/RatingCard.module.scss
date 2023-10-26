@@ -36,8 +36,8 @@
   height: 50px;
   margin-right: 20px;
   border-radius: 50%;
-  background-color: #ce82ff;
-  font-size: 22px;
+  background: var(--color-background-secondary);
+  font-size: var(--font-size-medium);
   font-weight: 900;
   text-transform: uppercase;
   object-fit: cover;
