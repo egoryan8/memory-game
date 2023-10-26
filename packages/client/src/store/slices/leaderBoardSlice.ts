@@ -4,11 +4,13 @@ import { setLeaderBoardResult } from '@/store/asyncThunks/leaderboard/setLeaderB
 
 export interface ILeaderBoardState {
   leaders: ILeaderBoardData[] | null
+  oldLeaders: ILeaderBoardData[] | null
   error: string | null
 }
 
 const initialState: ILeaderBoardState = {
   leaders: null,
+  oldLeaders: null,
   error: null,
 }
 
@@ -29,6 +31,7 @@ const leaderBoardSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(getLeaderBoardResults.fulfilled, (store, action) => {
       const { payload } = action
+      store.oldLeaders = store.leaders
       store.leaders = payload
     })
 
@@ -47,4 +50,9 @@ export const { setLeaders, setLeadersError } = leaderBoardSlice.actions
 export const leaderBoardSelector = (state: {
   leaderBoard: ILeaderBoardState
 }) => state.leaderBoard.leaders
+
+export const oldLeaderBoardSelector = (state: {
+  leaderBoard: ILeaderBoardState
+}) => state.leaderBoard.oldLeaders
+
 export default leaderBoardSlice.reducer
