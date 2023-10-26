@@ -55,6 +55,7 @@ const Forum: React.FC = () => {
       if (response.ok) {
         getData().then(() => {
           setNewTopic({ title: '', body: '' })
+          setShowForm(false)
         })
         const textarea = document.querySelector('textarea')
         if (textarea) {
@@ -147,12 +148,8 @@ const Forum: React.FC = () => {
                           <span className={s.date}>{comments.length}</span>
                         </div>
                       </div>
-                      <Link className={s.titleLink} to={`/forum/thread/${id}`}>
-                        <h3>{title}</h3>
-                      </Link>
-                      <FormattedBodyText
-                        text={`${body.substring(0, 300)}...`}
-                      />
+                      <h3>{title}</h3>
+                      {`${body.substring(0, 300)}...`}
                       <Link to={`/forum/thread/${id}`}>Читать дальше</Link>
                     </div>
                   </div>

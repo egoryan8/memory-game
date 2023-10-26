@@ -42,7 +42,9 @@
         border-radius: 12px;
 
         &:hover {
-          text-decoration: underline;
+          background: var(--button-color-background-secondary);
+          color: var(--color-text-white);
+          border-color: var(--button-color-background-secondary);
         }
 
         img {
@@ -70,8 +72,12 @@
     margin: 0;
   }
 
+  input {
+    padding: 20px;
+  }
+
   textarea {
-    padding-right: 50px;
+    padding: 20px 50px 20px 20px;
   }
 
   .submitButton {
