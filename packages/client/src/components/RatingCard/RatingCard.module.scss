@@ -5,13 +5,14 @@
   align-items: center;
   padding: 20px;
   margin-bottom: 10px;
-  backdrop-filter: blur(3px);
-  transition: background 0.3s, backdrop-filter 0.3s;
+  background: var(--half-opacity);
   font-weight: 900;
 }
 
 .player:hover {
   background: var(--opacity);
+  backdrop-filter: blur(3px);
+  transition: background 0.3s, backdrop-filter 0.3s;
   cursor: default;
 }
 

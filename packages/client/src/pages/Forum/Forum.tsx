@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { declensionWords } from '@/utils/declensionWords'
 import { Link } from 'react-router-dom'
 import s from './Forum.module.scss'
@@ -21,6 +21,7 @@ export const FormattedBodyText: React.FC<{ text: string }> = ({ text }) => {
 
 const Forum: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [showForm, setShowForm] = useState<boolean>(false)
   const [topics, setTopics] = useState<Topic[]>([])
   const [newTopic, setNewTopic] = useState({ title: '', body: '' })
 
@@ -69,6 +70,8 @@ const Forum: React.FC = () => {
     }
   }
 
+  const showFormHandler = useCallback(() => setShowForm(!showForm), [showForm])
+
   useEffect(() => {
     getData()
   }, [])
@@ -79,44 +82,54 @@ const Forum: React.FC = () => {
         <Spinner />
       ) : (
         <div className="content-wrapper">
-          <h1>Топики форума</h1>
-          <form className={s.topicForm} onSubmit={submitForm}>
-            <input
-              type="text"
-              placeholder="Тема топика..."
-              value={newTopic.title}
-              onChange={event =>
-                setNewTopic({
-                  ...newTopic,
-                  title: event.target.value.replace(/^\s+/, ''),
-                })
-              }
-            />
-            <textarea
-              value={newTopic.body}
-              onInput={textareaHeightAutoResize}
-              onChange={event =>
-                setNewTopic({
-                  ...newTopic,
-                  body: event.target.value.replace(/^\s+/, ''),
-                })
-              }
-              rows={3}
-              placeholder="Описание..."
-            />
-            <Button
-              className={s.submitButton}
-              type="submit"
-              disabled={!newTopic.body || !newTopic.title}>
-              <img src={sendReplyIcon} alt="Reply Icon" title="Создать топик" />
+          <div className={s.topicTitle}>
+            <h1>Топики форума</h1>
+            <Button onClick={showFormHandler}>
+              {showForm ? 'Отменить' : '+ Новый топик'}
             </Button>
-          </form>
+          </div>
+          {showForm && (
+            <form className={s.topicForm} onSubmit={submitForm}>
+              <input
+                type="text"
+                placeholder="Тема топика..."
+                value={newTopic.title}
+                onChange={event =>
+                  setNewTopic({
+                    ...newTopic,
+                    title: event.target.value.replace(/^\s+/, ''),
+                  })
+                }
+              />
+              <textarea
+                value={newTopic.body}
+                onInput={textareaHeightAutoResize}
+                onChange={event =>
+                  setNewTopic({
+                    ...newTopic,
+                    body: event.target.value.replace(/^\s+/, ''),
+                  })
+                }
+                rows={3}
+                placeholder="Описание..."
+              />
+              <Button
+                className={s.submitButton}
+                type="submit"
+                disabled={!newTopic.body || !newTopic.title}>
+                <img
+                  src={sendReplyIcon}
+                  alt="Reply Icon"
+                  title="Создать топик"
+                />
+              </Button>
+            </form>
+          )}
           <div className={s.container}>
             {topics.length ? (
               topics.map(item => {
                 const { id, title, body, comments, user_name, created_at } =
                   item
-
                 return (
                   <div className={s.topic} key={id}>
                     <div className={s.topicBody}>
