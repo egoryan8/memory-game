@@ -130,14 +130,11 @@ textarea {
   outline: none;
   border: 1px solid var(--color-border);
   border-radius: 12px;
+  resize: none;
 }
 
 input:disabled {
   color: var(--disabled);
-}
-
-textarea {
-  resize: vertical;
 }
 
 button {
@@ -197,5 +194,5 @@ h3 {
   flex-grow: 1;
   width: 100%;
   max-width: 1024px;
-  padding: 145px 15px 55px 15px;
+  padding: 125px 15px 25px 15px;
 }

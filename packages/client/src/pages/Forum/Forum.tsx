@@ -7,6 +7,8 @@ import answerIcon from './answers.svg'
 import { Spinner } from '@/components/Spinner/Spinner'
 import Button from '@/components/Button/Button'
 import sendReplyIcon from '@/pages/ForumThread/sendReplyIcon.svg'
+import { getCurrentDate } from '@/utils/currentDate'
+import { textareaHeightAutoResize } from '@/utils/textareaHeightAutoResize'
 
 export const FormattedBodyText: React.FC<{ text: string }> = ({ text }) => {
   const lines = text.split('\n')
@@ -20,9 +22,9 @@ export const FormattedBodyText: React.FC<{ text: string }> = ({ text }) => {
 const Forum: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [topics, setTopics] = useState<Topic[]>([])
-  const [showForm, setShowForm] = useState<boolean>(false)
   const [newTopic, setNewTopic] = useState({ title: '', body: '' })
-  const formClass = showForm ? s.slideDown : s.slideUp
+
+  const initialTextareaHeight = 'auto'
 
   const getData = async () => {
     try {
@@ -36,8 +38,6 @@ const Forum: React.FC = () => {
     }
   }
 
-  const showFormHandler = () => setShowForm(!showForm)
-
   const submitForm = async (event: React.FormEvent) => {
     event.preventDefault()
 
@@ -48,7 +48,7 @@ const Forum: React.FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          title: newTopic.title,
+          title: newTopic.title.trim(),
           body: newTopic.body.trim(),
         }),
       })
@@ -57,6 +57,10 @@ const Forum: React.FC = () => {
         getData().then(() => {
           setNewTopic({ title: '', body: '' })
         })
+        const textarea = document.querySelector('textarea')
+        if (textarea) {
+          textarea.style.height = initialTextareaHeight
+        }
       } else {
         console.error('Не удалось создать новый топик')
       }
@@ -76,24 +80,29 @@ const Forum: React.FC = () => {
       ) : (
         <div className="content-wrapper">
           <h1>Топики форума</h1>
-          <Button onClick={showFormHandler}>
-            {!showForm ? 'Создать топик' : 'Отмена'}
-          </Button>
-          <form className={`${s.topicForm} ${formClass}`} onSubmit={submitForm}>
+          <form className={s.topicForm} onSubmit={submitForm}>
             <input
               type="text"
               placeholder="Тема топика..."
               value={newTopic.title}
               onChange={event =>
-                setNewTopic({ ...newTopic, title: event.target.value })
+                setNewTopic({
+                  ...newTopic,
+                  title: event.target.value.replace(/^\s+/, ''),
+                })
               }
             />
             <textarea
-              placeholder="Описание..."
               value={newTopic.body}
+              onInput={textareaHeightAutoResize}
               onChange={event =>
-                setNewTopic({ ...newTopic, body: event.target.value })
+                setNewTopic({
+                  ...newTopic,
+                  body: event.target.value.replace(/^\s+/, ''),
+                })
               }
+              rows={3}
+              placeholder="Описание..."
             />
             <Button
               className={s.submitButton}
@@ -111,20 +120,24 @@ const Forum: React.FC = () => {
                 return (
                   <div className={s.topic} key={id}>
                     <div className={s.topicBody}>
-                      <div>
-                        <h3>{title}</h3>
-                        <div className={s.topicCreated}>
-                          <div>
-                            <b>Автор топика: </b>
-                            {user_name}
-                          </div>
-                          <div>
-                            <b>Дата создания: </b>
-                            {new Date(created_at).toLocaleString()}
-                          </div>
+                      <div className={s.topicCreated}>
+                        <div>
+                          <b>Автор топика: </b>
+                          {user_name}
+                        </div>
+                        <div>
+                          <b>Дата создания: </b>
+                          <span className={s.date}>
+                            {getCurrentDate(created_at)}
+                          </span>
                         </div>
                       </div>
-                      <FormattedBodyText text={body} />
+                      <Link className={s.titleLink} to={`/forum/thread/${id}`}>
+                        <h3>{title}</h3>
+                      </Link>
+                      <FormattedBodyText
+                        text={`${body.substring(0, 300)}...`}
+                      />
                       <Link to={`/forum/thread/${id}`}>
                         <img src={answerIcon} alt={'Answer ' + id} />
                         {comments.length

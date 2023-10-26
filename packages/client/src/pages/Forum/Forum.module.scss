@@ -25,7 +25,12 @@
         align-items: flex-start;
         gap: 10px;
         text-transform: uppercase;
-        margin-bottom: 20px;
+      }
+
+      .titleLink {
+        border: none;
+        padding: 0;
+        color: var(--button-color-background-secondary);
       }
 
       a {
@@ -48,7 +53,6 @@
 }
 
 .topicCreated {
-  font-size: 14px;
   display: flex;
   gap: 10px;
 }
@@ -62,23 +66,19 @@
   overflow: hidden;
 
   textarea {
-    min-height: 150px;
-    padding-bottom: 60px;
-    box-sizing: content-box;
+    padding-right: 50px;
   }
-}
 
-.submitButton {
-  max-width: 200px;
-  width: auto;
-  position: absolute;
-  bottom: 0;
-  border-radius: 0 12px;
-  background: none;
-  padding: 15px;
-  border: 1px solid var(--color-border);
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(5px);
+  .submitButton {
+    max-width: 200px;
+    width: auto;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-radius: 12px 0;
+    background: none;
+    padding: 15px;
+  }
 }
 
 .slideDown {
