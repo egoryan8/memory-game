@@ -18,6 +18,7 @@ export const mockInitialState = {
   },
   leaderBoard: {
     leaders: null,
+    oldLeaders: null,
     error: null,
   },
   theme: {

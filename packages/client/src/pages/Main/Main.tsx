@@ -1,10 +1,18 @@
+import { useAppDispatch } from '@/hooks/useAppDispatch'
+import { useAppSelector } from '@/hooks/useAppSelector'
 import useNotification from '@/hooks/useNotification'
+import { leaderBoardParams } from '@/pages/LeaderBoard/LeaderBoard'
+import { getLeaderBoardResults } from '@/store/asyncThunks/leaderboard/getLeaderBoardResults'
+import {
+  leaderBoardSelector,
+  oldLeaderBoardSelector,
+} from '@/store/slices/leaderBoardSlice'
+import { userSelector } from '@/store/slices/userSlice'
 import s from './Main.module.scss'
 import Button from '@/components/Button/Button'
 import { useNavigate } from 'react-router-dom'
 import { AppPath } from '@/types/AppPath'
-import { useDispatch } from 'react-redux'
-import { ChangeEventHandler, useState } from 'react'
+import { ChangeEventHandler, useEffect, useState } from 'react'
 import { setGameCols } from '@/store/slices/gameSlice'
 import grid4 from '@/assets/images/other/grid4.svg'
 import grid6 from '@/assets/images/other/grid6.svg'
@@ -14,7 +22,55 @@ import Logo from '@/components/Logo/Logo'
 const Main = () => {
   const navigate = useNavigate()
   const notification = useNotification()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
+  const leaderList = useAppSelector(leaderBoardSelector)
+  const oldLeaderList = useAppSelector(oldLeaderBoardSelector)
+  const currentUser = useAppSelector(userSelector)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      dispatch(getLeaderBoardResults(leaderBoardParams))
+    }, 10000)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [dispatch])
+
+  useEffect(() => {
+    if (leaderList !== null && oldLeaderList !== null) {
+      const isSame =
+        JSON.stringify(oldLeaderList) === JSON.stringify(leaderList)
+
+      if (!isSame) {
+        compareArrays(oldLeaderList, leaderList)
+      }
+    }
+  }, [oldLeaderList, leaderList])
+
+  const compareArrays = (
+    prevArray: ILeaderBoardData[],
+    currentArray: ILeaderBoardData[]
+  ) => {
+    if (prevArray[0].userData.id !== currentArray[0].userData.id) {
+      const message = `Игрок ${currentArray[0].userData.first_name} с рейтингом ${currentArray[0].codeHuntersMemoryGameScore}`
+
+      notification.notifyUser('В игре появился новый лидер', message)
+    } else {
+      const oldIndex = prevArray.findIndex(
+        user => user.userData.id === currentUser.data?.id
+      )
+      const newIndex = currentArray.findIndex(
+        user => user.userData.id === currentUser.data?.id
+      )
+
+      if (oldIndex < 3 && newIndex > 2) {
+        const message = `Ваше место в рейтинге – ${newIndex + 1}`
+
+        notification.notifyUser('Вы больше не в тройке лидеров', message)
+      }
+    }
+  }
 
   type GameIcons = {
     easy: string
