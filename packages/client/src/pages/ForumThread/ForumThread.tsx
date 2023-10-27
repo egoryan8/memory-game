@@ -112,141 +112,141 @@ const ForumThread: React.FC = () => {
               <FormattedBodyText text={topic?.body} />
             </div>
             <EmojiPicker topicId={topicId} />
-          </div>
-          <div className={s.commentsCount}>
-            <b>
-              {comments?.length
-                ? declensionWords(comments?.length, [
-                    'комментарий',
-                    'комментария',
-                    'комментариев',
-                  ])
-                : 'Комментариев еще нет'}
-            </b>
-          </div>
-          <div className={s.cards}>
-            {comments.map(comment => {
-              const { id, body, replies, user_name, created_at } = comment
+            <div className={s.commentsCount}>
+              <b>
+                {comments?.length
+                  ? declensionWords(comments?.length, [
+                      'комментарий',
+                      'комментария',
+                      'комментариев',
+                    ])
+                  : 'Комментариев еще нет'}
+              </b>
+            </div>
+            <div className={s.cards}>
+              {comments.map(comment => {
+                const { id, body, replies, user_name, created_at } = comment
 
-              return (
-                <div className={s.card} key={id}>
-                  <div className={s.messageBlock}>
-                    <div className={s.replyCreator}>
-                      {user_name}
-                      <span> оставил(а) комментарий </span>
-                      <span>{getCurrentDate(created_at)}</span>
-                      <img
-                        className={s.commentReplyIcon}
-                        onClick={() =>
-                          setDataReplyToState(user_name, body, null, id)
-                        }
-                        src={replyIcon}
-                        alt="Reply Icon"
-                        title="Ответить"
-                      />
-                    </div>
-                    <div className={s.messageBlockBody}>
-                      <FormattedBodyText text={body} />
-                    </div>
-                    <EmojiPicker commentId={id} />
-                    {replies.length ? (
-                      <>
-                        <b className={s.answersCount}>
-                          {declensionWords(replies.length, [
-                            'ответ',
-                            'ответа',
-                            'ответов',
-                          ])}
-                        </b>
-                        <div className={s.replies}>
-                          <div className={`${s.cards} ${s.replyCard}`}>
-                            {replies.map(reply => {
-                              const replyToReply = findReply(
-                                replies,
-                                reply.reply_id
-                              )
-                              return (
-                                <div
-                                  id={`reply-${reply.id}`}
-                                  className={s.reply}
-                                  key={reply.id}>
-                                  <div className={s.replyCreator}>
-                                    {reply.user_name}
-                                    <span> ответил(а) </span>
-                                    <span>
-                                      {getCurrentDate(reply.created_at)}
-                                    </span>
-                                    <img
-                                      onClick={() =>
-                                        setDataReplyToState(
-                                          reply.user_name,
-                                          reply.body,
-                                          reply.id,
-                                          id
-                                        )
-                                      }
-                                      src={replyIcon}
-                                      alt="Reply Icon"
-                                      title="Ответить"
-                                    />
-                                  </div>
-                                  {reply.reply_id && (
-                                    <a
-                                      href={`${location}#reply-${reply.reply_id}`}>
-                                      <div className={s.replyTo}>
-                                        <div className={s.replyToUser}>
-                                          <img
-                                            src={replyIcon}
-                                            alt="Reply Icon"
-                                            title="Ответить"
-                                          />
-                                          <b>{replyToReply?.user_name}</b>
+                return (
+                  <div className={s.card} key={id}>
+                    <div className={s.messageBlock}>
+                      <div className={s.replyCreator}>
+                        {user_name}
+                        <span> оставил(а) комментарий </span>
+                        <span>{getCurrentDate(created_at)}</span>
+                        <img
+                          className={s.commentReplyIcon}
+                          onClick={() =>
+                            setDataReplyToState(user_name, body, null, id)
+                          }
+                          src={replyIcon}
+                          alt="Reply Icon"
+                          title="Ответить"
+                        />
+                      </div>
+                      <div className={s.messageBlockBody}>
+                        <FormattedBodyText text={body} />
+                      </div>
+                      <EmojiPicker commentId={id} />
+                      {replies.length ? (
+                        <>
+                          <b className={s.answersCount}>
+                            {declensionWords(replies.length, [
+                              'ответ',
+                              'ответа',
+                              'ответов',
+                            ])}
+                          </b>
+                          <div className={s.replies}>
+                            <div className={`${s.cards} ${s.replyCard}`}>
+                              {replies.map(reply => {
+                                const replyToReply = findReply(
+                                  replies,
+                                  reply.reply_id
+                                )
+                                return (
+                                  <div
+                                    id={`reply-${reply.id}`}
+                                    className={s.reply}
+                                    key={reply.id}>
+                                    <div className={s.replyCreator}>
+                                      {reply.user_name}
+                                      <span> ответил(а) </span>
+                                      <span>
+                                        {getCurrentDate(reply.created_at)}
+                                      </span>
+                                      <img
+                                        onClick={() =>
+                                          setDataReplyToState(
+                                            reply.user_name,
+                                            reply.body,
+                                            reply.id,
+                                            id
+                                          )
+                                        }
+                                        src={replyIcon}
+                                        alt="Reply Icon"
+                                        title="Ответить"
+                                      />
+                                    </div>
+                                    {reply.reply_id && (
+                                      <a
+                                        href={`${location}#reply-${reply.reply_id}`}>
+                                        <div className={s.replyTo}>
+                                          <div className={s.replyToUser}>
+                                            <img
+                                              src={replyIcon}
+                                              alt="Reply Icon"
+                                              title="Ответить"
+                                            />
+                                            <b>{replyToReply?.user_name}</b>
+                                          </div>
+                                          <div className={s.replyToBody}>
+                                            {replyToReply?.body}
+                                          </div>
                                         </div>
-                                        <div className={s.replyToBody}>
-                                          {replyToReply?.body}
-                                        </div>
-                                      </div>
-                                    </a>
-                                  )}
-                                  <div className={s.replyBody}>
-                                    <FormattedBodyText text={reply.body} />
+                                      </a>
+                                    )}
+                                    <div className={s.replyBody}>
+                                      <FormattedBodyText text={reply.body} />
+                                    </div>
+                                    <EmojiPicker replyId={reply.id} />
                                   </div>
-                                  <EmojiPicker replyId={reply.id} />
-                                </div>
-                              )
-                            })}
+                                )
+                              })}
+                            </div>
                           </div>
-                        </div>
-                      </>
-                    ) : (
-                      ''
-                    )}
+                        </>
+                      ) : (
+                        ''
+                      )}
+                    </div>
                   </div>
-                </div>
-              )
-            })}
-            <div className={s.replyFormBlock}>
-              {replyTo.body && (
-                <div className={s.replyTo}>
-                  <div className={s.replyToUser}>
-                    <img src={replyIcon} alt="Reply Icon" title="Ответить" />
-                    <b>{replyTo.user_name}</b>
+                )
+              })}
+              <div className={s.replyFormBlock}>
+                {replyTo.body && (
+                  <div className={s.replyTo}>
+                    <div className={s.replyToUser}>
+                      <img src={replyIcon} alt="Reply Icon" title="Ответить" />
+                      <b>{replyTo.user_name}</b>
+                    </div>
+                    <div className={s.replyToBody}>{replyTo.body}</div>
+                    <img
+                      onClick={clearDataReplyToState}
+                      src={cancelReplyIcon}
+                      alt="Cancel Reply Icon"
+                      title="Отменить"
+                    />
                   </div>
-                  <div className={s.replyToBody}>{replyTo.body}</div>
-                  <img
-                    onClick={clearDataReplyToState}
-                    src={cancelReplyIcon}
-                    alt="Cancel Reply Icon"
-                    title="Отменить"
-                  />
-                </div>
-              )}
-              <ForumThreadReplyForm
-                replyId={replyTo.reply_id}
-                commentId={replyTo.comment_id}
-                updateData={getCommentsData}
-                clearReplyState={clearDataReplyToState}
-              />
+                )}
+                <ForumThreadReplyForm
+                  replyId={replyTo.reply_id}
+                  commentId={replyTo.comment_id}
+                  updateData={getCommentsData}
+                  clearReplyState={clearDataReplyToState}
+                />
+              </div>
             </div>
           </div>
         </div>

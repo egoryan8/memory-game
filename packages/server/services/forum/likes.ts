@@ -1,7 +1,7 @@
 import type { Handler } from 'express'
 import { Like } from '../../models/forum/like'
 
-export const getLikesByCommentOrReplyId: Handler = async (req, res) => {
+export const getLikesById: Handler = async (req, res) => {
   const { topicId, commentId, replyId } = req.params
 
   try {
