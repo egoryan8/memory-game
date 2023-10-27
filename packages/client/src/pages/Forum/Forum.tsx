@@ -7,6 +7,7 @@ import Button from '@/components/Button/Button'
 import sendReplyIcon from '@/pages/ForumThread/sendReplyIcon.svg'
 import { getCurrentDate } from '@/utils/currentDate'
 import { textareaHeightAutoResize } from '@/utils/textareaHeightAutoResize'
+import ForumThreadUserAvatar from '@/pages/ForumThread/ForumThreadUserAvatar'
 
 export const FormattedBodyText: React.FC<{ text: string }> = ({ text }) => {
   const lines = text.split('\n')
@@ -127,14 +128,22 @@ const Forum: React.FC = () => {
           <div className={s.container}>
             {topics.length ? (
               topics.map(item => {
-                const { id, title, body, comments, user_name, created_at } =
-                  item
+                const {
+                  id,
+                  title,
+                  body,
+                  comments,
+                  user_name,
+                  user_id,
+                  created_at,
+                } = item
                 return (
                   <div className={s.topic} key={id}>
                     <div className={s.topicBody}>
                       <div className={s.topicCreated}>
                         <div>
                           <b>Автор топика: </b>
+                          <ForumThreadUserAvatar userId={user_id} />
                           {user_name}
                         </div>
                         <div>

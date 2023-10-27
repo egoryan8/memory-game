@@ -10,7 +10,7 @@ export const getCommentsByTopicId: Handler = async (req, res) => {
     const comments = await Comment.findAll({
       where: { topic_id: topicId },
       order: [
-        [Sequelize.col('created_at'), 'DESC'],
+        [Sequelize.col('created_at'), 'ASC'],
         [{ model: Reply, as: 'replies' }, 'created_at', 'ASC'],
       ],
       include: [{ model: Reply }],

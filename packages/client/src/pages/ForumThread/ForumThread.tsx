@@ -14,6 +14,7 @@ import replyIcon from './replyIcon.svg'
 import cancelReplyIcon from './cancelReplyIcon.svg'
 import { FormattedBodyText } from '@/pages/Forum/Forum'
 import { getCurrentDate } from '@/utils/currentDate'
+import ForumThreadUserAvatar from '@/pages/ForumThread/ForumThreadUserAvatar'
 
 const ForumThread: React.FC = () => {
   const { topicId } = useParams()
@@ -25,6 +26,7 @@ const ForumThread: React.FC = () => {
   const [comments, setComments] = useState<Comment[]>([])
   const [replyTo, setReplyTo] = useState({
     user_name: '',
+    user_id: 0,
     body: '',
     reply_id: null,
     comment_id: 0,
@@ -57,10 +59,17 @@ const ForumThread: React.FC = () => {
   }
 
   const setDataReplyToState = useCallback(
-    (user_name: string, body: string, reply_id = null, comment_id: number) =>
+    (
+      user_name: string,
+      user_id: number,
+      body: string,
+      reply_id = null,
+      comment_id: number
+    ) =>
       setReplyTo({
         ...replyTo,
         user_name,
+        user_id,
         body,
         reply_id,
         comment_id,
@@ -96,6 +105,7 @@ const ForumThread: React.FC = () => {
             <div className={s.topicCreated}>
               <div>
                 <b>Автор топика: </b>
+                <ForumThreadUserAvatar userId={topic.user_id} />
                 {topic?.user_name}
               </div>
               <div>
@@ -125,19 +135,27 @@ const ForumThread: React.FC = () => {
             </div>
             <div className={s.cards}>
               {comments.map(comment => {
-                const { id, body, replies, user_name, created_at } = comment
+                const { id, body, replies, user_name, user_id, created_at } =
+                  comment
 
                 return (
                   <div className={s.card} key={id}>
                     <div className={s.messageBlock}>
                       <div className={s.replyCreator}>
+                        <ForumThreadUserAvatar userId={user_id} />
                         {user_name}
                         <span> оставил(а) комментарий </span>
                         <span>{getCurrentDate(created_at)}</span>
                         <img
                           className={s.commentReplyIcon}
                           onClick={() =>
-                            setDataReplyToState(user_name, body, null, id)
+                            setDataReplyToState(
+                              user_name,
+                              user_id,
+                              body,
+                              null,
+                              id
+                            )
                           }
                           src={replyIcon}
                           alt="Reply Icon"
@@ -170,15 +188,20 @@ const ForumThread: React.FC = () => {
                                     className={s.reply}
                                     key={reply.id}>
                                     <div className={s.replyCreator}>
+                                      <ForumThreadUserAvatar
+                                        userId={reply.user_id}
+                                      />
                                       {reply.user_name}
                                       <span> ответил(а) </span>
                                       <span>
                                         {getCurrentDate(reply.created_at)}
                                       </span>
                                       <img
+                                        className={s.replyReplyIcon}
                                         onClick={() =>
                                           setDataReplyToState(
                                             reply.user_name,
+                                            reply.user_id,
                                             reply.body,
                                             reply.id,
                                             id
@@ -198,6 +221,10 @@ const ForumThread: React.FC = () => {
                                               src={replyIcon}
                                               alt="Reply Icon"
                                               title="Ответить"
+                                            />
+                                            <ForumThreadUserAvatar
+                                              userId={replyToReply?.user_id}
+                                              width={'15'}
                                             />
                                             <b>{replyToReply?.user_name}</b>
                                           </div>
@@ -229,6 +256,10 @@ const ForumThread: React.FC = () => {
                   <div className={s.replyTo}>
                     <div className={s.replyToUser}>
                       <img src={replyIcon} alt="Reply Icon" title="Ответить" />
+                      <ForumThreadUserAvatar
+                        userId={replyTo?.user_id}
+                        width={'15'}
+                      />
                       <b>{replyTo.user_name}</b>
                     </div>
                     <div className={s.replyToBody}>{replyTo.body}</div>

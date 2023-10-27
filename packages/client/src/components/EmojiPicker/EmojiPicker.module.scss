@@ -2,10 +2,12 @@
   display: flex;
   flex-wrap: wrap;
   gap: 7.5px;
+  position: relative;
 
   .selectedEmoji {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 5px;
     padding: 0 10px;
     height: 35px;
@@ -63,5 +65,24 @@
     .emojiActive {
       background: rgba(247, 127, 0, 0.2);
     }
+  }
+}
+
+.userLike {
+  display: flex;
+  gap: 8px;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 10px;
+  bottom: 40px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  width: max-content;
+  justify-content: center;
+  max-width: 100px;
+  flex-wrap: wrap;
+
+  img {
+    margin: 0;
   }
 }

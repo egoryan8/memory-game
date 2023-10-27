@@ -16,6 +16,8 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
   commentId = null,
   replyId = null,
 }) => {
+  // const [hoveredEmoji, setHoveredEmoji] = useState<string>('')
+  // const [showUsers, setShowUsers] = useState<boolean>(false)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [emojis, setEmojis] = useState<Like[]>([])
   const emojiPickerRef = useRef<HTMLDivElement | null>(null)
@@ -25,6 +27,7 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
     '😀',
     '😂',
     '👍',
+    '👎',
     '🙌',
     '👏',
     '🤔',
@@ -32,7 +35,6 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
     '🤩',
     '😭',
     '🥳',
-    '👋',
     '🌟',
     '💯',
     '🔥',
@@ -163,6 +165,14 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
         ? Object.entries(emojiMap).map(([emoji, ids], index) => {
             return (
               <div
+                // onMouseEnter={() => {
+                //   setShowUsers(true)
+                //   setHoveredEmoji(emoji)
+                // }}
+                // onMouseLeave={() => {
+                //   setShowUsers(false)
+                //   setHoveredEmoji('')
+                // }}
                 onClick={() => addEmojiHandler(emoji)}
                 className={
                   existingEmoji(emoji)
@@ -170,6 +180,20 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
                     : style.selectedEmoji
                 }
                 key={index}>
+                {/*{showUsers && emoji === hoveredEmoji && (*/}
+                {/*  <div className={style.userLike}>*/}
+                {/*    {*/}
+                {/*      ids.map((user) => {*/}
+                {/*        return (*/}
+                {/*          <ForumThreadUserAvatar*/}
+                {/*            userId={user.user_id}*/}
+                {/*            key={user.user_id}*/}
+                {/*          />*/}
+                {/*        )*/}
+                {/*      })*/}
+                {/*    }*/}
+                {/*  </div>*/}
+                {/*)}*/}
                 {emoji}
                 <span>{ids.length}</span>
               </div>

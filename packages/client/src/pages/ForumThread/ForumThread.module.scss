@@ -5,6 +5,14 @@
   background: var(--half-opacity);
 }
 
+.avatar {
+  aspect-ratio: 1 / 1;
+  border-radius: 100%;
+  object-fit: cover;
+  margin-right: 5px;
+  border: 1px solid var(--color-border);
+}
+
 .topicBody {
   margin-bottom: 20px;
 }
@@ -215,7 +223,14 @@
     color: var(--color-text-gray);
   }
 
-  img {
+  .commentReplyIcon {
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    opacity: 0;
+  }
+
+  .replyReplyIcon {
     cursor: pointer;
     position: absolute;
     right: 0;
