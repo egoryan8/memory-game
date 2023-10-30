@@ -1,4 +1,5 @@
 import Button from '@/components/Button/Button'
+import GiphyButton from '@/components/GiphyButton/GiphyButton'
 import React, { useState } from 'react'
 import s from './ForumThread.module.scss'
 import sendReplyIcon from '@/pages/ForumThread/sendReplyIcon.svg'
@@ -67,20 +68,25 @@ const ForumThreadReplyForm: React.FC<ReplyProps> = ({
   }
 
   return (
-    <form className={s.replyForm} onSubmit={submitForm}>
-      <textarea
-        value={newReply}
-        onInput={textareaHeightAutoResize}
-        onChange={inputSearch}
-        rows={1}
-        placeholder={
-          topicId && !commentId && !replyId ? 'Комментарий...' : 'Ответ...'
-        }
-      />
-      <Button type="submit" disabled={!newReply}>
-        <img src={sendReplyIcon} alt="Reply Icon" title="Отправить" />
-      </Button>
-    </form>
+    <>
+      <form className={s.replyForm} onSubmit={submitForm}>
+        <textarea
+          value={newReply}
+          onInput={textareaHeightAutoResize}
+          onChange={inputSearch}
+          rows={1}
+          placeholder={
+            topicId && !commentId && !replyId ? 'Комментарий...' : 'Ответ...'
+          }
+        />
+        <div className={s.buttons}>
+          <Button type="submit" disabled={!newReply}>
+            <img src={sendReplyIcon} alt="Reply Icon" title="Отправить" />
+          </Button>
+        </div>
+      </form>
+      <GiphyButton />
+    </>
   )
 }
 

@@ -28,4 +28,10 @@ export const mockInitialState = {
     emojiList: null,
     error: null,
   },
+  giphy: {
+    items: [],
+    status: 'loading',
+    error: null,
+    page: 1,
+  },
 }

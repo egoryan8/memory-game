@@ -7,6 +7,7 @@ import leaderBoardReducer, {
 } from '@/store/slices/leaderBoardSlice'
 import emojiReducer, { IEmojiState } from '@/store/slices/emojiSlice'
 import themeReducer, { IThemeState } from '@/store/slices/themeSlice'
+import giphySlice, { IGiphyState } from '@/store/slices/giphySlice'
 
 const createStore = (
   getUser: () => Promise<any | Response>,
@@ -19,6 +20,7 @@ const createStore = (
       leaderBoard: leaderBoardReducer,
       theme: themeReducer,
       emoji: emojiReducer,
+      giphy: giphySlice,
     },
     preloadedState: initialState,
     devTools: process.env.NODE_ENV === 'development',
@@ -38,6 +40,7 @@ export interface RootState {
   leaderBoard: ILeaderBoardState
   theme: IThemeState
   emoji: IEmojiState
+  giphy: IGiphyState
 }
 
 export type AppDispatch = ReturnType<typeof createStore>['dispatch']

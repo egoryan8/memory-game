@@ -165,10 +165,8 @@
   }
 
   button {
-    position: absolute;
     width: auto;
     background: none;
-    right: 5px;
     padding: 12px 10px;
     border: 1px solid rgba(255, 255, 255, 0);
     cursor: pointer;
@@ -187,6 +185,12 @@
       }
     }
   }
+}
+
+.buttons {
+  display: flex;
+  position: absolute;
+  right: 5px;
 }
 
 .replyCard {
