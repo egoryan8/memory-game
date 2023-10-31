@@ -1,4 +1,6 @@
+import axios from 'axios'
 import React, { useDeferredValue, useEffect, useRef, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import gifIcon from './gif_icon.svg'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
 import { useAppSelector } from '@/hooks/useAppSelector'
@@ -9,7 +11,11 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import s from './GiphyButton.module.scss'
 import { v4 as uuidv4 } from 'uuid'
 
-const GiphyButton = () => {
+interface GiphyButtonProps {
+  updateData: () => void
+}
+
+const GiphyButton: React.FC<GiphyButtonProps> = ({ updateData }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [searchTerm, setSearchTerm] = useState('')
   const dispatch = useAppDispatch()
@@ -27,6 +33,29 @@ const GiphyButton = () => {
 
   const loadMore = () => {
     dispatch(loadMoreGifs(searchTerm))
+  }
+
+  const { topicId } = useParams()
+
+  const submitForm = async (event: React.FormEvent, url: string) => {
+    event.preventDefault()
+
+    try {
+      const resp = await axios.post(`http://localhost:9000/api/comments/add`, {
+        topic_id: topicId,
+        body: '',
+        img_url: url,
+      })
+
+      if (resp.status === 200) {
+        updateData()
+        setIsOpen(false)
+      } else {
+        console.error('Не удалось создать новый ответ')
+      }
+    } catch (error) {
+      console.error('Ошибка при публикации комментария:', error)
+    }
   }
 
   return (
@@ -73,8 +102,9 @@ const GiphyButton = () => {
                 <div
                   key={uuidv4()}
                   className={s.image}
-                  // onClick={() => window.open(gif.images.preview_gif.url)}
-                >
+                  onClick={event =>
+                    submitForm(event, gif.images.fixed_height.url)
+                  }>
                   <img src={gif.images.fixed_height.url} alt="gif" />
                 </div>
               ))}

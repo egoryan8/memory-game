@@ -85,7 +85,7 @@ const ForumThreadReplyForm: React.FC<ReplyProps> = ({
           </Button>
         </div>
       </form>
-      <GiphyButton />
+      <GiphyButton updateData={updateData} />
     </>
   )
 }

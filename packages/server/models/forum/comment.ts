@@ -27,6 +27,10 @@ export class Comment extends Model {
   @Column(DataType.TEXT)
   body!: string
 
+  @AllowNull(true)
+  @Column(DataType.TEXT)
+  img_url!: string
+
   @Column(DataType.DATE)
   created_at!: string
 
