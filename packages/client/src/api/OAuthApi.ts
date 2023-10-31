@@ -1,14 +1,14 @@
-import HTTPClient, { BASE_URI } from '@/utils/HTTPClient'
+import HTTPClient, { REDIRECT_URI } from '@/utils/HTTPClient'
 
 function OAuthApi() {
   const client = HTTPClient('/oauth/yandex')
-  const sendAuthCode = async (code: string, redirectUri: string) =>
-    await client.post('', { code, redirect_uri: redirectUri })
+  const sendAuthCode = async (code: string) =>
+    await client.post('', { code, redirect_uri: REDIRECT_URI })
 
-  const fetchServiceId = async (redirectUri: string) => {
+  const fetchServiceId = async () => {
     try {
       const { data } = await client.get(
-        `/service-id?redirect_uri=${redirectUri}`
+        `/service-id?redirect_uri=${REDIRECT_URI}`
       )
       return data.service_id
     } catch (error) {

@@ -6,6 +6,7 @@ import s from './ThemeButton.module.scss'
 
 import sun from './sun.svg'
 import moon from './moon.svg'
+import { REDIRECT_URI } from '@/utils/HTTPClient'
 
 const Theme = () => {
   const theme = useSelector((state: RootState) => state.theme.theme)
@@ -13,7 +14,7 @@ const Theme = () => {
   const dispatch = useDispatch()
 
   const getUser = async () => {
-    const url = 'http://localhost:9000/api/user-theme/'
+    const url = `${REDIRECT_URI}/api/user-theme`
     const response = await fetch(`${url}?user_id=${userId}`, { method: 'GET' })
     return await response.json()
   }
@@ -42,7 +43,7 @@ const Theme = () => {
       user_id: userId,
     }
 
-    const response = await fetch('http://localhost:9000/api/user-theme/', {
+    const response = await fetch(`${REDIRECT_URI}/api/user-theme`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',

@@ -4,6 +4,7 @@ import s from './ForumThread.module.scss'
 import sendReplyIcon from '@/pages/ForumThread/sendReplyIcon.svg'
 import { useParams } from 'react-router-dom'
 import { textareaHeightAutoResize } from '@/utils/textareaHeightAutoResize'
+import { REDIRECT_URI } from '@/utils/HTTPClient'
 
 interface ReplyProps {
   commentId: number | null
@@ -36,7 +37,7 @@ const ForumThreadReplyForm: React.FC<ReplyProps> = ({
     const reqPath = !commentId && !replyId ? 'comments' : 'replies'
 
     try {
-      const response = await fetch(`http://localhost:9000/api/${reqPath}/add`, {
+      const response = await fetch(`${REDIRECT_URI}/api/${reqPath}/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

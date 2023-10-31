@@ -4,6 +4,7 @@ import emojiPickerIcon from '@/components/EmojiPicker/emojiPicker.svg'
 import { useAppSelector } from '@/hooks/useAppSelector'
 import { userSelector } from '@/store/slices/userSlice'
 import { Like } from 'server/models/forum/like'
+import { REDIRECT_URI } from '@/utils/HTTPClient'
 
 interface EmojiPickerProps {
   commentId?: number
@@ -83,7 +84,7 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
     )
     const id = selectedPath && pathIdMap[selectedPath]
 
-    const api = `http://localhost:9000/api/likes/${selectedPath}/${id}`
+    const api = `${REDIRECT_URI}/api/likes/${selectedPath}/${id}`
 
     try {
       const responseLikes = await fetch(api)
@@ -103,16 +104,13 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:9000/api/likes/${action}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        }
-      )
+      const response = await fetch(`${REDIRECT_URI}/api/likes/${action}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
 
       if (response.ok) {
         getEmojisData()
