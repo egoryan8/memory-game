@@ -127,47 +127,45 @@ const Forum: React.FC = () => {
             </form>
           )}
           <div className={s.container}>
-            {topics.length ? (
-              topics.map(item => {
-                const {
-                  id,
-                  title,
-                  body,
-                  comments,
-                  user_name,
-                  user_id,
-                  created_at,
-                } = item
-                return (
-                  <div className={s.topic} key={id}>
-                    <div className={s.topicBody}>
-                      <div className={s.topicCreated}>
-                        <div>
-                          <b>Автор топика: </b>
-                          <ForumThreadUserAvatar userId={user_id} />
-                          {user_name}
+            {topics.length
+              ? topics.map(item => {
+                  const {
+                    id,
+                    title,
+                    body,
+                    comments,
+                    user_name,
+                    user_id,
+                    created_at,
+                  } = item
+                  return (
+                    <div className={s.topic} key={id}>
+                      <div className={s.topicBody}>
+                        <div className={s.topicCreated}>
+                          <div>
+                            <b>Автор топика: </b>
+                            <ForumThreadUserAvatar userId={user_id} />
+                            {user_name}
+                          </div>
+                          <div>
+                            <b>Дата создания: </b>
+                            <span className={s.date}>
+                              {getCurrentDate(created_at)}
+                            </span>
+                          </div>
+                          <div>
+                            <b>💬 </b>
+                            <span className={s.date}>{comments.length}</span>
+                          </div>
                         </div>
-                        <div>
-                          <b>Дата создания: </b>
-                          <span className={s.date}>
-                            {getCurrentDate(created_at)}
-                          </span>
-                        </div>
-                        <div>
-                          <b>💬 </b>
-                          <span className={s.date}>{comments.length}</span>
-                        </div>
+                        <h3>{title}</h3>
+                        {`${body.substring(0, 300)}...`}
+                        <Link to={`/forum/thread/${id}`}>Читать дальше</Link>
                       </div>
-                      <h3>{title}</h3>
-                      {`${body.substring(0, 300)}...`}
-                      <Link to={`/forum/thread/${id}`}>Читать дальше</Link>
                     </div>
-                  </div>
-                )
-              })
-            ) : (
-              <b>Топиков еще нет</b>
-            )}
+                  )
+                })
+              : !showForm && <b>Топиков еще нет</b>}
           </div>
         </div>
       )}
