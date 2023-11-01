@@ -1,23 +1,22 @@
 version: "3.9"
 
 services:
-    client:
-        container_name: prakticum-client
-        image: prakticum-client
-        env_file:
-          - ./.env
-        build:
-            context: .
-            dockerfile: Dockerfile.client
-            args:
-              CLIENT_PORT: ${CLIENT_PORT}
-        restart: always
-        ports:
-            - "${CLIENT_PORT}:80"
-        depends_on:
-          - server
-        networks:
-          - common
+    nginx:
+      image: nginx:alpine
+      ports:
+        - "80:80"
+        - "443:443"
+      restart: always
+      command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+      volumes:
+        - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+        - ./nginx/ssl/:/etc/nginx/ssl/
+        - ./nginx/.well-known:/etc/nginx/.well-known
+        - ./nginx/.cache:/var/cache/nginx
+      depends_on:
+        - server
+      networks:
+        - common
     server:
         container_name: prakticum-server
         image: prackicum-server

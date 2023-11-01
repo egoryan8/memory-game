@@ -22,7 +22,7 @@ const RequiredAuth = ({ children }: { children: JSX.Element }) => {
     }
   }, [data, loading])
 
-  // if (loading) return <Spinner />
+  if (loading) return <Spinner />
 
   return <Suspense fallback={<Spinner />}>{children}</Suspense>
 }

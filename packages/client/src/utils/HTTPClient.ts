@@ -1,8 +1,9 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import * as process from 'process'
 
-const port = 9000
-export const REDIRECT_URI = `http://localhost:${port}`
+export const REDIRECT_URI =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:9000'
+    : 'https://memory-game.ru'
 export const BASE_URI = `${REDIRECT_URI}/api/v2`
 
 function HTTPClient(baseUri = '') {

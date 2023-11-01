@@ -15,6 +15,7 @@ import cancelReplyIcon from './cancelReplyIcon.svg'
 import { FormattedBodyText } from '@/pages/Forum/Forum'
 import { getCurrentDate } from '@/utils/currentDate'
 import ForumThreadUserAvatar from '@/pages/ForumThread/ForumThreadUserAvatar'
+import { REDIRECT_URI } from '@/utils/HTTPClient'
 
 const ForumThread: React.FC = () => {
   const { topicId } = useParams()
@@ -34,9 +35,7 @@ const ForumThread: React.FC = () => {
 
   const getTopicData = async () => {
     try {
-      const responseTopic = await fetch(
-        `http://localhost:9000/api/topics/${topicId}`
-      )
+      const responseTopic = await fetch(`${REDIRECT_URI}api/topics/${topicId}`)
       const jsonTopic = await responseTopic.json()
       setTopic(jsonTopic.topic)
     } catch (error) {
@@ -47,7 +46,7 @@ const ForumThread: React.FC = () => {
   const getCommentsData = async () => {
     try {
       const responseComments = await fetch(
-        `http://localhost:9000/api/comments/${topicId}`
+        `${REDIRECT_URI}/api/comments/${topicId}`
       )
       const jsonComments = await responseComments.json()
       setComments(jsonComments.comments)

@@ -8,6 +8,7 @@ import sendReplyIcon from '@/pages/ForumThread/sendReplyIcon.svg'
 import { getCurrentDate } from '@/utils/currentDate'
 import { textareaHeightAutoResize } from '@/utils/textareaHeightAutoResize'
 import ForumThreadUserAvatar from '@/pages/ForumThread/ForumThreadUserAvatar'
+import { REDIRECT_URI } from '@/utils/HTTPClient'
 
 export const FormattedBodyText: React.FC<{ text: string }> = ({ text }) => {
   const lines = text.split('\n')
@@ -28,7 +29,7 @@ const Forum: React.FC = () => {
 
   const getData = async () => {
     try {
-      const responseTopics = await fetch('http://localhost:9000/api/topics')
+      const responseTopics = await fetch(`${REDIRECT_URI}/api/topics`)
       const jsonTopics = await responseTopics.json()
       setTopics(jsonTopics.topics)
     } catch (error) {
@@ -42,7 +43,7 @@ const Forum: React.FC = () => {
     event.preventDefault()
 
     try {
-      const response = await fetch('http://localhost:9000/api/topics/add', {
+      const response = await fetch(`${REDIRECT_URI}/api/topics/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

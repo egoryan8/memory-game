@@ -19,7 +19,7 @@ const Login: React.FC = () => {
   const onSubmit: SubmitHandler<ILogin> = data => dispatch(login(data))
 
   const handleYandexLogin = async () => {
-    const serviceId = await OAuthApi.fetchServiceId(REDIRECT_URI)
+    const serviceId = await OAuthApi.fetchServiceId()
     const yandexUrl = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${serviceId}&redirect_uri=${REDIRECT_URI}`
     return navigateTo(yandexUrl)
   }

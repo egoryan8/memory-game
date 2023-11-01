@@ -14,6 +14,7 @@ import AuthApi from './api/AuthApi'
 import { cleanPath } from './cleanPath'
 import { createSequelizeConnection } from './db'
 import { apiRoutes } from './routes'
+import * as process from 'process'
 
 dotenv.config()
 
