@@ -35,7 +35,7 @@ const ForumThread: React.FC = () => {
 
   const getTopicData = async () => {
     try {
-      const responseTopic = await fetch(`${REDIRECT_URI}api/topics/${topicId}`)
+      const responseTopic = await fetch(`${REDIRECT_URI}/api/topics/${topicId}`)
       const jsonTopic = await responseTopic.json()
       setTopic(jsonTopic.topic)
     } catch (error) {

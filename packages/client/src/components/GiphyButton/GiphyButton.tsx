@@ -10,6 +10,7 @@ import { giphySelector } from '@/store/slices/giphySlice'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import s from './GiphyButton.module.scss'
 import { v4 as uuidv4 } from 'uuid'
+import { REDIRECT_URI } from '@/utils/HTTPClient'
 
 interface GiphyButtonProps {
   updateData: () => void
@@ -41,7 +42,7 @@ const GiphyButton: React.FC<GiphyButtonProps> = ({ updateData }) => {
     event.preventDefault()
 
     try {
-      const resp = await axios.post(`http://localhost:9000/api/comments/add`, {
+      const resp = await axios.post(`${REDIRECT_URI}/api/comments/add`, {
         topic_id: topicId,
         body: '',
         img_url: url,

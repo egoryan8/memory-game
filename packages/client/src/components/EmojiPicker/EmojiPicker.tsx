@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import style from '@/components/EmojiPicker/EmojiPicker.module.scss'
 import emojiPickerIcon from '@/components/EmojiPicker/emojiPicker.svg'
 import { useAppSelector } from '@/hooks/useAppSelector'
 import { userSelector } from '@/store/slices/userSlice'
 import { Like } from 'server/models/forum/like'
 import { REDIRECT_URI } from '@/utils/HTTPClient'
+import ForumThreadUserAvatar from '@/pages/ForumThread/ForumThreadUserAvatar'
 
 interface EmojiPickerProps {
   commentId?: number
@@ -17,10 +18,11 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
   commentId = null,
   replyId = null,
 }) => {
-  // const [hoveredEmoji, setHoveredEmoji] = useState<string>('')
-  // const [showUsers, setShowUsers] = useState<boolean>(false)
+  const [hoveredEmoji, setHoveredEmoji] = useState<string>('')
+  const [showUsers, setShowUsers] = useState<boolean>(false)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [emojis, setEmojis] = useState<Like[]>([])
+  const [emojiData, setEmojiData] = useState<{ [emoji: string]: Like[] }>({})
   const emojiPickerRef = useRef<HTMLDivElement | null>(null)
   const user = useAppSelector(userSelector)
 
@@ -54,23 +56,10 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
   const emojiListToggle = useCallback(() => setIsOpen(!isOpen), [isOpen])
 
   const existingEmoji = (emoji: string) =>
-    emojis.find(item => item.emoji === emoji && item.user_id === user.data?.id)
-
-  const emojiMap = useMemo(() => {
-    const emojiMapData: { [emoji: string]: Like[] } = {}
-
-    emojis.forEach(item => {
-      const { emoji, user_id } = item
-
-      if (!emoji || !user_id) return
-
-      emojiMapData[emoji]
-        ? emojiMapData[emoji].push(item)
-        : (emojiMapData[emoji] = [item])
-    })
-
-    return emojiMapData
-  }, [emojis])
+    emojiData[emoji] &&
+    emojiData[emoji].find(
+      item => item.emoji === emoji && item.user_id === user.data?.id
+    )
 
   const getEmojisData = async () => {
     const pathIdMap: { [key: string]: number | string | null } = {
@@ -104,34 +93,56 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
     }
 
     try {
-      const response = await fetch(`${REDIRECT_URI}/api/likes/${action}`, {
+      await fetch(`${REDIRECT_URI}/api/likes/${action}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       })
-
-      if (response.ok) {
-        getEmojisData()
-      } else {
-        console.error('Не удалось выполнить операцию')
-      }
     } catch (error) {
       console.error('Ошибка:', error)
     }
   }
 
   const addEmojiHandler = async (emoji: string) => {
-    existingEmoji(emoji)
-      ? await removerEmojiHandler(emoji)
-      : await sendEmojiRequest('add', emoji)
+    if (existingEmoji(emoji)) {
+      await removerEmojiHandler(emoji)
+    } else {
+      await sendEmojiRequest('add', emoji)
+
+      const likeData: unknown = {
+        emoji,
+        user_id: user.data?.id,
+        comment_id: commentId,
+        reply_id: replyId,
+        topic_id: topicId,
+      }
+
+      const updatedEmojiData = { ...emojiData }
+
+      if (updatedEmojiData[emoji]) {
+        updatedEmojiData[emoji] = [...updatedEmojiData[emoji], likeData as Like]
+      } else {
+        updatedEmojiData[emoji] = [likeData as Like]
+      }
+
+      setEmojiData(updatedEmojiData)
+    }
 
     setIsOpen(false)
   }
 
   const removerEmojiHandler = async (emoji: string) => {
     await sendEmojiRequest('remove', emoji)
+
+    const updatedEmojiData = { ...emojiData }
+
+    updatedEmojiData[emoji] = updatedEmojiData[emoji].filter(
+      item => item.user_id !== user.data?.id
+    )
+    if (!updatedEmojiData[emoji].length) delete updatedEmojiData[emoji]
+    setEmojiData(updatedEmojiData)
   }
 
   useEffect(() => {
@@ -152,52 +163,64 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
   }, [])
 
   useEffect(() => {
-    if (!topicId && !replyId && !commentId) return
-
     getEmojisData()
-  }, [topicId, commentId, replyId])
+  }, [])
+
+  useEffect(() => {
+    if (!emojis.length) return
+
+    const emojiMapData: { [emoji: string]: Like[] } = {}
+
+    emojis.forEach(item => {
+      const { emoji, user_id } = item
+
+      if (!emoji || !user_id) return
+
+      emojiMapData[emoji]
+        ? emojiMapData[emoji].push(item)
+        : (emojiMapData[emoji] = [item])
+    })
+
+    setEmojiData(emojiMapData)
+  }, [emojis])
 
   return (
     <div className={style.selectedEmojiWrapper}>
-      {emojis.length
-        ? Object.entries(emojiMap).map(([emoji, ids], index) => {
-            return (
-              <div
-                // onMouseEnter={() => {
-                //   setShowUsers(true)
-                //   setHoveredEmoji(emoji)
-                // }}
-                // onMouseLeave={() => {
-                //   setShowUsers(false)
-                //   setHoveredEmoji('')
-                // }}
-                onClick={() => addEmojiHandler(emoji)}
-                className={
-                  existingEmoji(emoji)
-                    ? `${style.selectedEmoji} ${style.active}`
-                    : style.selectedEmoji
-                }
-                key={index}>
-                {/*{showUsers && emoji === hoveredEmoji && (*/}
-                {/*  <div className={style.userLike}>*/}
-                {/*    {*/}
-                {/*      ids.map((user) => {*/}
-                {/*        return (*/}
-                {/*          <ForumThreadUserAvatar*/}
-                {/*            userId={user.user_id}*/}
-                {/*            key={user.user_id}*/}
-                {/*          />*/}
-                {/*        )*/}
-                {/*      })*/}
-                {/*    }*/}
-                {/*  </div>*/}
-                {/*)}*/}
-                {emoji}
-                <span>{ids.length}</span>
+      {Object.entries(emojiData).map(([emoji, ids], index) => {
+        return (
+          <div
+            onMouseEnter={() => {
+              setShowUsers(true)
+              setHoveredEmoji(emoji)
+            }}
+            onMouseLeave={() => {
+              setShowUsers(false)
+              setHoveredEmoji('')
+            }}
+            onClick={() => addEmojiHandler(emoji)}
+            className={
+              existingEmoji(emoji)
+                ? `${style.selectedEmoji} ${style.active}`
+                : style.selectedEmoji
+            }
+            key={index}>
+            {showUsers && emoji === hoveredEmoji && (
+              <div className={style.userLike}>
+                {ids.map(user => {
+                  return (
+                    <ForumThreadUserAvatar
+                      userId={user.user_id}
+                      key={user.user_id}
+                    />
+                  )
+                })}
               </div>
-            )
-          })
-        : null}
+            )}
+            {emoji}
+            <span>{ids.length}</span>
+          </div>
+        )
+      })}
       <div
         className={style.emojiPicker}
         onClick={emojiListToggle}
