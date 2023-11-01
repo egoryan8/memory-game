@@ -10,7 +10,7 @@ export const getCommentsByTopicId: Handler = async (req, res) => {
     const comments = await Comment.findAll({
       where: { topic_id: topicId },
       order: [
-        [Sequelize.col('created_at'), 'ASC'],
+        [Sequelize.col('created_at'), 'DESC'],
         [{ model: Reply, as: 'replies' }, 'created_at', 'ASC'],
       ],
       include: [{ model: Reply }],
@@ -31,13 +31,14 @@ export const addComment: Handler = async (req, res) => {
   const user = res.locals.user
 
   if (req.body) {
-    const { topic_id, body } = req.body
+    const { topic_id, body, img_url } = req.body
 
     const post = await Comment.create({
       topic_id,
       user_id: user.id,
       user_name: `${user.first_name} ${user.second_name}`,
       body,
+      img_url,
     })
 
     res.status(200).json(post)

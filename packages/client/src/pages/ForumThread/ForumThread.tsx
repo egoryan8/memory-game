@@ -134,8 +134,15 @@ const ForumThread: React.FC = () => {
             </div>
             <div className={s.cards}>
               {comments.map(comment => {
-                const { id, body, replies, user_name, user_id, created_at } =
-                  comment
+                const {
+                  id,
+                  body,
+                  replies,
+                  user_name,
+                  user_id,
+                  created_at,
+                  img_url,
+                } = comment
 
                 return (
                   <div className={s.card} key={id}>
@@ -162,7 +169,11 @@ const ForumThread: React.FC = () => {
                         />
                       </div>
                       <div className={s.messageBlockBody}>
-                        <FormattedBodyText text={body} />
+                        {img_url ? (
+                          <img src={img_url} alt="gif" />
+                        ) : (
+                          <FormattedBodyText text={body} />
+                        )}
                       </div>
                       <EmojiPicker commentId={id} />
                       {replies.length ? (

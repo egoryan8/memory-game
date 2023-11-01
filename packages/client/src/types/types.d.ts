@@ -58,6 +58,40 @@ interface IEmojiResult {
   isSelected: boolean
 }
 
+interface IGiphyData {
+  id: string
+  url: string
+  images: IGiphyImages
+}
+
+interface IGiphyImages {
+  original: Original
+  downsized: Downsized
+  downsized_large: DownsizedLarge
+  downsized_medium: DownsizedMedium
+  downsized_small: DownsizedSmall
+  downsized_still: DownsizedStill
+  fixed_height: FixedHeight
+  fixed_height_downsampled: FixedHeightDownsampled
+  fixed_height_small: FixedHeightSmall
+  fixed_height_small_still: FixedHeightSmallStill
+  fixed_height_still: FixedHeightStill
+  fixed_width: FixedWidth
+  fixed_width_downsampled: FixedWidthDownsampled
+  fixed_width_small: FixedWidthSmall
+  fixed_width_small_still: FixedWidthSmallStill
+  fixed_width_still: FixedWidthStill
+  looping: Looping
+  original_still: OriginalStill
+  original_mp4: OriginalMp4
+  preview: Preview
+  preview_gif: PreviewGif
+  preview_webp: PreviewWebp
+  hd?: Hd
+  '480w_still': N480wStill
+  '4k'?: N4k
+}
+
 interface IEmojiData {
   userId: number
   topicId: number
