@@ -21,21 +21,7 @@ dotenv.config()
 const isDev = () => process.env.NODE_ENV === 'development'
 async function startServer() {
   const app = express()
-  // app.use(cors())
-  app.use(
-    '/',
-    cors({
-      credentials: true,
-      origin: [
-        `http://127.0.0.1:${process.env.CLIENT_PORT}`,
-        `http://localhost:${process.env.CLIENT_PORT}`,
-        `http://127.0.0.1:${process.env.SERVER_PORT}`,
-        `http://localhost:${process.env.SERVER_PORT}`,
-        'https://memory-game.ru',
-      ],
-      optionsSuccessStatus: 200,
-    })
-  )
+  app.use(cors())
   const port = Number(process.env.SERVER_PORT) || 9000
 
   let vite: ViteDevServer | undefined
