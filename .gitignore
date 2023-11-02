@@ -4,5 +4,4 @@ node_modules/
 .vscode
 dist
 /db/db-data/
-/nginx/.cache/
 /nginx/assets/
