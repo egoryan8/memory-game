@@ -24,7 +24,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push nginx image
-        uses: docker/build-push-action@v2
+        uses: isbang/compose-action@v1.5.1
         with:
           compose-file: "./docker-compose.yml"
           services: nginx
@@ -32,7 +32,7 @@ jobs:
           tags: ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/nginx:${{ github.sha }}
 
       - name: Build and push server image
-        uses: docker/build-push-action@v2
+        uses: isbang/compose-action@v1.5.1
         with:
           compose-file: "./docker-compose.yml"
           services: nginx
