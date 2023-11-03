@@ -58,7 +58,6 @@ services:
       networks:
         - common
 
-
 networks:
   common:
     driver: bridge

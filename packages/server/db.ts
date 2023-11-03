@@ -15,7 +15,7 @@ const {
 
 const sequelizeOptions: SequelizeOptions = {
   dialect: 'postgres',
-  host: POSTGRES_HOST || '0.0.0.0',
+  host: POSTGRES_HOST || 'pg-14',
   username: POSTGRES_USER || 'postgres',
   password: POSTGRES_PASSWORD || '11223344',
   database: POSTGRES_DB || 'memorybase',
