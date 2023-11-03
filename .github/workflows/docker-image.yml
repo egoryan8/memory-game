@@ -28,13 +28,15 @@ jobs:
         with:
           compose-file: "./docker-compose.yml"
           services: nginx
-          push: true
-          tags: ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/nginx:${{ github.sha }}
+          compose-flags: |
+            "build"
+            "push"
 
       - name: Build and push server image
         uses: isbang/compose-action@v1.5.1
         with:
           compose-file: "./docker-compose.yml"
-          services: nginx
-          push: true
-          tags: ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/server:${{ github.sha }}
+          services: server
+          compose-flags: |
+            "build"
+            "push"
