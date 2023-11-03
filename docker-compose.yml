@@ -24,7 +24,9 @@ services:
             context: .
             dockerfile: Dockerfile.server
             args:
-              SERVER_PORT: ${SERVER_PORT}
+              SERVER_PORT: 9000
+              POSCGRES_PORT: 5432
+              POSTRES_HOST: pg-14
         restart: always
         ports:
             - "9000:9000"
