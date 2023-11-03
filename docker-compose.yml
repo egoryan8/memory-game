@@ -2,17 +2,16 @@ version: "3.9"
 
 services:
     nginx:
-      container_name: nginx-memory
-      image: nginx-memory
-      build:
-        context: .
-        dockerfile: Dockerfile.nginx
+      image: nginx:alpine
+      ports:
+        - "80:80"
+        - "443:443"
       restart: always
+      command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
       volumes:
         - ./nginx/nginx.conf:/etc/nginx/nginx.conf
         - ./nginx/ssl/:/etc/nginx/ssl/
         - ./nginx/well-known:/etc/nginx/.well-known
-        - ./nginx/.cache:/var/cache/nginx
       depends_on:
         - server
       networks:
