@@ -2,12 +2,12 @@ version: "3.9"
 
 services:
     nginx:
-      image: nginx:alpine
-      ports:
-        - "80:80"
-        - "443:443"
+      container_name: nginx-memory
+      image: nginx-memory
+      build:
+        context: .
+        dockerfile: Dockerfile.nginx
       restart: always
-      command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
       volumes:
         - ./nginx/nginx.conf:/etc/nginx/nginx.conf
         - ./nginx/ssl/:/etc/nginx/ssl/
@@ -24,12 +24,10 @@ services:
             context: .
             dockerfile: Dockerfile.server
             args:
-              SERVER_PORT: 9000
-              POSCGRES_PORT: 5432
-              POSTRES_HOST: pg-14
+              SERVER_PORT: ${SERVER_PORT}
         restart: always
         ports:
-            - "9000:9000"
+            - "${SERVER_PORT}:${SERVER_PORT}"
         env_file:
           - ./.env
         depends_on:
@@ -40,13 +38,9 @@ services:
     pg-14:
       env_file:
         - ./.env
-      environment:
-        POSTGRES_PASSWORD: 11223344
-        POSTGRES_USER: postgres
-        POSTGRES_DB: memorybase
       image: postgres:14
       ports:
-        - "5432:5432"
+        - "${POSTGRES_PORT}:${POSTGRES_PORT}"
       volumes:
         - ./db/db-init:/docker-entrypoint-initdb.d
         - ./db/db-data:/var/lib/postgresql/data
