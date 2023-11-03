@@ -27,7 +27,7 @@ services:
               SERVER_PORT: ${SERVER_PORT}
         restart: always
         ports:
-            - "${SERVER_PORT}:${SERVER_PORT}"
+            - "9000:9000"
         env_file:
           - ./.env
         depends_on:
@@ -40,7 +40,7 @@ services:
         - ./.env
       image: postgres:14
       ports:
-        - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+        - "5432:5432"
       volumes:
         - ./db/db-init:/docker-entrypoint-initdb.d
         - ./db/db-data:/var/lib/postgresql/data
