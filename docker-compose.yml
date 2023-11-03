@@ -11,7 +11,7 @@ services:
       volumes:
         - ./nginx/nginx.conf:/etc/nginx/nginx.conf
         - ./nginx/ssl/:/etc/nginx/ssl/
-        - ./nginx/.well-known:/etc/nginx/.well-known
+        - ./nginx/well-known:/etc/nginx/.well-known
         - ./nginx/.cache:/var/cache/nginx
       depends_on:
         - server
