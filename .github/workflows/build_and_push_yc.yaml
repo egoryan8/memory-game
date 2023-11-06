@@ -1,0 +1,38 @@
+name: Push to GitHub Container Registry
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Login to Yandex Cloud Container Registry
+        id: mg-admin-service
+        uses: yc-actions/yc-cr-login@v1
+        with:
+          yc-sa-json-credentials: YCPQJyKe1RdWCMUa-p3SD3vH7pu3JtAW6gcN-Jow
+      - name: Build, tag, and push server image to Yandex Cloud Container Registry
+        env:
+          CR_REGISTRY: cr.yandex/crp79fgp5di3vtqqrmdu/
+          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_NAME: mg-server
+          FULL_TAG: $CR_REGISTRY$IMAGE_NAME:$IMAGE_TAG
+        run: |
+          docker-compose build server
+          docker tag $IMAGE_NAME $FULL_TAG
+          docker push $FULL_TAG
+
+      - name: Build, tag, and push server image to Yandex Cloud Container Registry
+        env:
+          CR_REGISTRY: cr.yandex/crp79fgp5di3vtqqrmdu/
+          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_NAME: mg-nginx
+          FULL_TAG: $CR_REGISTRY$IMAGE_NAME:$IMAGE_TAG
+        run: |
+          docker-compose build nginx
+          docker tag $IMAGE_NAME $FULL_TAG
+          docker push $FULL_TAG
