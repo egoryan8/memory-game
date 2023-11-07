@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-env:
-  CR_REGISTRY: cr.yandex/crp79fgp5di3vtqqrmdu/
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -27,20 +25,17 @@ jobs:
       - name: Build, tag, and push server image to Yandex Cloud Container Registry
         run: |
           docker-compose build server
-          echo $FULL_TAG
-          docker tag $IMAGE_NAME $FULL_TAG
-          docker push $FULL_TAG
+          echo "FULL_TAG=cr.yandex/crp79fgp5di3vtqqrmdu/mg-server:$IMAGE_TAG"
+          docker tag mg-server ${{ env.FULL_TAG }}
+          docker push ${{ env.FULL_TAG }}
         env:
           IMAGE_TAG: ${{ github.sha }}
-          IMAGE_NAME: mg-server
-          FULL_TAG: $CR_REGISTRY$IMAGE_NAME:$IMAGE_TAG
 
       - name: Build, tag, and push nginx image to Yandex Cloud Container Registry
         run: |
           docker-compose build nginx
-          docker tag $IMAGE_NAME $FULL_TAG
-          docker push $FULL_TAG
+          echo "FULL_TAG=cr.yandex/crp79fgp5di3vtqqrmdu/mg-nginx:$IMAGE_TAG"
+          docker tag mg-nginx ${{ env.FULL_TAG }}
+          docker push ${{ env.FULL_TAG }}
         env:
           IMAGE_TAG: ${{ github.sha }}
-          IMAGE_NAME: mg-nginx
-          FULL_TAG: $CR_REGISTRY$IMAGE_NAME:$IMAGE_TAG
