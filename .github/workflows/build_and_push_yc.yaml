@@ -25,17 +25,15 @@ jobs:
       - name: Build, tag, and push server image to Yandex Cloud Container Registry
         run: |
           docker-compose build server
-          echo "FULL_TAG=cr.yandex/crp79fgp5di3vtqqrmdu/mg-server:$IMAGE_TAG"
-          docker tag mg-server ${{ env.FULL_TAG }}
-          docker push ${{ env.FULL_TAG }}
+          docker tag mg-server cr.yandex/crp79fgp5di3vtqqrmdu/mg-server:$IMAGE_TAG
+          docker push cr.yandex/crp79fgp5di3vtqqrmdu/mg-server:$IMAGE_TAG
         env:
           IMAGE_TAG: ${{ github.sha }}
 
       - name: Build, tag, and push nginx image to Yandex Cloud Container Registry
         run: |
           docker-compose build nginx
-          echo "FULL_TAG=cr.yandex/crp79fgp5di3vtqqrmdu/mg-nginx:$IMAGE_TAG"
-          docker tag mg-nginx ${{ env.FULL_TAG }}
-          docker push ${{ env.FULL_TAG }}
+          docker tag mg-nginx cr.yandex/crp79fgp5di3vtqqrmdu/mg-nginx:$IMAGE_TAG
+          docker push cr.yandex/crp79fgp5di3vtqqrmdu/mg-nginx:$IMAGE_TAG
         env:
           IMAGE_TAG: ${{ github.sha }}
