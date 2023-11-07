@@ -14,7 +14,8 @@ jobs:
         id: mg-admin-service
         uses: yc-actions/yc-cr-login@v1
         with:
-          yc-sa-json-credentials: YCPQJyKe1RdWCMUa-p3SD3vH7pu3JtAW6gcN-Jow
+          yc-sa-json-credentials: '{"access_key": { "id": "aje4llr50llm30hr9bmi", "service_account_id": "ajep9g8he79qfqtjfjca", "created_at": "2023-11-06T18:06:34.387238034Z", "key_id": "YCAJE4jpg60DU0BU5g6ULVSsg" }, "secret": "YCPQJyKe1RdWCMUa-p3SD3vH7pu3JtAW6gcN-Jow"}'
+          
       - name: Build, tag, and push server image to Yandex Cloud Container Registry
         env:
           CR_REGISTRY: cr.yandex/crp79fgp5di3vtqqrmdu/
