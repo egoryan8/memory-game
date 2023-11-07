@@ -4,7 +4,9 @@ import { Comment } from './models/forum/comment'
 import { Theme } from './models/theme/theme'
 import { Like } from './models/forum/like'
 import { Reply } from './models/forum/reply'
+import { config } from 'dotenv'
 
+config()
 const {
   POSTGRES_HOST,
   POSTGRES_USER,
@@ -12,7 +14,11 @@ const {
   POSTGRES_DB,
   POSTGRES_PORT,
 } = process.env
-
+console.log('POSTGRES_HOST', POSTGRES_HOST)
+console.log('POSTGRES_USER', POSTGRES_USER)
+console.log('POSTGRES_PASSWORD', POSTGRES_PASSWORD)
+console.log('POSTGRES_DB', POSTGRES_DB)
+console.log('POSTGRES_PORT', POSTGRES_PORT)
 const sequelizeOptions: SequelizeOptions = {
   dialect: 'postgres',
   host: POSTGRES_HOST || '51.250.104.193',
