@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - main
-
+env:
+  CR_REGISTRY: cr.yandex/crp79fgp5di3vtqqrmdu/
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -18,13 +19,20 @@ jobs:
       - name: Install docker-compose
         run: |
           sudo apt-get install docker.io docker-compose
-      - name: Build, tag, and push server image to Yandex Cloud Container Registry
+      - name: Build server
         run: |
           docker-compose build server
+      - name: Tag server image
+        run: |
           docker tag $IMAGE_NAME $FULL_TAG
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_NAME: mg-server
+          FULL_TAG: $CR_REGISTRY$IMAGE_NAME:$IMAGE_TAG
+      - name: Push server image to Yandex Cloud Container Registry
+        run: |
           docker push $FULL_TAG
         env:
-          CR_REGISTRY: cr.yandex/crp79fgp5di3vtqqrmdu/
           IMAGE_TAG: ${{ github.sha }}
           IMAGE_NAME: mg-server
           FULL_TAG: $CR_REGISTRY$IMAGE_NAME:$IMAGE_TAG
@@ -35,7 +43,6 @@ jobs:
           docker tag $IMAGE_NAME $FULL_TAG
           docker push $FULL_TAG
         env:
-          CR_REGISTRY: cr.yandex/crp79fgp5di3vtqqrmdu/
           IMAGE_TAG: ${{ github.sha }}
           IMAGE_NAME: mg-nginx
           FULL_TAG: $CR_REGISTRY$IMAGE_NAME:$IMAGE_TAG
