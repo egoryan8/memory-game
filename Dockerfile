@@ -13,7 +13,6 @@ ENV POSTGRES_USER=$postgres_user
 ENV POSTGRES_PASSWORD=$postgres_password
 
 WORKDIR /app
-RUN yarn install --frozen-lockfile
 
 FROM base AS dependencies
 
@@ -21,7 +20,7 @@ COPY package.json yarn.lock lerna.json init.js .env.sample ./
 COPY ./packages/client/. /app/packages/client/
 COPY ./packages/server/. /app/packages/server/
 
-
+RUN yarn install --frozen-lockfile
 RUN rm -rf /app/packages/client/dist/ && yarn build --scope=client
 RUN rm -rf /app/packages/client/ssr-dist/ && yarn build:ssr --scope=client
 
