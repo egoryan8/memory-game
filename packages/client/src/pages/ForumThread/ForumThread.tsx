@@ -50,6 +50,7 @@ const ForumThread: React.FC = () => {
       )
       const jsonComments = await responseComments.json()
       setComments(jsonComments.comments)
+      clearDataReplyToState()
     } catch (error) {
       console.error('Ошибка при получении данных:', error)
     } finally {
@@ -170,7 +171,7 @@ const ForumThread: React.FC = () => {
                       </div>
                       <div className={s.messageBlockBody}>
                         {img_url ? (
-                          <img src={img_url} alt="gif" />
+                          <img className={s.gif} src={img_url} alt="gif" />
                         ) : (
                           <FormattedBodyText text={body} />
                         )}
@@ -239,13 +240,34 @@ const ForumThread: React.FC = () => {
                                             <b>{replyToReply?.user_name}</b>
                                           </div>
                                           <div className={s.replyToBody}>
-                                            {replyToReply?.body}
+                                            {replyToReply?.body.includes(
+                                              'https://media' || '.gif'
+                                            ) ? (
+                                              <img
+                                                className={s.replyGif}
+                                                width="50"
+                                                src={replyToReply?.body}
+                                                alt="GIF"
+                                              />
+                                            ) : (
+                                              replyToReply?.body
+                                            )}
                                           </div>
                                         </div>
                                       </a>
                                     )}
                                     <div className={s.replyBody}>
-                                      <FormattedBodyText text={reply.body} />
+                                      {reply.body.includes(
+                                        'https://media' || '.gif'
+                                      ) ? (
+                                        <img
+                                          className={s.gif}
+                                          src={reply.body}
+                                          alt="gif"
+                                        />
+                                      ) : (
+                                        <FormattedBodyText text={reply.body} />
+                                      )}
                                     </div>
                                     <EmojiPicker replyId={reply.id} />
                                   </div>
@@ -272,7 +294,11 @@ const ForumThread: React.FC = () => {
                       />
                       <b>{replyTo.user_name}</b>
                     </div>
-                    <div className={s.replyToBody}>{replyTo.body}</div>
+                    <div className={s.replyToBody}>
+                      {replyTo.body.includes('https://media' || '.gif')
+                        ? 'GIF'
+                        : replyTo.body}
+                    </div>
                     <img
                       onClick={clearDataReplyToState}
                       src={cancelReplyIcon}

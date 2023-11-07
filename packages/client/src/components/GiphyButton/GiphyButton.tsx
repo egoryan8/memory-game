@@ -1,7 +1,6 @@
 import axios from 'axios'
 import React, { useDeferredValue, useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import gifIcon from './gif_icon.svg'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
 import { useAppSelector } from '@/hooks/useAppSelector'
 import { fetchTrendingGifs } from '@/store/asyncThunks/giphy/fetchTrendingGifs'
@@ -13,14 +12,20 @@ import { v4 as uuidv4 } from 'uuid'
 import { REDIRECT_URI } from '@/utils/HTTPClient'
 
 interface GiphyButtonProps {
+  comment: number | null
+  reply: number | null
   updateData: () => void
 }
 
-const GiphyButton: React.FC<GiphyButtonProps> = ({ updateData }) => {
+const GiphyButton: React.FC<GiphyButtonProps> = ({
+  comment,
+  reply,
+  updateData,
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [searchTerm, setSearchTerm] = useState('')
   const dispatch = useAppDispatch()
-  const { items, status, error } = useAppSelector(giphySelector)
+  const { items } = useAppSelector(giphySelector)
   const deferredValue = useDeferredValue(searchTerm)
   const refContent = useRef<HTMLDivElement | null>(null)
 
@@ -38,13 +43,17 @@ const GiphyButton: React.FC<GiphyButtonProps> = ({ updateData }) => {
 
   const { topicId } = useParams()
 
+  const reqPath = !comment && !reply ? 'comments' : 'replies'
+
   const submitForm = async (event: React.FormEvent, url: string) => {
     event.preventDefault()
 
     try {
-      const resp = await axios.post(`${REDIRECT_URI}/api/comments/add`, {
+      const resp = await axios.post(`${REDIRECT_URI}/api/${reqPath}/add`, {
         topic_id: topicId,
-        body: '',
+        comment_id: comment,
+        reply_id: reply,
+        body: url,
         img_url: url,
       })
 
@@ -62,7 +71,7 @@ const GiphyButton: React.FC<GiphyButtonProps> = ({ updateData }) => {
   return (
     <div className={s.giphy}>
       <div className={s.giphyButton} onClick={() => setIsOpen(!isOpen)}>
-        <img src={gifIcon} alt="gif button" />
+        GIF
       </div>
 
       {isOpen && (

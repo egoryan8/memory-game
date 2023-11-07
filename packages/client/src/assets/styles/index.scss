@@ -58,9 +58,9 @@
   -webkit-user-select: none;
   user-select: none;
   transition:
-          background-color 0.5s ease-in-out,
-          background-color 0.5s ease-in-out,
+          background-color 0.25s ease-in-out,
           color 0.25s ease-in-out,
+          stroke 0.05s ease-in-out,
           opacity 0.5s ease-in-out,
           border 0.5s ease-in-out;
 }
