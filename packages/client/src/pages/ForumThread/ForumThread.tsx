@@ -245,7 +245,6 @@ const ForumThread: React.FC = () => {
                                             ) ? (
                                               <img
                                                 className={s.replyGif}
-                                                width="50"
                                                 src={replyToReply?.body}
                                                 alt="GIF"
                                               />
