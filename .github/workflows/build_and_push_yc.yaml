@@ -24,22 +24,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create .env
         run: cp .env.sample .env
-      - name: Build server
-        run: docker-compose build server
-      - name: Tag server image
-        run: docker tag $IMAGE_NAME $FULL_TAG
-        env:
-          IMAGE_TAG: ${{ github.sha }}
-          IMAGE_NAME: mg-server
-          FULL_TAG: $CR_REGISTRY$IMAGE_NAME:$IMAGE_TAG
-      - name: Push server image to Yandex Cloud Container Registry
-        run: docker push $FULL_TAG
+      - name: Build, tag, and push server image to Yandex Cloud Container Registry
+        run: |
+          docker-compose build server
+          docker tag $IMAGE_NAME $FULL_TAG
+          docker push $FULL_TAG
         env:
           IMAGE_TAG: ${{ github.sha }}
           IMAGE_NAME: mg-server
           FULL_TAG: $CR_REGISTRY$IMAGE_NAME:$IMAGE_TAG
 
-      - name: Build, tag, and push server image to Yandex Cloud Container Registry
+      - name: Build, tag, and push nginx image to Yandex Cloud Container Registry
         run: |
           docker-compose build nginx
           docker tag $IMAGE_NAME $FULL_TAG
