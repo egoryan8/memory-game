@@ -22,8 +22,8 @@ jobs:
         uses: KengoTODA/actions-setup-docker-compose@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: View directory
-        run: ls -a
+      - name: Create .env
+        run: cp .env.sample .env
       - name: Build server
         run: docker-compose build server
       - name: Tag server image
