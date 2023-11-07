@@ -23,6 +23,7 @@ jobs:
           IMAGE_NAME: mg-server
           FULL_TAG: $CR_REGISTRY$IMAGE_NAME:$IMAGE_TAG
         run: |
+          ls -a
           docker-compose build server
           docker tag $IMAGE_NAME $FULL_TAG
           docker push $FULL_TAG
