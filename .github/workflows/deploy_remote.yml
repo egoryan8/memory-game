@@ -8,22 +8,22 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-      - name: Create .env
-        run: cp .env.sample .env
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          echo "-----BEGIN OPENSSH PRIVATE KEY-----b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABDBS2fXAnAaRQJkNhagtSCuAAAAEAAAAAEAAAIXAAAAB3NzaC1yc2EAAAADAQABAAACAQDBD4d628U5PcYFFTmjskfzyYxpBHKMTJZn4Cq9+fatqJPm00bkDhuNTajNK7hc3XEFfNZSo58Ti7usk4Cyjum/V7LbfMEfArbjolr/OtYNHNFZurEzk1OQEFWcOy2PO51wXEtaE6SD0vW+YMQh0gpoBeYz4tBtlBxBXoj6Zo1ytwE67llcRiiZyq6pUvXc7zpCG/iTrpNFz1cDeR6HCcc5dMYGd34f+0SSWYQnblCHqWj7LtKvlPIqKbARpwOWAgakcngHouD/bINU8ay4aVhdb0LR+wMnXeuZA2R82dtV37Ze5Hffxa3sc+FTQCdAYPaUEdhvMjtGqVxfjHwfNydN4sOAeyeGhk3giA+QpAKOt+bW3KYOOBdDNqQSK5cDHEvgFcN6myPZK9wo6lNumIcnTkNRfQ5hbECbl5FGCFtrsTzaBi655Jffs6DkF/5gi4BTM8JI3+6h9kbI0EdoDDej7jQL8jIIMT8WGcgrqNxKhONP6ax6V7GK762/Nwl5V/sPvT6EBTsmTdy7vvczNAWHDmS19/ms5ZIOLLqOAdCz9ONMyK3Tx1GCyMagn/UZDeW40SSu0Hcv/gSKpC97svgPLbX5FKXyG4du+Qe6DSCMMgXIUf0xjcBbwT343sn1W7hFxbuD4d++JdEoS40XgCxBDedrimsPKB0nSZ9xGIJHjwAAB1Bon3SmoNwPmFNiqMzBxNqobLJWbOW0IVqlOFSaklzgVewoKZxO0Mk/athtFF9gpXL0Qvj2o8BTM4iQdrp1vonuG1HU72BxFfvuNUWWdgq+9/vPh/STy8MaG++kAVg+El14rwlbAndduF2OPq+ENhkIZJRMqcXhTmQiAOqxS1lwUHCn61cH+WiBExQRvWIGwea0MNmzcxwHpR9KDWx788SR/9jpBZQQPYkcmOIUTupu/41oV8B4TE8cZw7mzQ1LKTejy/FRA9i0LLgyBXMAYu/irxr3AY1op3apvly0FwP+fDopl3zfoxpB6QFwwFvnOOxQSBmDohbna8PTeHT3EGIbd51viZfkkD43WHSLbsNkPJUdCxw7itg6RAsQ8RKz8eam+ai+kyOBBe3LFtcJdKhLJ3134Oavj3ev5pMahs9SI3oiF/VEyGdTU8W+" > ~/.ssh/id_rsa
+          echo "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\nQyNTUxOQAAACDPT2kWl4zuzBhaY7luPpwsxPVAqrboHUnJSCS99bdA8gAAALDbGed62xnn\negAAAAtzc2gtZWQyNTUxOQAAACDPT2kWl4zuzBhaY7luPpwsxPVAqrboHUnJSCS99bdA8g\nAAAEDrqqJF1vvmWqiEKeXz+HLjIUAoLBl4nnkphOp/LaMZY89PaRaXjO7MGFpjuW4+nCzE\n9UCqtugdSclIJL31t0DyAAAAKWFsZWtzZWpwZXRyZW5rb0BNYWNCb29rLVByby1BbGVrc2\nVqLmxvY2FsAQIDBA==\n-----END OPENSSH PRIVATE KEY-----\n" > ~/.ssh/id_ed25519
           chmod 700 ~/.ssh
-          chmod 600 ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_ed25519
           echo "158.160.74.247 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEsSTBWju73XuM2wiHqjJz55AF4h$" >> ~/.ssh/known_hosts
           echo "158.160.74.247 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDCEUkW90iSswVmzXxkVSJqgCB3$" >> ~/.ssh/known_hosts
           echo "158.160.74.247 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAy$" >> ~/.ssh/known_hosts
         #env:
         #  SSH_PRIVATE_KEY: ${{ secrets.STARSHIP_PRIVATE_KEY }}
          # SSH_KNOWN_HOSTS: ${{ secrets.STARSHIP_KNOWN_HOSTS }}
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Create .env
+        run: cp .env.sample .env
       - name: Remove old files from server
         run: |
           ssh mg-admin@158.160.74.247 "pushd /home/mg && sudo docker-compose down && sudo find . -maxdepth 1 ! -path "./db/db-data" -delete \; && exit"
