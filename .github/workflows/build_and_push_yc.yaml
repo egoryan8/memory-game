@@ -27,6 +27,7 @@ jobs:
       - name: Build, tag, and push server image to Yandex Cloud Container Registry
         run: |
           docker-compose build server
+          echo $FULL_TAG
           docker tag $IMAGE_NAME $FULL_TAG
           docker push $FULL_TAG
         env:
