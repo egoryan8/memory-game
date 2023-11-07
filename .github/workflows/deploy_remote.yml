@@ -15,7 +15,7 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          echo "-----BEGIN OPENSSH PRIVATE KEY-----b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZWQyNTUxOQAAACDPT2kWl4zuzBhaY7luPpwsxPVAqrboHUnJSCS99bdA8gAAALDbGed62xnnegAAAAtzc2gtZWQyNTUxOQAAACDPT2kWl4zuzBhaY7luPpwsxPVAqrboHUnJSCS99bdA8gAAAEDrqqJF1vvmWqiEKeXz+HLjIUAoLBl4nnkphOp/LaMZY89PaRaXjO7MGFpjuW4+nCzE9UCqtugdSclIJL31t0DyAAAAKWFsZWtzZWpwZXRyZW5rb0BNYWNCb29rLVByby1BbGVrc2VqLmxvY2FsAQIDBA==-----END OPENSSH PRIVATE KEY-----" > ~/.ssh/id_rsa
+          echo "-----BEGIN OPENSSH PRIVATE KEY-----b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZWQyNTUxOQAAACDPT2kWl4zuzBhaY7luPpwsxPVAqrboHUnJSCS99bdA8gAAALDbGed62xnnegAAAAtzc2gtZWQyNTUxOQAAACDPT2kWl4zuzBhaY7luPpwsxPVAqrboHUnJSCS99bdA8gAAAEDrqqJF1vvmWqiEKeXz+HLjIUAoLBl4nnkphOp/LaMZY89PaRaXjO7MGFpjuW4+nCzE9UCqtugdSclIJL31t0DyAAAAKWFsZWtzZWpwZXRyZW5rb0BNYWNCb29rLVByby1BbGVrc2VqLmxvY2FsAQIDBA==-----END OPENSSH PRIVATE KEY-----" > ~/.ssh/id_ed25519
           chmod 700 ~/.ssh
           chmod 600 ~/.ssh/id_rsa
           echo "158.160.74.247 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEsSTBWju73XuM2wiHqjJz55AF4h$" >> ~/.ssh/known_hosts
