@@ -2,7 +2,6 @@ import Button from '@/components/Button/Button'
 import GiphyButton from '@/components/GiphyButton/GiphyButton'
 import React, { useState } from 'react'
 import s from './ForumThread.module.scss'
-import sendReplyIcon from '@/pages/ForumThread/sendReplyIcon.svg'
 import { useParams } from 'react-router-dom'
 import { textareaHeightAutoResize } from '@/utils/textareaHeightAutoResize'
 import { REDIRECT_URI } from '@/utils/HTTPClient'
@@ -69,7 +68,12 @@ const ForumThreadReplyForm: React.FC<ReplyProps> = ({
   }
 
   return (
-    <>
+    <div className={s.form}>
+      <GiphyButton
+        comment={commentId}
+        reply={replyId}
+        updateData={updateData}
+      />
       <form className={s.replyForm} onSubmit={submitForm}>
         <textarea
           value={newReply}
@@ -80,14 +84,22 @@ const ForumThreadReplyForm: React.FC<ReplyProps> = ({
             topicId && !commentId && !replyId ? 'Комментарий...' : 'Ответ...'
           }
         />
-        <div className={s.buttons}>
-          <Button type="submit" disabled={!newReply}>
-            <img src={sendReplyIcon} alt="Reply Icon" title="Отправить" />
-          </Button>
-        </div>
+        <Button className={s.button} type="submit" disabled={!newReply}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13" />
+            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+          </svg>
+        </Button>
       </form>
-      <GiphyButton updateData={updateData} />
-    </>
+    </div>
   )
 }
 

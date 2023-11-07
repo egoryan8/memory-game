@@ -17,7 +17,8 @@ export const Layout = ({ children }: ILayout) => {
 
   const [isLoaded, setIsLoaded] = useState(false)
 
-  const pathsToExclude = ['/game', '/change-password']
+  const pathToExclude = ['/game']
+  const pathToAdd = ['/login', '/register']
 
   useGameCols()
 
@@ -35,7 +36,10 @@ export const Layout = ({ children }: ILayout) => {
 
   return (
     <div className={styles.layout}>
-      {userId && !pathsToExclude.includes(location.pathname) && <Navigation />}
+      {userId && !pathToExclude.includes(location.pathname) && <Navigation />}
+      {pathToAdd.includes(location.pathname) && (
+        <div className={styles.copyright}>© 2023 CodeHunters</div>
+      )}
       {children}
       <Outlet />
     </div>

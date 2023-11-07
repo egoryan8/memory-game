@@ -5,19 +5,30 @@
 }
 
 .giphyButton {
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  padding: 10px;
+  background: none;
+  border-radius: 12px;
+  font-weight: 900;
+  font-size: 14px;
+  height: 46px;
+  width: 46px;
+  border: 1px solid var(--color-border);
+  background: var(--color-background);
 
-  img {
-    width: 30px;
+  &:hover {
+    background: var(--button-color-background-secondary);
+    color: var(--color-text-white);
   }
 }
 
 .content {
   position: absolute;
-  bottom: 35px;
-  right: 0;
+  bottom: 50px;
+  left: 0;
   width: 400px;
   background: rgba(255, 255, 255, 0.95);
   padding: 10px;
